@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <style>
+        body {
+            background-color: rgba(240, 240, 240, 0.7);
+            background-image: radial-gradient(#ccc 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .panel {
+            background: #ffffffcc;
+            backdrop-filter: blur(6px);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            height: 90vh;
+            overflow-y: auto;
+        }
+        .pdf-preview {
+            border: 1px solid #ddd;
+            background: white;
+            height: 100%;
+            border-radius: 8px;
+        }
+    </style>
+<div class="container-fluid py-4">
+    <div class="row g-4">
+
+        <!-- Colonne gauche : import d'images -->
+        <div class="col-12 col-md-3">
+            <div class="panel">
+                <form id="upload-form">
+                    <div>
+                        <div id="drop-area"
+                             class="border rounded-4 p-2 text-center shadow-sm cursor-pointer position-relative"
+                             onclick="document.getElementById('fileElem').click()">
+                            <div class="cloud-icon-container-2">
+                                <i class="bi bi-cloud-arrow-down-fill fs-10" style="color: #7c3aed; font-size: 4.5rem"></i>
+
+                            </div>
+                            <p class="text-title-photo mb-1">Glissez vos visuels, L'IA se chargera du reste...</p>
+                            <p class="text-violet">ou</p>
+
+                            <p class="btn btn-light file-button">Choisissez vos visuels (PNG ou PDF)</p>
+                            <input type="file" id="fileElem" multiple accept="image/png,application/pdf"
+                                   style="display:none;">
+                            <!-- Icône positionnée en bas à gauche
+                            <i class="fa-brands fa-confluence clickable-icon" data-bs-toggle="modal" data-bs-target="#ModalParams"
+                               onclick="event.stopPropagation()"></i>  -->
+                        </div>
+                    </div>
+                    <!---
+                    <p class="text-end fs-4">
+                        <span class="">Pas encore les fichiers?       </span>
+                        <u onclick="addStandardImageToPreview()" class="text-violet cursor-pointer">
+                            Je souhaite faire une simulation sans logos
+                        </u>
+                    </p>
+                    -->
+                    <div id="error-image" style="color: red"></div>
+                    <div class="preview col-mobile" id="preview"></div>
+                    <input type="hidden" id="id_format_choice" name="format-choice" value="1">
+                    <input type="hidden" id="margin" name="margin" value="0.5">
+                    <input type="hidden" id="gouttieres" name="gouttieres" value="0.5">
+                </form>
+            </div>
+        </div>
+
+        <!-- Colonne centrale : aperçu PDF -->
+        <div class="col-12 col-md-6">
+            <div class="panel" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <h5 class="mb-3">Aperçu du PDF</h5>
+                <canvas id="pdfCanvas" width="361" height="510" style="border:1px solid #000;"></canvas>
+            </div>
+        </div>
+<style>
+    .config-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .config-title {
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #1f2937;
+    }
+
+    .form-label {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #374151;
+    }
+
+    .input-small {
+        width: 70px;
+        text-align: center;
+    }
+
+    .btn-download {
+        border-radius: 12px;
+        font-weight: 600;
+        padding: 0.75rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn-download:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Select2 custom */
+    .select2-container--default .select2-selection--single {
+        height: 42px;
+        border-radius: 10px;
+        border: 1px solid #d1d5db;
+        display: flex;
+        align-items: center;
+    }
+
+    .select2-selection__rendered {
+        padding-left: 12px !important;
+        font-size: 0.9rem;
+    }
+
+    .select2-selection__arrow {
+        height: 100% !important;
+    }
+
+</style>
+        <!-- Colonne droite : configuration -->
+        <div class="col-12 col-md-3">
+            <div class="config-card">
+                <h5 class="config-title">Configuration</h5>
+
+                <!-- Format -->
+                <div class="form-group mb-4">
+                    <label class="form-label">Format</label>
+                    <select class="form-select select2" id="support" name="support">
+                        {% for support in supports %}
+                            <option value="{{ support.id }}">
+                                {{ support.name }} — {{ support.description }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Spacing -->
+                <div class="form-group d-flex align-items-center justify-content-between mb-3">
+                    <label class="form-label mb-0">Espacement entre logos</label>
+                    <input type="number" class="form-control form-control-sm input-small"
+                           id="spacing" name="spacing" min="0">
+                </div>
+
+                <!-- Margin -->
+                <div class="form-group d-flex align-items-center justify-content-between mb-3">
+                    <label class="form-label mb-0">Marge intérieure</label>
+                    <input type="number" class="form-control form-control-sm input-small"
+                           id="margin" name="margin" min="0">
+                </div>
+
+                <!-- Band -->
+                <div class="form-check form-switch mb-4">
+                    <input class="form-check-input" type="checkbox" id="band" name="band">
+                    <label class="form-check-label" for="band">
+                        Supprimer la bande de logos
+                    </label>
+                </div>
+
+                <!-- Button -->
+                <button type="button"
+                        onclick="submitForm()"
+                        class="btn btn-primary w-100 btn-download">
+                    Télécharger le PDF
+                </button>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}

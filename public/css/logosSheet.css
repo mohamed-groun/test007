@@ -1,0 +1,187 @@
+#preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.preview-card {
+    width: 100%;
+    background: white;
+    border-radius: 18px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(30, 10, 60, 0.12);
+    position: relative;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.preview-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(30, 10, 60, 0.18);
+}
+
+.preview-img {
+    width: 50%;
+    max-height: 170px;
+    object-fit: contain;
+    border-radius: 12px;
+    background: #fafafa;
+    padding: 10px;
+}
+
+.preview-delete {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 85, 85, 0.9);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.preview-delete:hover {
+    background: #ff0000;
+}
+
+.preview-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #5b21b6;
+    margin-bottom: 3px;
+}
+
+.preview-input {
+    border-radius: 10px !important;
+    font-size: 0.85rem;
+}
+
+
+/* Container pour toutes les cards */
+#allowed-formats-section .preview-coupe-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Card moderne */
+.coupe-card {
+    width: 240px;
+    background: white;
+    border-radius: 18px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(30, 10, 60, 0.12);
+    position: relative;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.coupe-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(30, 10, 60, 0.18);
+}
+
+/* Inputs */
+.coupe-input {
+    border-radius: 10px !important;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+}
+
+/* Delete icon */
+.coupe-delete {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 85, 85, 0.9);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.coupe-delete:hover {
+    background: #ff0000;
+}
+
+.coupe-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #5b21b6;
+    margin-bottom: 3px;
+}
+
+
+.coupe-card {
+    position: relative;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-width: 300px; /* largeur max de la carte */
+}
+
+.coupe-image {
+    display: block;
+    max-width: 100%;   /* l'image ne dépassera jamais la largeur de la carte */
+    max-height: 150px; /* ajuste selon ton besoin */
+    object-fit: contain; /* l'image garde ses proportions */
+    margin-bottom: 10px; /* espace sous l'image */
+    border-radius: 4px;
+}
+
+
+#drop-area.drag-over {
+    border-color: #7c3aed !important;
+    background-color: rgba(124, 58, 237, 0.05);
+    transition: .2s ease-in-out;
+}
+.preview-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 6px 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.preview-navbar button {
+    margin-left: 5px;
+}
+
+.compact-filename {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70%;
+}
+
+.preview-compact .form-control {
+    flex: 0 0 auto !important;
+}
+
+.preview-compact {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px;
+}
+
+.compact-qty {
+    width: 90px;           /* largeur fixe */
+    min-width: 90px;
+    height: 38px;          /* hauteur standard Bootstrap */
+    font-size: 14px;
+    padding: 6px 8px;
+}

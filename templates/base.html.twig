@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+    <title>{% block title %}Logos sheets{% endblock %}</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        <!-- ========================= CSS here ========================= -->
+        <link rel="stylesheet" href="assets/css/bootstrap-5.0.0-alpha-2.min.css"/>
+        <link rel="stylesheet" href="assets/css/LineIcons.2.0.css"/>
+        <link rel="stylesheet" href="assets/css/animate.css"/>
+        <link rel="stylesheet" href="assets/css/lindy-uikit.css"/>
+        <link rel="stylesheet" href="/css/style.css"/>
+        <link rel="stylesheet" href="/css/logosSheet.css"/>
+    {% endblock %}
+</head>
+<body>
+<!--[if lte IE 9]>
+<p class="browserupgrade">
+    You are using an <strong>outdated</strong> browser. Please
+    <a href="https://browsehappy.com/">upgrade your browser</a> to improve
+    your experience and security.
+</p>
+<![endif]-->
+
+<!-- ========================= preloader start ========================= -->
+<div id="preloader" class="preloader">
+    <div class="loader">
+        <div class="spinner">
+            <div class="spinner-container">
+                <div class="spinner-rotator">
+                    <div class="spinner-left">
+                        <div class="spinner-circle"></div>
+                    </div>
+                    <div class="spinner-right">
+                        <div class="spinner-circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ========================= preloader end ========================= -->
+
+<!-- ========================= header-2 start ========================= -->
+<header class="header header-2">
+    <div class="navbar-area">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <nav class="navbar navbar-expand-lg">
+                        <a class="navbar-brand" href="index.html">
+                            <img src="assets/img/logo/logo.svg" alt="Logo"/>
+                        </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#navbarSupportedContent2" aria-controls="navbarSupportedContent2"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent2">
+                            <ul id="nav2" class="navbar-nav ml-auto">
+                                <li class="nav-item">
+                                    <a class="page-scroll active" href="#home">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="page-scroll" href="#services">Services</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="page-scroll" href="#about">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="page-scroll" href="#pricing">Pricing</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="page-scroll" href="#contact">Contact</a>
+                                </li>
+                            </ul>
+                            <div class="buttons">
+                                <a href="{{ path('app_generator_2') }}" rel="nofollow" target="blank"
+                                   class="button radius-10 wow fadeInUp" data-wow-delay=".7s">Start Now</a>
+                            </div>
+                            <style>
+                                .test {
+                                    font-size: 18px;
+                                    font-weight: 600;
+                                    color: #585978;
+                                    transition: all 0.3s ease-out 0s;
+                                    padding: 10px 30px;
+                                    position: relative;
+                                    display: inline-block;
+                                    z-index: 1;
+                                }
+                            </style>
+                            {% if(app.user) %}
+                            <span class="test">HI Mourad</span>
+                            {% else %}
+                            <span class="test" ><a href="{{ path('app_login') }}">Login</a> </span>
+                            {% endif %}
+                        </div>
+                        <!-- navbar collapse -->
+                    </nav>
+                    <!-- navbar -->
+                </div>
+            </div>
+            <!-- row -->
+        </div>
+        <!-- container -->
+    </div><!-- navbar area -->
+</header>
+<!-- ========================= header-2 end ========================= -->
+{% block body %}
+
+{% endblock %}
+{% block javascripts %}
+    <!-- ========================= JS here ========================= -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="assets/js/bootstrap.5.0.0.alpha-2-min.js"></script>
+    <script src="assets/js/count-up.min.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="js/logosSheet.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    </script>
+
+    <script>
+    $(document).ready(function () {
+        $('.select2').select2({
+            placeholder: "Choisir un format",
+            width: '100%'
+        });
+    });
+</script>
+{% endblock %}
+</body>
+</html>
