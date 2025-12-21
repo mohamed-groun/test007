@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const fileInput = document.getElementById('fileElem');
     const allowedFormatsSection = document.getElementById("allowed-formats-section");
     const hiddenChoice = document.getElementById("id_format_choice");
- //   const coupeContainer = allowedFormatsSection.querySelector(".preview-coupe-container");
+    //   const coupeContainer = allowedFormatsSection.querySelector(".preview-coupe-container");
 
     // -------------------- Upload files & preview --------------------
     if (!fileInput) {
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const selectedValue = hiddenChoice?.value;
 
         if (selectedValue === "1") {
-        //    allowedFormatsSection.style.display = "none";
+            //    allowedFormatsSection.style.display = "none";
         } else {
             //showAllowedFormatsSection();
         }
@@ -252,10 +252,10 @@ async function handleFiles(files) {
 
 async function getPdfDimensionsAndThumbnail(file, scale = 1) {
     const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
     const page = await pdf.getPage(1);
 
-    const viewport = page.getViewport({ scale });
+    const viewport = page.getViewport({scale});
 
     // PDF units → points (1 pt = 1/72 inch)
     const widthInch = viewport.width / 72;
@@ -322,13 +322,13 @@ function addCoupeCard(defaultWidth = "", defaultHeight = "") {
     card.appendChild(heightDiv);
 
     // Add coupe button
-/*
-    const addBtn = document.createElement("button");
-    addBtn.type = "button";
-    addBtn.className = "btn btn-sm btn-outline-primary add-coupe-btn mt-2";
-    addBtn.textContent = "Ajouter une coupe";
-    addBtn.addEventListener("click", () => addCoupeCard()); // ajout dynamique
-    card.appendChild(addBtn); */
+    /*
+        const addBtn = document.createElement("button");
+        addBtn.type = "button";
+        addBtn.className = "btn btn-sm btn-outline-primary add-coupe-btn mt-2";
+        addBtn.textContent = "Ajouter une coupe";
+        addBtn.addEventListener("click", () => addCoupeCard()); // ajout dynamique
+        card.appendChild(addBtn); */
 
     container.appendChild(card);
     return card;
@@ -370,7 +370,7 @@ async function getImageDimensions(file) {
 
 document.addEventListener("DOMContentLoaded", () => {
     const fixedBtn = document.getElementById("add-coupe-fixed-btn");
-  //  fixedBtn.addEventListener("click", () => addCoupeCard());
+    //  fixedBtn.addEventListener("click", () => addCoupeCard());
 });
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -414,7 +414,7 @@ const imageCache = {};
 const pdfCache = {};
 
 // -------------------- FONCTION PRINCIPALE --------------------
-async function submitForm() {
+async function submitForm(action) {
 
     if (selectedFiles.length === 0) {
         alert("Veuillez ajouter au moins une image ou PDF !");
@@ -443,10 +443,10 @@ async function submitForm() {
     formData.append('support', $('#support').val());
     formData.append('format-choice', document.getElementById('id_format_choice').value);
     formData.append('margin', document.getElementById('margin').value);
-    formData.append('gouttieres', document.getElementById('gouttieres').value);
+    formData.append('space_between_logos', document.getElementById('space_between_logos').value);
 
-    // -------------------- Envoi Symfony --------------------
-    try {
+    if (action === 'preview') {
+
         const response = await fetch('/generator/calculate', {
             method: 'POST',
             body: formData
@@ -454,112 +454,206 @@ async function submitForm() {
 
         const data = await response.json();
 
-        if (data.status !== 'success') {
-            document.getElementById('response').innerHTML =
-                `<p style="color: red;">Erreur serveur</p>`;
-            return;
+        if (data.status !== 'success') return;
+
+        await renderPreview(data);
+    }
+
+
+    if (action == 'download') {
+        try {
+            const response = await fetch('/generator/download', {
+                method: 'POST',
+                body: formData
+            });
+
+
+
+
+        } catch (error) {
+            alert("Erreur lors du téléchargement : " + error.message);
         }
+    }
 
-        console.log(data);
+}
 
-        // -------------------- CANVAS --------------------
-        const canvas = document.getElementById('pdfCanvas');
-        const ctx = canvas.getContext('2d');
+async function renderPreview(data) {
 
-        const support = data.supports[0];
+    const container = document.getElementById('canvasContainer');
+    container.innerHTML = '';
 
-        const maxWidth = window.innerWidth * 0.8;
-        const maxHeight = window.innerHeight * 0.7;
+    for (const supportKey in data.packingResult) {
 
-        const scale = Math.min(
-            maxWidth / support.width,
-            maxHeight / support.height
-        );
+        const support = data.packingResult[supportKey];
 
-        canvas.width = support.width * scale;
-        canvas.height = support.height * scale;
+        // ---------- Groupe support ----------
+        const supportGroup = document.createElement('div');
+        supportGroup.className = 'support-group';
 
-        // -------------------- Fond + bordure --------------------
-        ctx.fillStyle = '#f0f0f0';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        const title = document.createElement('div');
+        title.className = 'support-title';
+        title.textContent = supportKey;
 
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(0, 0, canvas.width, canvas.height);
+        const sheetsRow = document.createElement('div');
+        sheetsRow.className = 'sheets-row';
 
-        // -------------------- DESSIN DES ELEMENTS --------------------
-        const firstKey = Object.keys(data.packingResult)[0];
-        const sheet = data.packingResult[firstKey].sheets[0];
+        supportGroup.appendChild(title);
+        supportGroup.appendChild(sheetsRow);
+        container.appendChild(supportGroup);
 
-        for (const item of sheet) {
+        // ---------- Subtitle UX ----------
+        const subtitle = document.createElement('div');
+        subtitle.className = 'support-subtitle';
+        if (support.unique_sheets === 1 && support.bins_used > 1) {
+            subtitle.textContent = `× ${support.bins_used} feuilles identiques`;
+        } else {
+            subtitle.textContent = `${support.sheets.length} feuille(s)`;
+        }
+        supportGroup.insertBefore(subtitle, sheetsRow);
 
-            // -------------------- PDF --------------------
-            if (item.name.endsWith('.pdf')) {
+        // ---------- Sheets à afficher ----------
+        const sheetsToRender =
+            support.unique_sheets === 1
+                ? [support.sheets[0]] // une seule sheet
+                : support.sheets;
 
-                if (!pdfCache[item.name]) {
-                    const tempCanvas = document.createElement('canvas');
-                    pdfCache[item.name] = drawPdfOnCanvas(item.name, tempCanvas, scale)
-                        .then(() => tempCanvas);
-                }
+        for (let i = 0; i < sheetsToRender.length; i++) {
 
-                const pdfCanvas = await pdfCache[item.name];
+            const sheet = sheetsToRender[i];
+            const taux = support.taux[i] ?? support.taux[0] ?? 0;
 
-                ctx.drawImage(
-                    pdfCanvas,
-                    item.x * scale,
-                    item.y * scale,
-                    item.width * scale,
-                    item.height * scale
-                );
+            // ----- Card sheet -----
+            const card = document.createElement('div');
+            card.className = 'sheet-card';
 
-            }
-            // -------------------- IMAGE --------------------
-            else {
+            const header = document.createElement('div');
+            header.className = 'sheet-header';
+            header.innerHTML = `
+                <span>Feuille ${i + 1}</span>
+                <span>${taux.toFixed(2)}%</span>
+            `;
 
-                if (!imageCache[item.name]) {
-                    const img = new Image();
-                    img.src = item.name;
+            const canvasWrapper = document.createElement('div');
+            canvasWrapper.className = 'canvas-wrapper';
 
-                    imageCache[item.name] = new Promise((resolve) => {
-                        img.onload = () => resolve(img);
-                    });
-                }
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
 
-                const img = await imageCache[item.name];
+            canvasWrapper.appendChild(canvas);
+            card.appendChild(header);
+            card.appendChild(canvasWrapper);
 
-                if (item.rotated) {
-                    ctx.save();
-                    ctx.translate(
-                        (item.x + item.width / 2) * scale,
-                        (item.y + item.height / 2) * scale
-                    );
-                    ctx.rotate(Math.PI / 2);
+            // ----- Bouton Download PDF -----
+            const downloadBtn = document.createElement('button');
+            downloadBtn.className = 'btn-download-sheet';
+            downloadBtn.type = 'button';
+            downloadBtn.textContent = 'Télécharger PDF';
+
+            downloadBtn.onclick = () => {
+                submitForm('download', {
+                    support: supportKey,
+                    sheetIndex: i
+                });
+            };
+
+            card.appendChild(downloadBtn);
+
+
+
+            sheetsRow.appendChild(card);
+
+            // ----- Scale -----
+            const maxWidth = 250;
+            const maxHeight = 350;
+
+            const scale = Math.min(
+                maxWidth / support.width,
+                maxHeight / support.height
+            );
+
+            canvas.width = support.width * scale;
+            canvas.height = support.height * scale;
+
+            // ----- Fond -----
+            ctx.fillStyle = '#f3f4f6';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = '#111827';
+            ctx.lineWidth = 1.2;
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+            // ----- Dessin items -----
+            for (const item of sheet) {
+
+                // PDF
+                if (item.name.endsWith('.pdf')) {
+                    if (!pdfCache[item.name]) {
+                        const tempCanvas = document.createElement('canvas');
+                        pdfCache[item.name] = drawPdfOnCanvas(
+                            item.name,
+                            tempCanvas,
+                            scale
+                        ).then(() => tempCanvas);
+                    }
+
+                    const pdfCanvas = await pdfCache[item.name];
+
                     ctx.drawImage(
-                        img,
-                        -item.height / 2 * scale,
-                        -item.width / 2 * scale,
-                        item.height * scale,
-                        item.width * scale
-                    );
-                    ctx.restore();
-                } else {
-                    ctx.drawImage(
-                        img,
+                        pdfCanvas,
                         item.x * scale,
                         item.y * scale,
                         item.width * scale,
                         item.height * scale
                     );
                 }
+
+                // Image
+                else {
+                    if (!imageCache[item.name]) {
+                        const img = new Image();
+                        img.crossOrigin = 'anonymous';
+                        img.src = item.name;
+
+                        imageCache[item.name] = new Promise(resolve => {
+                            img.onload = () => resolve(img);
+                        });
+                    }
+
+                    const img = await imageCache[item.name];
+
+                    if (item.rotated) {
+                        ctx.save();
+                        ctx.translate(
+                            (item.x + item.width / 2) * scale,
+                            (item.y + item.height / 2) * scale
+                        );
+                        ctx.rotate(Math.PI / 2);
+                        ctx.drawImage(
+                            img,
+                            -item.height / 2 * scale,
+                            -item.width / 2 * scale,
+                            item.height * scale,
+                            item.width * scale
+                        );
+                        ctx.restore();
+                    } else {
+                        ctx.drawImage(
+                            img,
+                            item.x * scale,
+                            item.y * scale,
+                            item.width * scale,
+                            item.height * scale
+                        );
+                    }
+                }
             }
         }
-
-    } catch (error) {
-        console.error(error);
-        document.getElementById('response').innerHTML =
-            `<p style="color: red;">Erreur lors de l'envoi</p>`;
     }
 }
+
+
+
+
 
 async function drawPdfOnCanvas(pdfUrl, canvas, scale = 1) {
     const ctx = canvas.getContext('2d');
@@ -567,7 +661,7 @@ async function drawPdfOnCanvas(pdfUrl, canvas, scale = 1) {
     const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
     const page = await pdf.getPage(1); // première page
 
-    const viewport = page.getViewport({ scale });
+    const viewport = page.getViewport({scale});
 
     canvas.width = viewport.width;
     canvas.height = viewport.height;
@@ -576,6 +670,39 @@ async function drawPdfOnCanvas(pdfUrl, canvas, scale = 1) {
         canvasContext: ctx,
         viewport: viewport
     }).promise;
+}
+
+async function previewForm() {
+    const formData = buildFormData();
+
+    const response = await fetch('/generator/preview', {
+        method: 'POST',
+        body: formData
+    });
+
+    const data = await response.json();
+
+    if (data.status !== 'success') {
+        alert('Erreur aperçu');
+        return;
+    }
+
+    drawPreview(data);
+}
+
+function buildFormData() {
+    const formData = new FormData();
+
+    selectedFiles.forEach((file, index) => {
+        formData.append('files_info[' + index + '][name]', file.name);
+        formData.append('files_info[' + index + '][width]', 20);
+        formData.append('files_info[' + index + '][height]', 20);
+        formData.append('files_info[' + index + '][quantity]', 1);
+    });
+
+    formData.append('support', document.getElementById('support').value);
+
+    return formData;
 }
 
 

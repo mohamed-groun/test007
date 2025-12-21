@@ -21,12 +21,103 @@
             height: 100%;
             border-radius: 8px;
         }
+
+
+        /* Titre support */
+        .support-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            color: #111827;
+            text-align: left;
+        }
+
+
+
+
+        /* Header sheet */
+        .sheet-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        /* Canvas */
+        .canvas-wrapper {
+            background: #f9fafb;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        canvas {
+            background: #fff;
+            border-radius: 6px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .panel-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;   /* OK */
+            justify-content: flex-start; /* 🔥 IMPORTANT */
+        }
+        .support-subtitle {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+        .sheets-row {
+            display: flex;
+            flex-wrap: wrap;         /* permet de passer à la ligne si trop large */
+            gap: 24px;
+            justify-content: center; /* centrer horizontalement */
+        }
+
+        #canvasContainer {
+            display: flex;
+            flex-wrap: wrap;      /* permet de passer à la ligne si écran trop petit */
+            gap: 20px;            /* espace entre les groupes */
+            justify-content: flex-start; /* aligne à gauche */
+        }
+
+        .support-group {
+            flex: 1 1 300px;      /* flexible avec minimum 300px */
+            box-sizing: border-box;
+            border: 1px solid #ccc;  /* optionnel pour mieux visualiser */
+            padding: 10px;
+            border-radius: 6px;
+            background: #f9f9f9;
+        }
+
+        /* Responsive supplémentaire pour très petits écrans */
+        @media (max-width: 500px) {
+            .support-group {
+                flex: 1 1 100%;   /* prend toute la largeur sur mobile */
+            }
+        }
+
+        .sheet-card {
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 4px;
+            background: #fff;
+        }
+
+
     </style>
-<div class="container-fluid py-4">
+
+
+    <div class="container-fluid py-4">
     <div class="row g-4">
 
         <!-- Colonne gauche : import d'images -->
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-2">
             <div class="panel">
                 <form id="upload-form">
                     <div>
@@ -59,17 +150,15 @@
                     <div id="error-image" style="color: red"></div>
                     <div class="preview col-mobile" id="preview"></div>
                     <input type="hidden" id="id_format_choice" name="format-choice" value="1">
-                    <input type="hidden" id="margin" name="margin" value="0.5">
-                    <input type="hidden" id="gouttieres" name="gouttieres" value="0.5">
                 </form>
             </div>
         </div>
 
         <!-- Colonne centrale : aperçu PDF -->
-        <div class="col-12 col-md-6">
-            <div class="panel" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <h5 class="mb-3">Aperçu du PDF</h5>
-                <canvas id="pdfCanvas" width="361" height="510" style="border:1px solid #000;"></canvas>
+        <div class="col-12 col-md-7">
+            <div class="panel panel-preview">
+            <h5 class="mb-3">Aperçu du PDF</h5>
+                <div id="canvasContainer" class="supports-row"></div>
             </div>
         </div>
 <style>
@@ -109,23 +198,6 @@
         box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
     }
 
-    /* Select2 custom */
-    .select2-container--default .select2-selection--single {
-        height: 42px;
-        border-radius: 10px;
-        border: 1px solid #d1d5db;
-        display: flex;
-        align-items: center;
-    }
-
-    .select2-selection__rendered {
-        padding-left: 12px !important;
-        font-size: 0.9rem;
-    }
-
-    .select2-selection__arrow {
-        height: 100% !important;
-    }
 
 </style>
         <!-- Colonne droite : configuration -->
@@ -136,27 +208,28 @@
                 <!-- Format -->
                 <div class="form-group mb-4">
                     <label class="form-label">Format</label>
-                    <select class="form-select select2" id="support" name="support">
+                    <select class="select2 form-control" id="support" name="support[]" multiple="multiple">
                         {% for support in supports %}
                             <option value="{{ support.id }}">
                                 {{ support.name }} — {{ support.description }}
                             </option>
                         {% endfor %}
                     </select>
+
                 </div>
 
                 <!-- Spacing -->
                 <div class="form-group d-flex align-items-center justify-content-between mb-3">
                     <label class="form-label mb-0">Espacement entre logos</label>
                     <input type="number" class="form-control form-control-sm input-small"
-                           id="spacing" name="spacing" min="0">
+                           id="space_between_logos" name="space_between_logos" min="0.2"  max="2" value="0.5">
                 </div>
 
                 <!-- Margin -->
                 <div class="form-group d-flex align-items-center justify-content-between mb-3">
                     <label class="form-label mb-0">Marge intérieure</label>
                     <input type="number" class="form-control form-control-sm input-small"
-                           id="margin" name="margin" min="0">
+                           id="margin" name="margin" min="0.2"  max="2" value="0.5">
                 </div>
 
                 <!-- Band -->
@@ -169,14 +242,22 @@
 
                 <!-- Button -->
                 <button type="button"
-                        onclick="submitForm()"
+                        onclick="submitForm('preview')"
                         class="btn btn-primary w-100 btn-download">
-                    Télécharger le PDF
+       Apercue
                 </button>
+
+
+                <!-- TÉLÉCHARGEMENT-->
+
+                    <button type="button"
+                            onclick="submitForm('download')"
+                            class="btn btn-primary w-100">
+                        Télécharger le PDF
+                    </button>
+
             </div>
         </div>
-
-
     </div>
 </div>
 {% endblock %}

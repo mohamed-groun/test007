@@ -548,7 +548,7 @@ function deleteImage(button) {
     }
 }
 
-
+/*
 function submitForm() {
     if (utilisateurId == 0) {
         $(document).ready(function () {
@@ -620,7 +620,7 @@ function submitForm() {
             setTimeout(() => preloadModal.hide(), 500);
         });
 }
-
+*/
 
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("upload-form");
