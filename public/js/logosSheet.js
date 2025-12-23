@@ -457,23 +457,45 @@ async function submitForm(action) {
         if (data.status !== 'success') return;
 
         await renderPreview(data);
+        $('#download_button').attr('data-id-file', data.id_file);
+        $('#download_button').attr('data-id-file', data.id_file);
+
     }
 
 
-    if (action == 'download') {
+    if (action === 'download') {
+        const fileId = $('#download_button').attr('data-id-file');
+
+        const formData = new FormData();
+        formData.append('id_file', fileId);
+
         try {
             const response = await fetch('/generator/download', {
                 method: 'POST',
                 body: formData
             });
 
+            if (!response.ok) {
+                throw new Error('Erreur serveur');
+            }
 
+            const blob = await response.blob();
 
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'commande_123_pdfs.zip'; // nom du fichier
+            document.body.appendChild(a);
+            a.click();
+
+            a.remove();
+            window.URL.revokeObjectURL(url);
 
         } catch (error) {
             alert("Erreur lors du téléchargement : " + error.message);
         }
     }
+
 
 }
 

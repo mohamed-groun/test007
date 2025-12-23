@@ -108,7 +108,7 @@ final class GeneratorController extends AbstractController
         $em->flush();
         return new JsonResponse([
             'status' => 'success',
-            'id_files' => $pdfParam->getId(),
+            'id_file' => $pdfParam->getId(),
             'files' => $fileDetails,
             'supports' => $supportDetails,
             'formatChoice' => $formatChoice,
@@ -127,14 +127,14 @@ final class GeneratorController extends AbstractController
         EntityManagerInterface $em
     ): Response {
 
-        $pdf = $em->getRepository(PdfParametres::class)->find(10);
+        $id_file = $request->request->get('id_file');
+        $pdf = $em->getRepository(PdfParametres::class)->find($id_file);
         $json = $pdf->getImagessheets();
         $images = $pdf->getImages();
 
         $outputDir = $this->getParameter('uploads_directory') . '/pdfs/'.$pdf->getId();
         $generatedFiles = $pdfsGenerator->generatePdfsFromJson($json, $images, $outputDir, 123);
 
-        dd('files created');
         // Création d'un ZIP
         $zipPath = $outputDir . '/commande_123_pdfs.zip';
         $zip = new \ZipArchive();
