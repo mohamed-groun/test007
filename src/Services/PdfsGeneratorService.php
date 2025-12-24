@@ -26,10 +26,11 @@ class PdfsGeneratorService
         string $json,
         string $originImages,
         string $outputDir,
-        int $commandeId
+        int $commandeId,
+        bool $withBanner = false
     ): array {
         $json = $this->checkInversedImages($originImages, $json);
-
+dd($json);
         $data = json_decode($json, true);
         if ($data === null) {
             throw new \RuntimeException('JSON invalide');
@@ -81,6 +82,34 @@ class PdfsGeneratorService
                 $pdf->setPrintHeader(false);
                 $pdf->setPrintFooter(false);
                 $pdf->AddPage();
+
+
+// ===== BANNIÈRE EN BAS =====
+                // ===== BANNIÈRE EN BAS =====
+// Après avoir généré toutes les images / contenu
+                if ($withBanner) {
+                    $pageCount = $pdf->getNumPages();
+                    $pdf->setPage($pageCount); // aller à la dernière page
+
+                    $bannerHeight = 10; // hauteur du bandeau
+                    $pageWidth  = $pdf->getPageWidth();
+                    $pageHeight = $pdf->getPageHeight();
+
+                    // Fond bleu du bandeau
+                    $pdf->SetFillColor(37, 99, 235);
+                    $pdf->Rect(0, $pageHeight - $bannerHeight, $pageWidth, $bannerHeight, 'F');
+
+                    // Texte blanc centré
+                    $pdf->SetTextColor(255, 255, 255);
+                    $pdf->SetFont('helvetica', 'B', 10);
+
+                    // Coller le texte à l’intérieur du bandeau
+                    $pdf->SetXY(0, $pageHeight - $bannerHeight + 1); // 1mm de marge depuis le haut du bandeau
+                    $pdf->Cell($pageWidth, $bannerHeight - 2, 'Made by Logos Sheet', 0, 0, 'C');
+                }
+
+
+
 
                 foreach ($group['sheet'] as $img) {
                     $this->insertImage($pdf, $img, 1, $commandeId);

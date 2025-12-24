@@ -1,263 +1,163 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-admin.html.twig' %}
+
+{% block title %}Hello DashboardController!{% endblock %}
+
 {% block body %}
-    <style>
-        body {
-            background-color: rgba(240, 240, 240, 0.7);
-            background-image: radial-gradient(#ccc 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        .panel {
-            background: #ffffffcc;
-            backdrop-filter: blur(6px);
-            border-radius: 12px;
-            padding: 1rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            height: 90vh;
-            overflow-y: auto;
-        }
-        .pdf-preview {
-            border: 1px solid #ddd;
-            background: white;
-            height: 100%;
-            border-radius: 8px;
-        }
 
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
 
-        /* Titre support */
-        .support-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 14px;
-            color: #111827;
-            text-align: left;
-        }
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                        class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+        </div>
 
+        <!-- Content Row -->
+        <div class="row">
 
-
-
-        /* Header sheet */
-        .sheet-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            color: #6b7280;
-            margin-bottom: 10px;
-        }
-
-        /* Canvas */
-        .canvas-wrapper {
-            background: #f9fafb;
-            padding: 10px;
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-        }
-
-        canvas {
-            background: #fff;
-            border-radius: 6px;
-            max-width: 100%;
-            height: auto;
-        }
-
-        .panel-preview {
-            display: flex;
-            flex-direction: column;
-            align-items: center;   /* OK */
-            justify-content: flex-start; /* 🔥 IMPORTANT */
-        }
-        .support-subtitle {
-            font-size: 13px;
-            color: #6b7280;
-            margin-bottom: 12px;
-        }
-        .sheets-row {
-            display: flex;
-            flex-wrap: wrap;         /* permet de passer à la ligne si trop large */
-            gap: 24px;
-            justify-content: center; /* centrer horizontalement */
-        }
-
-        #canvasContainer {
-            display: flex;
-            flex-wrap: wrap;      /* permet de passer à la ligne si écran trop petit */
-            gap: 20px;            /* espace entre les groupes */
-            justify-content: flex-start; /* aligne à gauche */
-        }
-
-        .support-group {
-            flex: 1 1 300px;      /* flexible avec minimum 300px */
-            box-sizing: border-box;
-            border: 1px solid #ccc;  /* optionnel pour mieux visualiser */
-            padding: 10px;
-            border-radius: 6px;
-            background: #f9f9f9;
-        }
-
-        /* Responsive supplémentaire pour très petits écrans */
-        @media (max-width: 500px) {
-            .support-group {
-                flex: 1 1 100%;   /* prend toute la largeur sur mobile */
-            }
-        }
-
-        .sheet-card {
-            margin-top: 10px;
-            border: 1px solid #ddd;
-            padding: 8px;
-            border-radius: 4px;
-            background: #fff;
-        }
-
-
-    </style>
-
-
-    <div class="container-fluid py-4">
-    <div class="row g-4">
-
-        <!-- Colonne gauche : import d'images -->
-        <div class="col-12 col-md-2">
-            <div class="panel">
-                <form id="upload-form">
-                    <div>
-                        <div id="drop-area"
-                             class="border rounded-4 p-2 text-center shadow-sm cursor-pointer position-relative"
-                             onclick="document.getElementById('fileElem').click()">
-                            <div class="cloud-icon-container-2">
-                                <i class="bi bi-cloud-arrow-down-fill fs-10" style="color: #7c3aed; font-size: 4.5rem"></i>
-
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Earnings (Monthly)</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
                             </div>
-                            <p class="text-title-photo mb-1">Glissez vos visuels, L'IA se chargera du reste...</p>
-                            <p class="text-violet">ou</p>
-
-                            <p class="btn btn-light file-button">Choisissez vos visuels (PNG ou PDF)</p>
-                            <input type="file" id="fileElem" multiple accept="image/png,application/pdf"
-                                   style="display:none;">
-                            <!-- Icône positionnée en bas à gauche
-                            <i class="fa-brands fa-confluence clickable-icon" data-bs-toggle="modal" data-bs-target="#ModalParams"
-                               onclick="event.stopPropagation()"></i>  -->
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
                         </div>
                     </div>
-                    <!---
-                    <p class="text-end fs-4">
-                        <span class="">Pas encore les fichiers?       </span>
-                        <u onclick="addStandardImageToPreview()" class="text-violet cursor-pointer">
-                            Je souhaite faire une simulation sans logos
-                        </u>
-                    </p>
-                    -->
-                    <div id="error-image" style="color: red"></div>
-                    <div class="preview col-mobile" id="preview"></div>
-                    <input type="hidden" id="id_format_choice" name="format-choice" value="1">
-                </form>
+                </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Earnings (Annual)</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+                                </div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="progress progress-sm mr-2">
+                                            <div class="progress-bar bg-info" role="progressbar"
+                                                 style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                                 aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Pending Requests</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ contacts|length }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-comments fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Colonne centrale : aperçu PDF -->
-        <div class="col-12 col-md-7">
-            <div class="panel panel-preview">
-            <h5 class="mb-3">Aperçu du PDF</h5>
-                <div id="canvasContainer" class="supports-row"></div>
+
+
+        <!-- Page Heading -->
+
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Message envoyé de Site</h6>
             </div>
-        </div>
-<style>
-    .config-card {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    }
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Subject</th>
+                            <th>Message</th>
 
-    .config-title {
-        font-weight: 600;
-        margin-bottom: 1.5rem;
-        color: #1f2937;
-    }
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
 
-    .form-label {
-        font-size: 0.9rem;
-        font-weight: 500;
-        color: #374151;
-    }
+                            <th>date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Subject</th>
+                            <th>Message</th>
 
-    .input-small {
-        width: 70px;
-        text-align: center;
-    }
-
-    .btn-download {
-        border-radius: 12px;
-        font-weight: 600;
-        padding: 0.75rem;
-        transition: all 0.2s ease;
-    }
-
-    .btn-download:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-    }
-
-
-</style>
-        <!-- Colonne droite : configuration -->
-        <div class="col-12 col-md-3">
-            <div class="config-card">
-                <h5 class="config-title">Configuration</h5>
-
-                <!-- Format -->
-                <div class="form-group mb-4">
-                    <label class="form-label">Format</label>
-                    <select class="select2 form-control" id="support" name="support[]" multiple="multiple">
-                        {% for support in supports %}
-                            <option value="{{ support.id }}">
-                                {{ support.name }} — {{ support.description }}
-                            </option>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for contact in contacts %}
+                            <tr>
+                                <td>contact.date</td>
+                                <td>{{ contact.name }}</td>
+                                <td>{{ contact.email }}</td>
+                                <td>{{ contact.number }}</td>
+                                <td>{{ contact.subject }}</td>
+                                <td>{{ contact.message }}</td>
+                            </tr>
                         {% endfor %}
-                    </select>
-
+                        </tbody>
+                    </table>
                 </div>
-
-                <!-- Spacing -->
-                <div class="form-group d-flex align-items-center justify-content-between mb-3">
-                    <label class="form-label mb-0">Espacement entre logos</label>
-                    <input type="number" class="form-control form-control-sm input-small"
-                           id="space_between_logos" name="space_between_logos" min="0.2"  max="2" value="0.5">
-                </div>
-
-                <!-- Margin -->
-                <div class="form-group d-flex align-items-center justify-content-between mb-3">
-                    <label class="form-label mb-0">Marge intérieure</label>
-                    <input type="number" class="form-control form-control-sm input-small"
-                           id="margin" name="margin" min="0.2"  max="2" value="0.5">
-                </div>
-
-                <!-- Band -->
-                <div class="form-check form-switch mb-4">
-                    <input class="form-check-input" type="checkbox" id="band" name="band">
-                    <label class="form-check-label" for="band">
-                        Supprimer la bande de logos
-                    </label>
-                </div>
-
-                <!-- Button -->
-                <button type="button"
-                        onclick="submitForm('preview')"
-                        class="btn btn-primary w-100 btn-download">
-       Apercue
-                </button>
-
-
-                <!-- TÉLÉCHARGEMENT-->
-
-                    <button id="download_button" type="button" data-id-file=""
-                            onclick="submitForm('download')"
-                            class="btn btn-primary w-100">
-                        Télécharger le PDF
-                    </button>
-
             </div>
         </div>
+
+
+
     </div>
-</div>
+    <!-- /.container-fluid -->
+
+
 {% endblock %}

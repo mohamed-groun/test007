@@ -433,10 +433,12 @@ async function submitForm(action) {
         const width = card.querySelector('.file-width')?.value || 0;
         const height = card.querySelector('.file-height')?.value || 0;
         const qty = card.querySelector('.file-qty')?.value || 1;
+        const with_banner = document.getElementById('with_banner')?.checked ? 1 : 0;
 
         formData.append(`files_info[${index}][width]`, width);
         formData.append(`files_info[${index}][height]`, height);
         formData.append(`files_info[${index}][qty]`, qty);
+        formData.append('with_banner', with_banner);
     });
 
     // -------------------- Autres champs --------------------
@@ -498,11 +500,13 @@ async function submitForm(action) {
 
 
 }
-
 async function renderPreview(data) {
 
     const container = document.getElementById('canvasContainer');
     container.innerHTML = '';
+
+    const imageCache = {};
+    const pdfCache = {};
 
     for (const supportKey in data.packingResult) {
 
@@ -536,7 +540,7 @@ async function renderPreview(data) {
         // ---------- Sheets à afficher ----------
         const sheetsToRender =
             support.unique_sheets === 1
-                ? [support.sheets[0]] // une seule sheet
+                ? [support.sheets[0]]
                 : support.sheets;
 
         for (let i = 0; i < sheetsToRender.length; i++) {
@@ -579,19 +583,12 @@ async function renderPreview(data) {
             };
 
             card.appendChild(downloadBtn);
-
-
-
             sheetsRow.appendChild(card);
 
             // ----- Scale -----
             const maxWidth = 250;
             const maxHeight = 350;
-
-            const scale = Math.min(
-                maxWidth / support.width,
-                maxHeight / support.height
-            );
+            const scale = Math.min(maxWidth / support.width, maxHeight / support.height);
 
             canvas.width = support.width * scale;
             canvas.height = support.height * scale;
@@ -604,86 +601,92 @@ async function renderPreview(data) {
             ctx.lineWidth = 1.2;
             ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
+            // ===== BANNIÈRE EN BAS =====
+            if (data.with_banner) {
+                const bannerHeightMm = 10;
+                const bannerHeightPx = bannerHeightMm * scale;
+                const yBanner = canvas.height - bannerHeightPx;
+
+                ctx.fillStyle = '#2563eb';
+                ctx.fillRect(0, yBanner, canvas.width, bannerHeightPx);
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('Made by Logos Sheet', canvas.width / 2, yBanner + bannerHeightPx / 2);
+            }
+
             // ----- Dessin items -----
             for (const item of sheet) {
 
-                // PDF
-                if (item.name.endsWith('.pdf')) {
-                    if (!pdfCache[item.name]) {
-                        const tempCanvas = document.createElement('canvas');
-                        pdfCache[item.name] = drawPdfOnCanvas(
-                            item.name,
-                            tempCanvas,
-                            scale
-                        ).then(() => tempCanvas);
-                    }
+                let drawWidth = item.width * scale;
+                let drawHeight = item.height * scale;
 
-                    const pdfCanvas = await pdfCache[item.name];
+                if (item.inversed) [drawWidth, drawHeight] = [drawHeight, drawWidth];
 
-                    ctx.drawImage(
-                        pdfCanvas,
-                        item.x * scale,
-                        item.y * scale,
-                        item.width * scale,
-                        item.height * scale
-                    );
-                }
+                const x = item.x * scale;
+                const y = item.y * scale;
 
-                // Image
-                else {
-                    if (!imageCache[item.name]) {
-                        const img = new Image();
-                        img.crossOrigin = 'anonymous';
-                        img.src = item.name;
+                ctx.save();
 
-                        imageCache[item.name] = new Promise(resolve => {
-                            img.onload = () => resolve(img);
-                        });
-                    }
-
-                    const img = await imageCache[item.name];
-
-                    if (item.rotated) {
-                        ctx.save();
-                        ctx.translate(
-                            (item.x + item.width / 2) * scale,
-                            (item.y + item.height / 2) * scale
-                        );
-                        ctx.rotate(Math.PI / 2);
-                        ctx.drawImage(
-                            img,
-                            -item.height / 2 * scale,
-                            -item.width / 2 * scale,
-                            item.height * scale,
-                            item.width * scale
-                        );
-                        ctx.restore();
+                // ----- Récupération drawable -----
+                async function getDrawable(item) {
+                    if (item.name.endsWith('.pdf')) {
+                        if (!pdfCache[item.name]) {
+                            const tempCanvas = document.createElement('canvas');
+                            pdfCache[item.name] = drawPdfOnCanvas(item.name, tempCanvas, scale);
+                        }
+                        const pdfCanvas = await pdfCache[item.name];
+                        if (!(pdfCanvas instanceof HTMLCanvasElement)) return null;
+                        return pdfCanvas;
                     } else {
-                        ctx.drawImage(
-                            img,
-                            item.x * scale,
-                            item.y * scale,
-                            item.width * scale,
-                            item.height * scale
-                        );
+                        if (!imageCache[item.name]) {
+                            const img = new Image();
+                            img.crossOrigin = 'anonymous';
+                            img.src = item.name;
+                            imageCache[item.name] = new Promise((resolve, reject) => {
+                                img.onload = () => resolve(img);
+                                img.onerror = () => reject(new Error("Impossible de charger l'image : " + item.name));
+                            });
+                        }
+                        const img = await imageCache[item.name];
+                        if (!(img instanceof HTMLImageElement)) return null;
+                        return img;
                     }
                 }
+
+                const drawable = await getDrawable(item);
+                if (!drawable) {
+                    ctx.restore();
+                    continue;
+                }
+
+                // ----- Rotation 90° si nécessaire -----
+                if (item.inversed || item.rotated) {
+                    // Translation corrigée : soustraire drawHeight pour correspondre au PDF
+                    ctx.translate(x - drawHeight, y);
+                    ctx.rotate(Math.PI / 2);
+                    ctx.drawImage(drawable, 0, 0, drawWidth, drawHeight);
+                } else {
+                    ctx.drawImage(drawable, x, y, drawWidth, drawHeight);
+                }
+
+                ctx.restore();
             }
         }
     }
 }
 
 
-
-
-
+// ----- Fonction PDF -----
 async function drawPdfOnCanvas(pdfUrl, canvas, scale = 1) {
     const ctx = canvas.getContext('2d');
 
     const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
-    const page = await pdf.getPage(1); // première page
+    const page = await pdf.getPage(1);
 
-    const viewport = page.getViewport({scale});
+    const viewport = page.getViewport({ scale });
 
     canvas.width = viewport.width;
     canvas.height = viewport.height;
@@ -692,7 +695,31 @@ async function drawPdfOnCanvas(pdfUrl, canvas, scale = 1) {
         canvasContext: ctx,
         viewport: viewport
     }).promise;
+
+    return canvas; // très important pour drawImage
 }
+
+
+// ----- Fonction PDF -----
+async function drawPdfOnCanvas(pdfUrl, canvas, scale = 1) {
+    const ctx = canvas.getContext('2d');
+
+    const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+    const page = await pdf.getPage(1);
+
+    const viewport = page.getViewport({ scale });
+
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+
+    await page.render({
+        canvasContext: ctx,
+        viewport: viewport
+    }).promise;
+
+    return canvas; // très important pour drawImage
+}
+
 
 async function previewForm() {
     const formData = buildFormData();

@@ -16,7 +16,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 
-
 final class GeneratorController extends AbstractController
 {
     #[Route('/', name: 'app_generator')]
@@ -47,7 +46,9 @@ final class GeneratorController extends AbstractController
         $formatChoice = $request->request->get('format-choice');
         $margin = $request->request->get('margin');
         $space_between_logos = $request->request->get('space_between_logos');
-       //dd($request->request->all());
+        $with_banner = (bool)$request->request->get('with_banner', false);
+
+        //dd($request->request->all());
         $fileDetails = [];
 
         foreach ($files as $index => $file) {
@@ -78,17 +79,22 @@ final class GeneratorController extends AbstractController
         $supportDetails = [];
         $supports_array = explode(",", $support_ids);
         foreach ($supports_array as $support_id) {
-        $support = $em->getRepository(Supports::class)->find($support_id);
+            $support = $em->getRepository(Supports::class)->find($support_id);
 
-        $supportDetails[] = [
-            'id' => $support->getId(),
-            'label' => $support->getName(),
-            'width' => $support->getWidth() * 10,
-            'height' => $support->getHeight() * 10 ,
-            // 'svg' => 'a4_portrait.svg',
-            //      'is_roll' => 0,
-            //     'visibility' => 1,
-        ];
+            $usableHeight = $support->getHeight() * 10;
+
+            if ($with_banner) {
+                $usableHeight -= 10; // 1 cm
+            }
+            $supportDetails[] = [
+                'id' => $support->getId(),
+                'label' => $support->getName(),
+                'width' => $support->getWidth() * 10,
+                'height' => $usableHeight,
+                // 'svg' => 'a4_portrait.svg',
+                //      'is_roll' => 0,
+                //     'visibility' => 1,
+            ];
         }
 
         $result = $multiPackService->sendMultiPackRequest($supportDetails, $fileDetails, $margin, $space_between_logos);
@@ -110,6 +116,7 @@ final class GeneratorController extends AbstractController
             'status' => 'success',
             'id_file' => $pdfParam->getId(),
             'files' => $fileDetails,
+            'with_banner' => $with_banner,
             'supports' => $supportDetails,
             'formatChoice' => $formatChoice,
             'margin' => $margin,
@@ -125,15 +132,17 @@ final class GeneratorController extends AbstractController
         PdfsGeneratorService $pdfsGenerator,
         MultiPackService $multiPackService,
         EntityManagerInterface $em
-    ): Response {
+    ): Response
+    {
 
         $id_file = $request->request->get('id_file');
+        $with_banner = (bool) $request->request->get('with_banner', false);
         $pdf = $em->getRepository(PdfParametres::class)->find($id_file);
         $json = $pdf->getImagessheets();
         $images = $pdf->getImages();
 
-        $outputDir = $this->getParameter('uploads_directory') . '/pdfs/'.$pdf->getId();
-        $generatedFiles = $pdfsGenerator->generatePdfsFromJson($json, $images, $outputDir, 123);
+        $outputDir = $this->getParameter('uploads_directory') . '/pdfs/' . $pdf->getId();
+        $generatedFiles = $pdfsGenerator->generatePdfsFromJson($json, $images, $outputDir, 123 , true);
 
         // Création d'un ZIP
         $zipPath = $outputDir . '/commande_123_pdfs.zip';
@@ -153,7 +162,6 @@ final class GeneratorController extends AbstractController
             ResponseHeaderBag::DISPOSITION_ATTACHMENT
         );
     }
-
 
 
 }
