@@ -14,8 +14,7 @@ final class DashboardController extends AbstractController
 #[Route('/dashboard', name: 'app_dashboard')]
     public function index(EntityManagerInterface $em): Response
     {
-        dump(class_exists('Imagick'));
-        dump('d');die();
+
         $user = $this->getUser();
 
         $pdfs = $em->getRepository(PdfParametres::class)->findBy(['id_user' => $user->getId()]);

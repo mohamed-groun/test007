@@ -48,86 +48,133 @@ final class GeneratorController extends AbstractController
 
 
 #[Route('/generator/calculate', name: 'app_generator_calculate', methods: ['POST'])]
-    public function calculate(Request $request, MultiPackService $multiPackService, EntityManagerInterface $em): JsonResponse
+    public function calculate(
+        Request $request,
+        MultiPackService $multiPackService,
+        EntityManagerInterface $em
+    ): JsonResponse
     {
         $user = $this->getUser();
         $now = new \DateTimeImmutable();
+
+        // Fichiers uploadés
         $files = $request->files->get('files', []);
 
-        $filesInfo = $request->request->all('files_info'); // <-- tableau complet
-        $support_ids = $request->request->get('support');    // <-- tableau complet
+        // Infos envoyées depuis le front
+        $filesInfo = $request->request->all('files_info');     // files_info[UUID][...]
+        $fileIds   = $request->request->all('file_ids');       // file_ids[] dans le même ordre que files[]
+        $support_ids = $request->request->get('support');      // "1,2,3" (string) ou array selon ton front
         $formatChoice = $request->request->get('format-choice');
         $margin = $request->request->get('margin');
         $space_between_logos = $request->request->get('space_between_logos');
+        $with_banner = (bool)$request->request->get('with_banner', false);
 
         $fileDetails = [];
-        if ($user) {
-            $pathFinale = '/' . $user->getId();
-        } else {
-            $pathFinale = '/no-user';
-        }
-        $uploadDir = $this->getParameter('uploads_directory') . $pathFinale;
-        foreach ($files as $index => $file) {
-            $extension = $file->guessExtension();
-            $newFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)
-                . '-' . $now->format('Ymd-His') . '.' . $extension;
 
+        // Dossier upload
+        $pathFinale = $user ? '/' . $user->getId() : '/no-user';
+        $uploadDir = $this->getParameter('uploads_directory') . $pathFinale;
+
+        foreach ($files as $index => $file) {
+
+            // ✅ récupère l'UUID associé à ce fichier (même ordre que files[])
+            $uuid = $fileIds[$index] ?? null;
+
+            // ✅ récupère les infos via UUID (sinon tableau vide)
+            $info = ($uuid && isset($filesInfo[$uuid])) ? $filesInfo[$uuid] : [];
+
+            $extension = $file->guessExtension() ?: $file->getClientOriginalExtension();
+            $newFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)
+                . '-' . $now->format('Ymd-His')
+                . '-' . $index
+                . '.' . $extension;
 
             $file->move($uploadDir, $newFilename);
 
-            // Générer l'URL accessible via le navigateur
             $fileUrl = $request->getSchemeAndHttpHost() . '/uploads' . $pathFinale . '/' . $newFilename;
 
             $fileDetails[] = [
                 'name' => $fileUrl,
                 'file' => $fileUrl,
-                'width' => isset($filesInfo[$index]['width'])
-                    ? (float)$filesInfo[$index]['width'] * 10
+                // Le front envoie en cm, ton service attend en mm => *10
+                'width' => isset($info['width']) && $info['width'] !== ''
+                    ? (float)$info['width'] * 10
                     : null,
-                'height' => isset($filesInfo[$index]['height'])
-                    ? (float)$filesInfo[$index]['height'] * 10
+                'height' => isset($info['height']) && $info['height'] !== ''
+                    ? (float)$info['height'] * 10
                     : null,
-                'quantity' => isset($filesInfo[$index]['qty'])
-                    ? (int)$filesInfo[$index]['qty']
+                // ton multipack attend "quantity"
+                'quantity' => isset($info['qty']) && $info['qty'] !== ''
+                    ? (int)$info['qty']
                     : 1,
             ];
         }
+
+        // Supports
         $supportDetails = [];
-        $supports_array = explode(",", $support_ids);
+
+        // Ton support peut arriver en "1,2,3" ou déjà en array.
+        if (is_array($support_ids)) {
+            $supports_array = $support_ids;
+        } else {
+            $supports_array = array_filter(array_map('trim', explode(',', (string)$support_ids)));
+        }
+
         foreach ($supports_array as $support_id) {
             $support = $em->getRepository(Supports::class)->find($support_id);
+
+            if (!$support) {
+                continue;
+            }
+
+            $usableHeight = $support->getHeight() * 10;
+            if ($with_banner) {
+                $usableHeight -= 10; // 1 cm = 10 mm
+            }
 
             $supportDetails[] = [
                 'id' => $support->getId(),
                 'label' => $support->getName(),
                 'width' => $support->getWidth() * 10,
-                'height' => $support->getHeight() * 10,
-                // 'svg' => 'a4_portrait.svg',
-                //      'is_roll' => 0,
-                //     'visibility' => 1,
+                'height' => $usableHeight,
             ];
         }
 
-        $result = $multiPackService->sendMultiPackRequest($supportDetails, $fileDetails, $margin, $space_between_logos);
+        // Optionnel : logs debug
 
-        // add to PDf parametres
+        // dump($fileDetails);
+        // dump($margin);
+        // dump($space_between_logos);
+
+        // Appel multipack
+        $result = $multiPackService->sendMultiPackRequest(
+            $supportDetails,
+            $fileDetails,
+            $margin,
+            $space_between_logos
+        );
+
+        // Enregistrement DB (attention: tu utilisais $support hors scope si plusieurs supports)
         $pdfParam = new PdfParametres();
-        $pdfParam->setName($fileUrl);
-        $pdfParam->setIdUser($user->getId());
-        $pdfParam->setWidth($support->getWidth() * 10);
-        $pdfParam->setHeight($support->getHeight() * 10);
+        $pdfParam->setName('pack-result-' . $now->format('Ymd-His'));
+        $pdfParam->setIdUser($user ? $user->getId() : null);
+
+        // Si tu veux stocker une taille support, prends le premier support, sinon null
+
+            $pdfParam->setWidth($supportDetails[0]['width']);
+            $pdfParam->setHeight($supportDetails[0]['height']);
+
         $pdfParam->setImagesSheets(json_encode($result));
         $pdfParam->setImages(json_encode($fileDetails));
 
-        // 2. Persister l'objet
         $em->persist($pdfParam);
-
-        // 3. Enregistrer dans la base de données
         $em->flush();
+
         return new JsonResponse([
             'status' => 'success',
             'id_file' => $pdfParam->getId(),
             'files' => $fileDetails,
+            'with_banner' => $with_banner,
             'supports' => $supportDetails,
             'formatChoice' => $formatChoice,
             'margin' => $margin,
@@ -136,6 +183,7 @@ final class GeneratorController extends AbstractController
             'message' => 'Données reçues avec dimensions et quantités !'
         ]);
     }
+
 
     #[Route('/generator/download', name: 'app_generator_download', methods: ['POST'])]
     public function download(
@@ -147,12 +195,14 @@ final class GeneratorController extends AbstractController
     {
 
         $id_file = $request->request->get('id_file');
+       // dd($request->request->all());
+        $with_banner = (bool) $request->request->get('with_banner', false);
         $pdf = $em->getRepository(PdfParametres::class)->find($id_file);
         $json = $pdf->getImagessheets();
         $images = $pdf->getImages();
 
         $outputDir = $this->getParameter('uploads_directory') . '/pdfs/' . $pdf->getId();
-        $generatedFiles = $pdfsGenerator->generatePdfsFromJson($json, $images, $outputDir, 123);
+        $generatedFiles = $pdfsGenerator->generatePdfsFromJson($json, $images, $outputDir, 123 , $with_banner);
 
         // Création d'un ZIP
         $zipPath = $outputDir . '/commande_123_pdfs.zip';

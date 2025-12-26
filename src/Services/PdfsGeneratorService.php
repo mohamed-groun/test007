@@ -30,7 +30,7 @@ class PdfsGeneratorService
         bool $withBanner = false
     ): array {
         $json = $this->checkInversedImages($originImages, $json);
-dd($json);
+
         $data = json_decode($json, true);
         if ($data === null) {
             throw new \RuntimeException('JSON invalide');
