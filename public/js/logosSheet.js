@@ -283,6 +283,171 @@ async function getPdfDimensionsAndThumbnail(file, scale = 1) {
     };
 }
 
+async function displayFavoriteImages(favoriteImages) {
+    const previewDiv = document.getElementById("preview");
+
+    for (let i = 0; i < favoriteImages.length; i++) {
+        const url = favoriteImages[i];
+
+        // Fetch le fichier distant pour créer un File (comme handleFiles)
+        const response = await fetch(url);
+        const blob = await response.blob();
+
+        // Déterminer le type mime
+        const type = blob.type || (url.endsWith('.pdf') ? 'application/pdf' : 'image/png');
+        const name = `favorite-${i}${url.endsWith('.pdf') ? '.pdf' : '.png'}`;
+
+        const file = new File([blob], name, { type });
+        selectedFiles.push(file); // ⚡ important pour le submitForm
+
+        const fileIndex = selectedFiles.length - 1;
+
+        // ==========================
+        // CARD
+        // ==========================
+        let card = document.createElement("div");
+        card.classList.add("preview-card", "favorite-preloaded");
+
+        // Hidden filename
+        let fileNameInput = document.createElement("input");
+        fileNameInput.type = "hidden";
+        fileNameInput.name = "files_name[]";
+        fileNameInput.value = file.name;
+        card.appendChild(fileNameInput);
+
+        // ==========================
+        // NAVBAR
+        // ==========================
+        let actionBar = document.createElement("div");
+        actionBar.classList.add("preview-navbar");
+
+        let title = document.createElement("span");
+        title.classList.add("small", "fw-bold");
+        title.textContent = file.name;
+
+        let btnGroup = document.createElement("div");
+        let toggleBtn = document.createElement("button");
+        toggleBtn.type = "button";
+        toggleBtn.classList.add("btn", "btn-sm", "btn-secondary");
+        toggleBtn.innerHTML = `<i class="fa-solid fa-minus"></i>`;
+
+        let deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.classList.add("btn", "btn-sm", "btn-danger");
+        deleteBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+        deleteBtn.addEventListener("click", () => {
+            card.remove();
+            selectedFiles[fileIndex] = null;
+        });
+
+        btnGroup.appendChild(toggleBtn);
+        btnGroup.appendChild(deleteBtn);
+        actionBar.appendChild(title);
+        actionBar.appendChild(btnGroup);
+        card.appendChild(actionBar);
+
+        // ==========================
+        // IMAGE / PDF
+        // ==========================
+        let imgContainer = document.createElement("div");
+        imgContainer.classList.add("text-center", "mt-2");
+
+        if (file.type.startsWith("image/")) {
+            let img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            img.classList.add("preview-img");
+
+            imgContainer.appendChild(img);
+
+            // Dimensions réelles comme handleFiles
+            const dim = await getImageDimensions(file);
+            var widthValue = dim ? dim.width_cm : 10;
+            var heightValue = dim ? dim.height_cm : 10;
+
+        } else if (file.type === "application/pdf") {
+            const pdfData = await getPdfDimensionsAndThumbnail(file, 0.5);
+            pdfData.canvas.classList.add("preview-img");
+            imgContainer.appendChild(pdfData.canvas);
+
+            var widthValue = pdfData.width_cm;
+            var heightValue = pdfData.height_cm;
+        }
+
+        card.appendChild(imgContainer);
+
+        // ==========================
+        // INPUTS
+        // ==========================
+        let container = document.createElement("div");
+        container.classList.add("mt-3");
+
+        // Width
+        let widthInput = document.createElement("input");
+        widthInput.type = "number";
+        widthInput.name = `files_info[${fileIndex}][width]`;
+        widthInput.classList.add('form-control', 'preview-input', 'file-width');
+        widthInput.value = widthValue;
+
+        let widthDiv = document.createElement("div");
+        widthDiv.innerHTML = `<label class="preview-label">Width (cm)</label>`;
+        widthDiv.appendChild(widthInput);
+
+        // Height
+        let heightInput = document.createElement("input");
+        heightInput.type = "number";
+        heightInput.name = `files_info[${fileIndex}][height]`;
+        heightInput.classList.add('form-control', 'preview-input', 'file-height');
+        heightInput.value = heightValue;
+
+        let heightDiv = document.createElement("div");
+        heightDiv.innerHTML = `<label class="preview-label">Height (cm)</label>`;
+        heightDiv.appendChild(heightInput);
+
+        // Quantity
+        let qtyInputFull = document.createElement("input");
+        qtyInputFull.type = "number";
+        qtyInputFull.min = 1;
+        qtyInputFull.value = 1;
+        qtyInputFull.name = `files_info[${fileIndex}][qty]`;
+        qtyInputFull.classList.add('form-control', 'preview-input', 'file-qty');
+
+        let qtyDiv = document.createElement("div");
+        qtyDiv.innerHTML = `<label class="preview-label">Quantity</label>`;
+        qtyDiv.appendChild(qtyInputFull);
+
+        container.appendChild(widthDiv);
+        container.appendChild(heightDiv);
+        container.appendChild(qtyDiv);
+
+        card.appendChild(container);
+
+        // ==========================
+        // Toggle
+        // ==========================
+        toggleBtn.addEventListener("click", () => {
+            let collapsed = card.classList.toggle("collapsed");
+            if(collapsed){
+                imgContainer.style.display = "none";
+                container.style.display = "none";
+                toggleBtn.innerHTML = `<i class="fa-solid fa-plus"></i>`;
+            } else {
+                imgContainer.style.display = "block";
+                container.style.display = "block";
+                toggleBtn.innerHTML = `<i class="fa-solid fa-minus"></i>`;
+            }
+        });
+
+        previewDiv.appendChild(card);
+    }
+}
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (favoriteImages.length > 0) {
+        displayFavoriteImages(favoriteImages);
+    }
+});
 
 function addCoupeCard(defaultWidth = "", defaultHeight = "") {
     const container = document.querySelector("#allowed-formats-section .preview-coupe-container");
@@ -433,12 +598,10 @@ async function submitForm(action) {
         const width = card.querySelector('.file-width')?.value || 0;
         const height = card.querySelector('.file-height')?.value || 0;
         const qty = card.querySelector('.file-qty')?.value || 1;
-        const with_banner = document.getElementById('with_banner')?.checked ? 1 : 0;
 
         formData.append(`files_info[${index}][width]`, width);
         formData.append(`files_info[${index}][height]`, height);
         formData.append(`files_info[${index}][qty]`, qty);
-        formData.append('with_banner', with_banner);
     });
 
     // -------------------- Autres champs --------------------
@@ -500,13 +663,11 @@ async function submitForm(action) {
 
 
 }
+
 async function renderPreview(data) {
 
     const container = document.getElementById('canvasContainer');
     container.innerHTML = '';
-
-    const imageCache = {};
-    const pdfCache = {};
 
     for (const supportKey in data.packingResult) {
 
@@ -540,7 +701,7 @@ async function renderPreview(data) {
         // ---------- Sheets à afficher ----------
         const sheetsToRender =
             support.unique_sheets === 1
-                ? [support.sheets[0]]
+                ? [support.sheets[0]] // une seule sheet
                 : support.sheets;
 
         for (let i = 0; i < sheetsToRender.length; i++) {
@@ -568,27 +729,17 @@ async function renderPreview(data) {
             canvasWrapper.appendChild(canvas);
             card.appendChild(header);
             card.appendChild(canvasWrapper);
-
-            // ----- Bouton Download PDF -----
-            const downloadBtn = document.createElement('button');
-            downloadBtn.className = 'btn-download-sheet';
-            downloadBtn.type = 'button';
-            downloadBtn.textContent = 'Télécharger PDF';
-
-            downloadBtn.onclick = () => {
-                submitForm('download', {
-                    support: supportKey,
-                    sheetIndex: i
-                });
-            };
-
-            card.appendChild(downloadBtn);
+            
             sheetsRow.appendChild(card);
 
             // ----- Scale -----
             const maxWidth = 250;
             const maxHeight = 350;
-            const scale = Math.min(maxWidth / support.width, maxHeight / support.height);
+
+            const scale = Math.min(
+                maxWidth / support.width,
+                maxHeight / support.height
+            );
 
             canvas.width = support.width * scale;
             canvas.height = support.height * scale;
@@ -601,92 +752,86 @@ async function renderPreview(data) {
             ctx.lineWidth = 1.2;
             ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-            // ===== BANNIÈRE EN BAS =====
-            if (data.with_banner) {
-                const bannerHeightMm = 10;
-                const bannerHeightPx = bannerHeightMm * scale;
-                const yBanner = canvas.height - bannerHeightPx;
-
-                ctx.fillStyle = '#2563eb';
-                ctx.fillRect(0, yBanner, canvas.width, bannerHeightPx);
-
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 12px Arial';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('Made by Logos Sheet', canvas.width / 2, yBanner + bannerHeightPx / 2);
-            }
-
             // ----- Dessin items -----
             for (const item of sheet) {
 
-                let drawWidth = item.width * scale;
-                let drawHeight = item.height * scale;
+                // PDF
+                if (item.name.endsWith('.pdf')) {
+                    if (!pdfCache[item.name]) {
+                        const tempCanvas = document.createElement('canvas');
+                        pdfCache[item.name] = drawPdfOnCanvas(
+                            item.name,
+                            tempCanvas,
+                            scale
+                        ).then(() => tempCanvas);
+                    }
 
-                if (item.inversed) [drawWidth, drawHeight] = [drawHeight, drawWidth];
+                    const pdfCanvas = await pdfCache[item.name];
 
-                const x = item.x * scale;
-                const y = item.y * scale;
+                    ctx.drawImage(
+                        pdfCanvas,
+                        item.x * scale,
+                        item.y * scale,
+                        item.width * scale,
+                        item.height * scale
+                    );
+                }
 
-                ctx.save();
+                // Image
+                else {
+                    if (!imageCache[item.name]) {
+                        const img = new Image();
+                        img.crossOrigin = 'anonymous';
+                        img.src = item.name;
 
-                // ----- Récupération drawable -----
-                async function getDrawable(item) {
-                    if (item.name.endsWith('.pdf')) {
-                        if (!pdfCache[item.name]) {
-                            const tempCanvas = document.createElement('canvas');
-                            pdfCache[item.name] = drawPdfOnCanvas(item.name, tempCanvas, scale);
-                        }
-                        const pdfCanvas = await pdfCache[item.name];
-                        if (!(pdfCanvas instanceof HTMLCanvasElement)) return null;
-                        return pdfCanvas;
+                        imageCache[item.name] = new Promise(resolve => {
+                            img.onload = () => resolve(img);
+                        });
+                    }
+
+                    const img = await imageCache[item.name];
+
+                    if (item.rotated) {
+                        ctx.save();
+                        ctx.translate(
+                            (item.x + item.width / 2) * scale,
+                            (item.y + item.height / 2) * scale
+                        );
+                        ctx.rotate(Math.PI / 2);
+                        ctx.drawImage(
+                            img,
+                            -item.height / 2 * scale,
+                            -item.width / 2 * scale,
+                            item.height * scale,
+                            item.width * scale
+                        );
+                        ctx.restore();
                     } else {
-                        if (!imageCache[item.name]) {
-                            const img = new Image();
-                            img.crossOrigin = 'anonymous';
-                            img.src = item.name;
-                            imageCache[item.name] = new Promise((resolve, reject) => {
-                                img.onload = () => resolve(img);
-                                img.onerror = () => reject(new Error("Impossible de charger l'image : " + item.name));
-                            });
-                        }
-                        const img = await imageCache[item.name];
-                        if (!(img instanceof HTMLImageElement)) return null;
-                        return img;
+                        ctx.drawImage(
+                            img,
+                            item.x * scale,
+                            item.y * scale,
+                            item.width * scale,
+                            item.height * scale
+                        );
                     }
                 }
-
-                const drawable = await getDrawable(item);
-                if (!drawable) {
-                    ctx.restore();
-                    continue;
-                }
-
-                // ----- Rotation 90° si nécessaire -----
-                if (item.inversed || item.rotated) {
-                    // Translation corrigée : soustraire drawHeight pour correspondre au PDF
-                    ctx.translate(x - drawHeight, y);
-                    ctx.rotate(Math.PI / 2);
-                    ctx.drawImage(drawable, 0, 0, drawWidth, drawHeight);
-                } else {
-                    ctx.drawImage(drawable, x, y, drawWidth, drawHeight);
-                }
-
-                ctx.restore();
             }
         }
     }
 }
 
 
-// ----- Fonction PDF -----
+
+
+
 async function drawPdfOnCanvas(pdfUrl, canvas, scale = 1) {
     const ctx = canvas.getContext('2d');
 
     const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
-    const page = await pdf.getPage(1);
+    const page = await pdf.getPage(1); // première page
 
-    const viewport = page.getViewport({ scale });
+    const viewport = page.getViewport({scale});
 
     canvas.width = viewport.width;
     canvas.height = viewport.height;
@@ -695,31 +840,7 @@ async function drawPdfOnCanvas(pdfUrl, canvas, scale = 1) {
         canvasContext: ctx,
         viewport: viewport
     }).promise;
-
-    return canvas; // très important pour drawImage
 }
-
-
-// ----- Fonction PDF -----
-async function drawPdfOnCanvas(pdfUrl, canvas, scale = 1) {
-    const ctx = canvas.getContext('2d');
-
-    const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
-    const page = await pdf.getPage(1);
-
-    const viewport = page.getViewport({ scale });
-
-    canvas.width = viewport.width;
-    canvas.height = viewport.height;
-
-    await page.render({
-        canvasContext: ctx,
-        viewport: viewport
-    }).promise;
-
-    return canvas; // très important pour drawImage
-}
-
 
 async function previewForm() {
     const formData = buildFormData();

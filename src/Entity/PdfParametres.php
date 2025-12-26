@@ -32,6 +32,9 @@ class PdfParametres
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $id_user = null;
+
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
@@ -110,6 +113,18 @@ class PdfParametres
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getIdUser(): ?string
+    {
+        return $this->id_user;
+    }
+
+    public function setIdUser(?string $id_user): static
+    {
+        $this->id_user = $id_user;
 
         return $this;
     }
