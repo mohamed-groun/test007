@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Roll;
 use App\Services\MultiPackService;
 use App\Entity\Supports;
 use App\Entity\PdfParametres;
@@ -62,7 +63,7 @@ final class GeneratorController extends AbstractController
 
         // Infos envoyées depuis le front
         $filesInfo = $request->request->all('files_info');     // files_info[UUID][...]
-        $fileIds   = $request->request->all('file_ids');       // file_ids[] dans le même ordre que files[]
+        $fileIds = $request->request->all('file_ids');       // file_ids[] dans le même ordre que files[]
         $support_ids = $request->request->get('support');      // "1,2,3" (string) ou array selon ton front
         $formatChoice = $request->request->get('format-choice');
         $margin = $request->request->get('margin');
@@ -139,6 +140,43 @@ final class GeneratorController extends AbstractController
                 'height' => $usableHeight,
             ];
         }
+        if (empty($supportDetails)) {
+            $supports = $em->getRepository(Supports::class)->findBy([
+                'id_user' => null
+            ]);
+            foreach ($supports as $support) {
+                $usableHeight = $support->getHeight() * 10;
+                if ($with_banner) {
+                    $usableHeight -= 10; // 1 cm = 10 mm
+                }
+                $supportDetails[] = [
+                    'id' => $support->getId(),
+                    'label' => $support->getName(),
+                    'width' => $support->getWidth() * 10,
+                    'height' => $usableHeight,
+                ];
+            }
+            $roll = $em->getRepository(Roll::class)->findOneBy(['id_user' => $user->getId()])
+                ?? $em->getRepository(Roll::class)->findOneBy(['id_user' => null]);
+
+            $min = (int) $roll->getMinHeight();
+            $max = (int) $roll->getMaxHeight();
+
+            for ($i = $min; $i <= $max; $i += 10) {
+                $usableHeight = $i * 10;
+                if ($with_banner) {
+                    $usableHeight -= 10; // 1 cm = 10 mm
+                }
+                $supportDetails[] = [
+                    'id' => $i+1000,
+                    'label' => $roll->getWidth() .'*' .$i,
+                    'width' => $roll->getWidth() * 10,
+                    'height' => $usableHeight,
+                ];
+            }
+
+        }
+
 
         // Optionnel : logs debug
 
@@ -161,8 +199,8 @@ final class GeneratorController extends AbstractController
 
         // Si tu veux stocker une taille support, prends le premier support, sinon null
 
-            $pdfParam->setWidth($supportDetails[0]['width']);
-            $pdfParam->setHeight($supportDetails[0]['height']);
+        $pdfParam->setWidth($supportDetails[0]['width']);
+        $pdfParam->setHeight($supportDetails[0]['height']);
 
         $pdfParam->setImagesSheets(json_encode($result));
         $pdfParam->setImages(json_encode($fileDetails));
@@ -195,17 +233,34 @@ final class GeneratorController extends AbstractController
     {
 
         $id_file = $request->request->get('id_file');
-       // dd($request->request->all());
-        $with_banner = (bool) $request->request->get('with_banner', false);
+
+        $with_banner = (bool)$request->request->get('with_banner', false);
         $pdf = $em->getRepository(PdfParametres::class)->find($id_file);
         $json = $pdf->getImagessheets();
         $images = $pdf->getImages();
 
         $outputDir = $this->getParameter('uploads_directory') . '/pdfs/' . $pdf->getId();
-        $generatedFiles = $pdfsGenerator->generatePdfsFromJson($json, $images, $outputDir, 123 , $with_banner);
 
-        // Création d'un ZIP
-        $zipPath = $outputDir . '/commande_123_pdfs.zip';
+        //dd($images);
+        $zipPath = $outputDir . '/order_' . $pdf->getId() . '.zip';
+
+// 🔥 CACHE ZIP
+        if (file_exists($zipPath)) {
+            return $this->file(
+                $zipPath,
+                basename($zipPath),
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT
+            );
+        }
+
+// Sinon on génère
+        $generatedFiles = $pdfsGenerator->generatePdfsFromJson(
+            $json,
+            $images,
+            $outputDir,
+            $pdf->getId(),
+            $with_banner
+        );
         $zip = new \ZipArchive();
         if ($zip->open($zipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
             foreach ($generatedFiles as $file) {
@@ -218,7 +273,7 @@ final class GeneratorController extends AbstractController
 
         return $this->file(
             $zipPath,
-            'commande_123_pdfs.zip',
+            'order_'.$pdf->getId().'.zip',
             ResponseHeaderBag::DISPOSITION_ATTACHMENT
         );
     }
@@ -259,8 +314,6 @@ final class GeneratorController extends AbstractController
 
         return $this->json(['success' => false, 'message' => 'Action invalide'], 400);
     }
-
-
 
 
 }

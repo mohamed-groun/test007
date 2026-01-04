@@ -2,47 +2,35 @@
 
 namespace App\Entity;
 
-use App\Repository\SupportsRepository;
+use App\Repository\RollRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: SupportsRepository::class)]
-class Supports
+#[ORM\Entity(repositoryClass: RollRepository::class)]
+class Roll
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $name = null;
-
     #[ORM\Column]
     private ?float $width = null;
 
     #[ORM\Column]
-    private ?float $height = null;
+    private ?float $min_height = null;
+
+    #[ORM\Column]
+    private ?float $max_height = null;
 
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
+    #[ORM\Column(length: 50)]
     private ?string $id_user = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     public function getWidth(): ?float
@@ -57,14 +45,26 @@ class Supports
         return $this;
     }
 
-    public function getHeight(): ?float
+    public function getMinHeight(): ?float
     {
-        return $this->height;
+        return $this->min_height;
     }
 
-    public function setHeight(float $height): static
+    public function setMinHeight(float $min_height): static
     {
-        $this->height = $height;
+        $this->min_height = $min_height;
+
+        return $this;
+    }
+
+    public function getMaxHeight(): ?float
+    {
+        return $this->max_height;
+    }
+
+    public function setMaxHeight(float $max_height): static
+    {
+        $this->max_height = $max_height;
 
         return $this;
     }
@@ -86,7 +86,7 @@ class Supports
         return $this->id_user;
     }
 
-    public function setIdUser(?string $id_user): static
+    public function setIdUser(string $id_user): static
     {
         $this->id_user = $id_user;
 

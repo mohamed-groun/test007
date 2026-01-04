@@ -2,17 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class AdminController extends AbstractController
 {
-    #[Route('/admin2', name: 'app_admin')]
-    public function index(): Response
+    #[Route('/admin', name: 'app_admin')]
+    public function index(EntityManagerInterface $em): Response
     {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
+        $contacts = $em->getRepository(Contact::class)->findAll();
+        return $this->render('dashboard/dashboard-admin.html.twig', [
+            'contacts' => $contacts,
         ]);
     }
 }

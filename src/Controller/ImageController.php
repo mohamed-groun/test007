@@ -27,19 +27,22 @@ class ImageController extends AbstractController
         if (in_array($extension, ['jpg', 'jpeg', 'png', 'tiff'])) {
             // Utilisation d'Imagick si disponible
             if (class_exists(\Imagick::class)) {
-                $img = new \Imagick($path);
 
+                $img = new \Imagick($path);
+                $units = $img->getImageUnits();
                 // Dimensions en pixels
                 $widthPx = $img->getImageWidth();
                 $heightPx = $img->getImageHeight();
 
                 // DPI réel
-                $xDpi = $img->getImageResolution()['x'] ?: 96; // fallback 96
-                $yDpi = $img->getImageResolution()['y'] ?: 96;
+                $xDpi = $img->getImageResolution()['x'] * 2.54;// fallback 96
+                $yDpi = $img->getImageResolution()['y'] * 2.54;
 
-                // Conversion en cm
-                $widthCm = round($widthPx * 2.54 / $xDpi, 1);
-                $heightCm = round($heightPx * 2.54 / $yDpi, 1);
+                $dpi = (int) round($xDpi);
+
+                // Conversion e;n cm
+                $widthCm = round($widthPx * 2.54 / $dpi, 1);
+                $heightCm = round($heightPx * 2.54 / $dpi, 1);
             }
             // Sinon fallback GD
             elseif (function_exists('getimagesize')) {

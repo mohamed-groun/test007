@@ -22,6 +22,9 @@
             border-radius: 8px;
         }
 
+        .favorite-color {
+            background:  #ffc107;
+        }
 
         /* Titre support */
         .support-title {
@@ -31,9 +34,6 @@
             color: #111827;
             text-align: left;
         }
-
-
-
 
         /* Header sheet */
         .sheet-header {
@@ -46,9 +46,6 @@
 
         /* Canvas */
         .canvas-wrapper {
-            background: #f9fafb;
-            padding: 10px;
-            border-radius: 10px;
             display: flex;
             justify-content: center;
         }
@@ -72,26 +69,15 @@
             margin-bottom: 12px;
         }
         .sheets-row {
-            display: flex;
-            flex-wrap: wrap;         /* permet de passer à la ligne si trop large */
-            gap: 24px;
-            justify-content: center; /* centrer horizontalement */
+
         }
 
         #canvasContainer {
-            display: flex;
-            flex-wrap: wrap;      /* permet de passer à la ligne si écran trop petit */
-            gap: 20px;            /* espace entre les groupes */
-            justify-content: flex-start; /* aligne à gauche */
+
         }
 
         .support-group {
-            flex: 1 1 300px;      /* flexible avec minimum 300px */
-            box-sizing: border-box;
-            border: 1px solid #ccc;  /* optionnel pour mieux visualiser */
-            padding: 10px;
-            border-radius: 6px;
-            background: #f9f9f9;
+
         }
 
         /* Responsive supplémentaire pour très petits écrans */
@@ -102,31 +88,25 @@
         }
 
         .sheet-card {
-            margin-top: 10px;
-            border: 1px solid #ddd;
-            padding: 8px;
-            border-radius: 4px;
-            background: #fff;
+            padding: 1rem;
         }
 
 
     </style>
 
-
     <div class="container-fluid py-4">
     <div class="row g-4">
 
         <!-- Colonne gauche : import d'images -->
-        <div class="col-12 col-md-2">
-            <div class="panel">
+        <div class="col-sm-12 col-lg-2">
+            <div class="panel*2">
                 <form id="upload-form">
                     <div>
                         <div id="drop-area"
                              class="border rounded-4 p-2 text-center shadow-sm cursor-pointer position-relative"
                              onclick="document.getElementById('fileElem').click()">
                             <div class="cloud-icon-container-2">
-                                <i class="bi bi-cloud-arrow-down-fill fs-10" style="color: #7c3aed; font-size: 4.5rem"></i>
-
+                                <i class="bi bi-cloud-arrow-down-fill fs-10" style="color: #0d6efd; font-size: 4.5rem"></i>
                             </div>
                             <p class="text-title-photo mb-1">Glissez vos visuels, L'IA se chargera du reste...</p>
                             <p class="text-violet">ou</p>
@@ -155,9 +135,9 @@
         </div>
 
         <!-- Colonne centrale : aperçu PDF -->
-        <div class="col-12 col-md-7">
-            <div class="panel panel-preview">
-            <h5 class="mb-3">Aperçu du PDF</h5>
+        <div class="col-sm-12 col-lg-7">
+            <div class="panel-2 panel-preview-2">
+            <h5 class="mb-3 text-center">Aperçu du PDF</h5>
                 <div id="canvasContainer" class="supports-row"></div>
             </div>
         </div>
@@ -191,6 +171,7 @@
         font-weight: 600;
         padding: 0.75rem;
         transition: all 0.2s ease;
+        margin-bottom : 1rem;
     }
 
     .btn-download:hover {
@@ -201,7 +182,7 @@
 
 </style>
         <!-- Colonne droite : configuration -->
-        <div class="col-12 col-md-3">
+        <div class="col-sm-12 col-lg-3">
             <div class="config-card">
                 <h5 class="config-title">Configuration</h5>
 
@@ -245,14 +226,14 @@
                         onclick="submitForm('preview')"
                         class="btn btn-primary w-100 btn-download">
        Apercue
-                </button>
+                </button><br>
 
 
                 <!-- TÉLÉCHARGEMENT-->
 
                     <button id="download_button" type="button" data-id-file=""
                             onclick="submitForm('download')"
-                            class="btn btn-primary w-100">
+                            class="btn btn-primary w-100 btn-download">
                         Télécharger le PDF
                     </button>
 
@@ -262,5 +243,16 @@
 </div>
 <script>
     const favoriteImages = {{ favorites|json_encode|raw }};
+</script>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+<script>
+    $(document).ready(function () {
+        $('#support').select2({
+            placeholder: "Sélectionnez des supports",
+            allowClear: true
+        });
+    });
 </script>
 {% endblock %}

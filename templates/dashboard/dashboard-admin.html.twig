@@ -100,12 +100,7 @@
                             </div>
                         </div>
                     </div>
-
-
-
                         <!-- Page Heading -->
-
-
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
@@ -140,7 +135,7 @@
                                         <tbody>
                                         {% for contact in contacts %}
                                         <tr>
-                                            <td>contact.date</td>
+                                            <td>{{ contact.createdAt|date('Y-m-d H:i') }}</td>
                                             <td>{{ contact.name }}</td>
                                             <td>{{ contact.email }}</td>
                                             <td>{{ contact.number }}</td>

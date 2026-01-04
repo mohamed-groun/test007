@@ -87,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // -------------------- Favoris --------------------
+    console.log(favoriteImages)
     if (typeof favoriteImages !== "undefined" && favoriteImages.length > 0) {
         displayFavoriteImages(favoriteImages);
     }
@@ -162,7 +163,7 @@ async function handleFiles(files) {
         imgContainer.classList.add("text-center", "mt-2");
 
         const container = document.createElement("div");
-        container.classList.add("mt-3");
+        container.classList.add("mt-3", "p-3");
 
         const widthInput = document.createElement("input");
         widthInput.type = "number";
@@ -277,26 +278,164 @@ async function getPdfDimensionsAndThumbnail(file, scale = 1) {
    Favoris (inchangé)
 ========================================================= */
 async function displayFavoriteImages(favoriteImages) {
+    $("#preloader").show();
     const previewDiv = document.getElementById("preview");
 
     for (let i = 0; i < favoriteImages.length; i++) {
         const url = favoriteImages[i];
 
+        // Récupérer l'image ou le PDF
         const response = await fetch(url);
         const blob = await response.blob();
 
         const type = blob.type || (url.endsWith('.pdf') ? 'application/pdf' : 'image/png');
         const name = `favorite-${i}${url.endsWith('.pdf') ? '.pdf' : '.png'}`;
-
         const file = new File([blob], name, { type });
-        const fileId = crypto.randomUUID();
 
+        const fileId = crypto.randomUUID();
         selectedFiles.push({ id: fileId, file });
 
-        // Tu peux garder ton code existant ici si tu veux.
-        // (Je ne le réécris pas entièrement pour éviter d’écraser ta logique UI.)
+        // --- Création de la card ---
+        const card = document.createElement("div");
+        card.classList.add("preview-card");
+        card.dataset.fileId = fileId;
+
+        const fileNameInput = document.createElement("input");
+        fileNameInput.type = "hidden";
+        fileNameInput.name = "files_name[]";
+        fileNameInput.value = file.name;
+        card.appendChild(fileNameInput);
+
+        // Navbar
+        const actionBar = document.createElement("div");
+        actionBar.classList.add("preview-navbar", "favorite-color");
+
+        const title = document.createElement("span");
+        title.classList.add("small", "fw-bold");
+        title.textContent = file.name;
+
+        const btnGroup = document.createElement("div");
+
+        const toggleBtn = document.createElement("button");
+        toggleBtn.type = "button";
+        toggleBtn.classList.add("btn", "btn-sm", "btn-secondary");
+        toggleBtn.innerHTML = `<i class="fa-solid fa-minus"></i>`;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.classList.add("btn", "btn-sm", "btn-danger");
+        deleteBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+        deleteBtn.addEventListener("click", () => removeFileById(fileId));
+
+        btnGroup.appendChild(toggleBtn);
+        btnGroup.appendChild(deleteBtn);
+        actionBar.appendChild(title);
+        actionBar.appendChild(btnGroup);
+        card.appendChild(actionBar);
+
+        // Compact mode
+        const compactRow = document.createElement("div");
+        compactRow.classList.add("preview-compact", "d-none");
+
+        const compactName = document.createElement("span");
+        compactName.textContent = file.name;
+
+        const qtyInputCompact = document.createElement("input");
+        qtyInputCompact.type = "number";
+        qtyInputCompact.min = 1;
+        qtyInputCompact.value = 1;
+        qtyInputCompact.classList.add("form-control", "compact-qty");
+
+        compactRow.appendChild(compactName);
+        compactRow.appendChild(qtyInputCompact);
+        card.appendChild(compactRow);
+
+        // Media preview + inputs
+        const imgContainer = document.createElement("div");
+        imgContainer.classList.add("text-center", "mt-2");
+
+        const container = document.createElement("div");
+        container.classList.add("mt-3", "p-3");
+
+        const widthInput = document.createElement("input");
+        widthInput.type = "number";
+        widthInput.name = `files_info[${fileId}][width]`;
+        widthInput.classList.add("form-control", "preview-input", "file-width");
+
+        const heightInput = document.createElement("input");
+        heightInput.type = "number";
+        heightInput.name = `files_info[${fileId}][height]`;
+        heightInput.classList.add("form-control", "preview-input", "file-height");
+
+        const qtyInputFull = document.createElement("input");
+        qtyInputFull.type = "number";
+        qtyInputFull.min = 1;
+        qtyInputFull.value = 1;
+        qtyInputFull.name = `files_info[${fileId}][qty]`;
+        qtyInputFull.classList.add("form-control", "preview-input", "file-qty");
+
+        qtyInputFull.addEventListener("input", () => qtyInputCompact.value = qtyInputFull.value);
+        qtyInputCompact.addEventListener("input", () => qtyInputFull.value = qtyInputCompact.value);
+
+        if (file.type.startsWith("image/")) {
+            const img = document.createElement("img");
+            const objectUrl = URL.createObjectURL(file);
+            img.src = objectUrl;
+            img.classList.add("preview-img");
+            imgContainer.appendChild(img);
+
+            card.dataset.objectUrl = objectUrl;
+
+            const dim = await getImageDimensions(file);
+            if (dim) {
+                widthInput.value = dim.width_cm;
+                heightInput.value = dim.height_cm;
+            }
+        } else if (file.type === "application/pdf") {
+            const pdfData = await getPdfDimensionsAndThumbnail(file, 0.5);
+            pdfData.canvas.classList.add("preview-img");
+            imgContainer.appendChild(pdfData.canvas);
+
+            widthInput.value = pdfData.width_cm;
+            heightInput.value = pdfData.height_cm;
+        }
+
+        card.appendChild(imgContainer);
+
+        const widthDiv = document.createElement("div");
+        widthDiv.innerHTML = `<label>Width (cm)</label>`;
+        widthDiv.appendChild(widthInput);
+
+        const heightDiv = document.createElement("div");
+        heightDiv.innerHTML = `<label>Height (cm)</label>`;
+        heightDiv.appendChild(heightInput);
+
+        const qtyDiv = document.createElement("div");
+        qtyDiv.innerHTML = `<label>Quantity</label>`;
+        qtyDiv.appendChild(qtyInputFull);
+
+        container.appendChild(widthDiv);
+        container.appendChild(heightDiv);
+        container.appendChild(qtyDiv);
+        card.appendChild(container);
+
+        toggleBtn.addEventListener("click", () => {
+            const collapsed = card.classList.toggle("collapsed");
+            imgContainer.style.display = collapsed ? "none" : "block";
+            container.style.display = collapsed ? "none" : "block";
+            compactRow.classList.toggle("d-none", !collapsed);
+
+            toggleBtn.innerHTML = collapsed
+                ? `<i class="fa-solid fa-plus"></i>`
+                : `<i class="fa-solid fa-minus"></i>`;
+        });
+
+        previewDiv.appendChild(card);
     }
+
+    $("#preloader").hide();
 }
+
 
 /* =========================================================
    Image dimensions via backend
@@ -394,7 +533,7 @@ async function submitForm(action) {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'commande_123_pdfs.zip';
+            a.download = 'order_' + fileId + '.zip';
             document.body.appendChild(a);
             a.click();
 
@@ -419,6 +558,21 @@ function normalizeKey(u) {
     try { return new URL(String(u), window.location.origin).pathname; }
     catch { return String(u || ""); }
 }
+
+function sheetSignature(sheet) {
+    return JSON.stringify(
+        sheet.map(i => ({
+            n: normalizeKey(i.name),
+            x: round2(i.x),
+            y: round2(i.y),
+            w: round2(i.width),
+            h: round2(i.height),
+            r: i.rotated,
+            inv: i.inversed
+        }))
+    );
+}
+
 
 function applyInversedFromFiles(data) {
     const packingResult = data?.packingResult;
@@ -486,87 +640,103 @@ function drawInversedFitSlot(ctx, imgOrCanvas, x, y, w, h, scale) {
 
 async function renderPreview(data) {
     applyInversedFromFiles(data);
+    console.log(data);
 
     const container = document.getElementById('canvasContainer');
     if (!container) return;
-
     container.innerHTML = '';
 
     const packingResult = data?.packingResult;
     if (!packingResult || typeof packingResult !== 'object') {
-        console.error("packingResult invalide :", packingResult);
         container.textContent = "Erreur : packingResult invalide.";
         return;
+    }
+
+    // util pour signature de feuille (déduplication)
+    function sheetSignature(sheet) {
+        return JSON.stringify(
+            sheet.map(i => ({
+                n: normalizeKey(i.name),
+                x: round2(i.x),
+                y: round2(i.y),
+                w: round2(i.width),
+                h: round2(i.height),
+                r: Number(i.rotated),
+                inv: Number(i.inversed)
+            }))
+        );
     }
 
     for (const supportKey in packingResult) {
         const support = packingResult[supportKey];
 
-        const supportGroup = document.createElement('div');
-        supportGroup.className = 'support-group';
-
-        const title = document.createElement('div');
-        title.className = 'support-title';
-        title.textContent = supportKey;
-
-        const sheetsRow = document.createElement('div');
-        sheetsRow.className = 'sheets-row';
-
-        supportGroup.appendChild(title);
-        supportGroup.appendChild(sheetsRow);
-        container.appendChild(supportGroup);
-
         const sheets = Array.isArray(support?.sheets) ? support.sheets : [];
+        if (!sheets.length) continue;
+
         const tauxArr = Array.isArray(support?.taux) ? support.taux : [];
-
-        const uniqueSheets = Number(support?.unique_sheets ?? 0);
         const binsUsed = Number(support?.bins_used ?? 0);
-
-        const subtitle = document.createElement('div');
-        subtitle.className = 'support-subtitle';
-        subtitle.textContent = (uniqueSheets === 1 && binsUsed > 1)
-            ? `× ${binsUsed} feuilles identiques`
-            : `${sheets.length} feuille(s)`;
-
-        supportGroup.insertBefore(subtitle, sheetsRow);
-
-        const sheetsToRender = (uniqueSheets === 1)
-            ? (sheets[0] ? [sheets[0]] : [])
-            : sheets;
-
-        if (sheetsToRender.length === 0) {
-            const empty = document.createElement('div');
-            empty.className = 'sheet-empty';
-            empty.textContent = "Aucune feuille générée pour ce support.";
-            sheetsRow.appendChild(empty);
-            continue;
-        }
 
         const supportWidth = Number(support?.width);
         const supportHeight = Number(support?.height);
 
-        if (!Number.isFinite(supportWidth) || !Number.isFinite(supportHeight) || supportWidth <= 0 || supportHeight <= 0) {
-            const warn = document.createElement('div');
-            warn.className = 'sheet-empty';
-            warn.textContent = "Dimensions support invalides (width/height manquantes).";
-            sheetsRow.appendChild(warn);
-            continue;
-        }
+        if (
+            !Number.isFinite(supportWidth) ||
+            !Number.isFinite(supportHeight) ||
+            supportWidth <= 0 ||
+            supportHeight <= 0
+        ) continue;
 
-        for (let i = 0; i < sheetsToRender.length; i++) {
-            const sheet = sheetsToRender[i];
+        // 🔁 Regroupement des feuilles identiques
+        const groupedSheets = [];
+        const map = new Map();
+
+        sheets.forEach((sheet, index) => {
+            const sig = sheetSignature(sheet);
+            if (!map.has(sig)) {
+                const entry = {
+                    sheet,
+                    count: 1,
+                    taux: Number(tauxArr[index] ?? tauxArr[0] ?? 0)
+                };
+                map.set(sig, entry);
+                groupedSheets.push(entry);
+            } else {
+                map.get(sig).count++;
+            }
+        });
+
+        const supportGroup = document.createElement('div');
+        supportGroup.className = 'support-group';
+
+        const sheetsRow = document.createElement('div');
+        sheetsRow.className = 'sheets-row';
+
+        supportGroup.appendChild(sheetsRow);
+        container.appendChild(supportGroup);
+
+        for (let i = 0; i < groupedSheets.length; i++) {
+            const { sheet, count, taux } = groupedSheets[i];
             if (!Array.isArray(sheet)) continue;
-
-            const taux = Number(tauxArr[i] ?? tauxArr[0] ?? 0);
 
             const card = document.createElement('div');
             card.className = 'sheet-card';
+
+            const title = document.createElement('div');
+            title.className = 'support-title';
+            title.textContent = supportKey;
+
+            const subtitle = document.createElement('div');
+            subtitle.className = 'support-subtitle';
+            subtitle.textContent =
+                count > 1
+                    ? `× ${count} feuilles identiques`
+                    : `1 feuille`;
 
             const header = document.createElement('div');
             header.className = 'sheet-header';
             header.innerHTML = `
                 <span>Feuille ${i + 1}</span>
-                <span>${Number.isFinite(taux) ? taux.toFixed(2) : "0.00"}%</span>
+                <span>${Number.isFinite(taux) ? taux.toFixed(2) : '0.00'}%</span>
             `;
 
             const canvasWrapper = document.createElement('div');
@@ -574,22 +744,25 @@ async function renderPreview(data) {
 
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-
             canvasWrapper.appendChild(canvas);
+
+            card.appendChild(title);
+            card.appendChild(subtitle);
             card.appendChild(header);
             card.appendChild(canvasWrapper);
             sheetsRow.appendChild(card);
 
+            // 🎨 Canvas scale
             const maxWidth = 250;
             const maxHeight = 350;
-
-            const scale = Math.min(
+            let scale = Math.min(
                 maxWidth / supportWidth,
                 maxHeight / supportHeight
             );
+            scale *= 1.5;
 
-            canvas.width = Math.max(1, Math.round(supportWidth * scale));
-            canvas.height = Math.max(1, Math.round(supportHeight * scale));
+            canvas.width = Math.round(supportWidth * scale);
+            canvas.height = Math.round(supportHeight * scale);
 
             ctx.fillStyle = '#f3f4f6';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -598,10 +771,9 @@ async function renderPreview(data) {
             ctx.lineWidth = 1.2;
             ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-            // Bandeau
+            // 🟦 Banner
             if (data?.with_banner) {
-                const bannerHeightMm = 10;
-                const bannerHeightPx = bannerHeightMm * scale;
+                const bannerHeightPx = 10 * scale;
                 const yBanner = canvas.height - bannerHeightPx;
 
                 ctx.fillStyle = '#2563eb';
@@ -611,76 +783,57 @@ async function renderPreview(data) {
                 ctx.font = 'bold 12px Arial';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText('Made by Logos Sheet', canvas.width / 2, yBanner + bannerHeightPx / 2);
+                ctx.fillText(
+                    'Made by Logos Sheet',
+                    canvas.width / 2,
+                    yBanner + bannerHeightPx / 2
+                );
             }
 
-            // Items
+            // 🖼️ Dessin des items
             for (const item of sheet) {
                 if (!item || !item.name) continue;
 
-                const x = Number(item.x ?? 0);
-                const y = Number(item.y ?? 0);
-                const w = Number(item.width ?? 0);
-                const h = Number(item.height ?? 0);
+                const x = Number(item.x);
+                const y = Number(item.y);
+                const w = Number(item.width);
+                const h = Number(item.height);
 
-                if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(w) || !Number.isFinite(h) || w <= 0 || h <= 0) {
-                    continue;
-                }
+                if (![x, y, w, h].every(Number.isFinite)) continue;
 
                 const inv = Number(item.inversed) === 1;
+                const url = encodeURI(item.name);
 
-                // PDF
-                if (String(item.name).toLowerCase().endsWith('.pdf')) {
-                    const pdfUrl = encodeURI(item.name);
-
-                    if (!pdfCache[pdfUrl]) {
-                        const tempCanvas = document.createElement('canvas');
-                        pdfCache[pdfUrl] = drawPdfOnCanvas(pdfUrl, tempCanvas, 1)
-                            .then(() => tempCanvas)
-                            .catch(err => {
-                                console.error("Erreur rendu PDF :", pdfUrl, err);
-                                return null;
-                            });
-                    }
-
-                    const pdfCanvas = await pdfCache[pdfUrl];
-                    if (!pdfCanvas) continue;
-
-                    if (inv) {
-                        drawInversedFitSlot(ctx, pdfCanvas, x, y, w, h, scale);
-                    } else {
-                        ctx.drawImage(pdfCanvas, x * scale, y * scale, w * scale, h * scale);
-                    }
+                if (!imageCache[url]) {
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.src = url;
+                    imageCache[url] = new Promise(resolve => {
+                        img.onload = () => resolve(img);
+                        img.onerror = () => resolve(null);
+                    });
                 }
 
-                // Image
-                else {
-                    const url = encodeURI(item.name);
+                const img = await imageCache[url];
+                if (!img) continue;
 
-                    if (!imageCache[url]) {
-                        const img = new Image();
-                        img.crossOrigin = 'anonymous';
-                        img.src = url;
-
-                        imageCache[url] = new Promise(resolve => {
-                            img.onload = () => resolve(img);
-                            img.onerror = () => { console.error("IMG load failed:", url); resolve(null); };
-                        });
-                    }
-
-                    const img = await imageCache[url];
-                    if (!img) continue;
-
-                    if (inv) {
-                        drawInversedFitSlot(ctx, img, x, y, w, h, scale);
-                    } else {
-                        ctx.drawImage(img, x * scale, y * scale, w * scale, h * scale);
-                    }
+                if (inv) {
+                    drawInversedFitSlot(ctx, img, x, y, w, h, scale);
+                } else {
+                    ctx.drawImage(
+                        img,
+                        x * scale,
+                        y * scale,
+                        w * scale,
+                        h * scale
+                    );
                 }
             }
         }
     }
 }
+
+
 
 /* =========================================================
    PDF render helper (IMPORTANT: return promise)

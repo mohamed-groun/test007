@@ -29,6 +29,7 @@ class PdfsGeneratorService
         int $commandeId,
         bool $withBanner = false
     ): array {
+        // Vérifie les images inversées
         $json = $this->checkInversedImages($originImages, $json);
 
         $data = json_decode($json, true);
@@ -36,24 +37,16 @@ class PdfsGeneratorService
             throw new \RuntimeException('JSON invalide');
         }
 
-        $this->createDir($outputDir);
-
         $generatedFiles = [];
 
         foreach ($data as $formatKey => $formatData) {
-
-            $formatDir = $outputDir . '/' . preg_replace('/[^\w\-]/', '_', $formatKey);
-            $this->createDir($formatDir);
-
             $formatWidth  = $formatData['width'];
             $formatHeight = $formatData['height'];
 
             // 1️⃣ Regrouper les sheets identiques
             $groupedSheets = [];
-
             foreach ($formatData['sheets'] as $sheet) {
                 $signature = $this->getSheetSignature($sheet, $formatWidth, $formatHeight);
-
                 if (!isset($groupedSheets[$signature])) {
                     $groupedSheets[$signature] = [
                         'sheet' => $sheet,
@@ -64,9 +57,21 @@ class PdfsGeneratorService
                 }
             }
 
-            // 2️⃣ Générer un seul PDF par sheet unique
+            // 2️⃣ Générer les PDFs par sheet unique
             $index = 1;
+            $formatDirCreated = false;
+
             foreach ($groupedSheets as $group) {
+                if (empty($group['sheet'])) {
+                    continue; // aucun sheet réel, skip
+                }
+
+                // Crée le dossier seulement si nécessaire
+                if (!$formatDirCreated) {
+                    $formatDir = $outputDir . '/' . preg_replace('/[^\w\-]/', '_', $formatKey);
+                    $this->createDir($formatDir);
+                    $formatDirCreated = true;
+                }
 
                 $pdf = new Fpdi(
                     'P',
@@ -83,61 +88,54 @@ class PdfsGeneratorService
                 $pdf->setPrintFooter(false);
                 $pdf->AddPage();
 
-
-// ===== BANNIÈRE EN BAS =====
-                // ===== BANNIÈRE EN BAS =====
-// Après avoir généré toutes les images / contenu
+                // ===== Ajout du banner si demandé =====
                 if ($withBanner) {
                     $pageCount = $pdf->getNumPages();
-                    $pdf->setPage($pageCount); // aller à la dernière page
+                    $pdf->setPage($pageCount);
 
-                    $bannerHeight = 10; // hauteur du bandeau
+                    $bannerHeight = 10;
                     $pageWidth  = $pdf->getPageWidth();
                     $pageHeight = $pdf->getPageHeight();
 
-                    // Fond bleu du bandeau
                     $pdf->SetFillColor(37, 99, 235);
                     $pdf->Rect(0, $pageHeight - $bannerHeight, $pageWidth, $bannerHeight, 'F');
 
-                    // Texte blanc centré
                     $pdf->SetTextColor(255, 255, 255);
                     $pdf->SetFont('helvetica', 'B', 10);
-
-                    // Coller le texte à l’intérieur du bandeau
-                    $pdf->SetXY(0, $pageHeight - $bannerHeight + 1); // 1mm de marge depuis le haut du bandeau
+                    $pdf->SetXY(0, $pageHeight - $bannerHeight + 1);
                     $pdf->Cell($pageWidth, $bannerHeight - 2, 'Made by Logos Sheet', 0, 0, 'C');
                 }
 
-
-
-
+                // Insertion des images
                 foreach ($group['sheet'] as $img) {
                     $this->insertImage($pdf, $img, 1, $commandeId);
                 }
 
                 $count = $group['count'];
 
+                // 🔹 Nom du PDF selon ton format souhaité
                 $filename = sprintf(
-                    '%s/sheet_%d_x%d_%d.pdf',
+                    '%s/logosSheet_%d_%dx%d_X%d.pdf',
                     $formatDir,
                     $index,
-                    $count,
-                    $commandeId
+                    $formatData['width'],
+                    $formatData['height'],
+                    $count
                 );
 
-                $pdf->Output($filename, 'F');
-                $generatedFiles[] = $filename;
+                // ⚡ Cache PDF : ne régénère que si absent
+                if (!file_exists($filename)) {
+                    $pdf->Output($filename, 'F');
+                }
 
+                $generatedFiles[] = $filename;
                 $index++;
             }
         }
 
-
         return $generatedFiles;
     }
-
-
-
+    
     /* ========================================================= */
     /* ======================= HELPERS ========================= */
     /* ========================================================= */
@@ -152,6 +150,7 @@ class PdfsGeneratorService
         }
 
         $path = $this->normalizePng($path);
+        dump($path, file_exists($path));
         $ext  = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
         $x = $img['x'] * $scale;
@@ -237,7 +236,14 @@ class PdfsGeneratorService
 
     private function downgradePdfIfNeeded(string $path): string
     {
-        $newPath = sys_get_temp_dir() . '/downgraded_' . uniqid() . '.pdf';
+        $hash = md5_file($path);
+        $newPath = sys_get_temp_dir() . '/pdf_' . $hash . '.pdf';
+
+        // 🔥 CACHE
+        if (file_exists($newPath)) {
+            return $newPath;
+        }
+
 
         $cmd = "gs -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH "
             . "-sDEVICE=pdfwrite "
@@ -253,6 +259,14 @@ class PdfsGeneratorService
     {
         if (!file_exists($path)) {
             return $path;
+        }
+
+        $hash = md5_file($path);
+        $cached = sys_get_temp_dir() . '/png_' . $hash . '.png';
+
+        // 🔥 CACHE
+        if (file_exists($cached)) {
+            return $cached;
         }
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -271,25 +285,21 @@ class PdfsGeneratorService
             return $path;
         }
 
-        $hasICC  = preg_match('/Profile-icc/i', $info);
-        $hasICCP = preg_match('/png:iCCP/i', $info);
-
-        if (!$hasICC && !$hasICCP) {
+        if (!preg_match('/Profile-icc|png:iCCP/i', $info)) {
             return $path;
         }
-
-        $output = sys_get_temp_dir() . '/clean_' . uniqid() . '.png';
 
         exec(
             "convert " . escapeshellarg($path) .
             " -strip -colorspace sRGB -depth 8 " .
-            escapeshellarg($output),
+            escapeshellarg($cached),
             $o,
             $code
         );
 
-        return ($code === 0 && file_exists($output)) ? $output : $path;
+        return ($code === 0 && file_exists($cached)) ? $cached : $path;
     }
+
 
     private function checkInversedImages(string $images, string $json): string
     {

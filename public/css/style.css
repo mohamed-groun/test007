@@ -38,8 +38,9 @@ ul {
     DROP AREA
 ========================================= */
 #drop-area {
-    background: #EDE5FA;
+    background: #CCE5FF;
     margin-bottom: 0.5rem;
+    border-radius: 1rem;
 }
 
 /* =========================================
@@ -181,7 +182,7 @@ ul {
 
 .planche_2 {
     font-size: x-large;
-    color: #7c3aed;
+    color: #0d6efd;
 }
 
 .web_ligne_variable_saisie_intitule {
@@ -221,7 +222,7 @@ ul {
 }
 
 .option-card.active {
-    border: 2px solid #7c3aed;
+    border: 2px solid #0d6efd;
     box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
 }
 
@@ -234,7 +235,7 @@ ul {
 }
 
 .option-card.active .option-icon {
-    color: #7c3aed;
+    color: #0d6efd;
 }
 
 .option-card:not(.active) .option-icon {
@@ -261,7 +262,7 @@ ul {
     top: 6px;
     right: -5rem;
     font-size: x-large;
-    color: #7c3aed;
+    color: #0d6efd;
 }
 
 /* =========================================
@@ -288,7 +289,7 @@ ul {
 
 .file-button {
     background: white;
-    color: #7c3aed;
+    color: #0d6efd;
     padding: 1rem 2rem;
     border-radius: 9px;
     font-size: 13px;
@@ -318,7 +319,7 @@ ul {
   UTILITIES & TYPOGRAPHY
 ========================================= */
 .text-violet {
-    color: #7c3aed !important;
+    color: #0d6efd !important;
 }
 
 .fs-10 {
@@ -332,7 +333,7 @@ ul {
 .text-title-photo {
     font-size: larger;
     font-weight: 600;
-    color: #7c3aed;
+    color: #0d6efd;
 }
 
 .text-title-page {
@@ -610,17 +611,17 @@ ul {
 }
 
 .div_puce_pictos_boxes[data-abrev^="svg/"].selected {
-    border: 1px solid #7c3aed !important;
+    border: 1px solid #0d6efd !important;
     opacity: 1;
 }
 
 .selected + .picto_box_text {
     font-weight: 500;
-    color: #7c3aed !important;
+    color: #0d6efd !important;
 }
 
 .div_puce_pictos_boxes:hover {
-    border: 1px solid #7c3aed !important;
+    border: 1px solid #0d6efd !important;
 }
 
 .delete-svg-container svg {
@@ -634,11 +635,11 @@ ul {
 }
 
 #overlay_titleless {
-    border-top: 5px solid #7c3aed;
+    border-top: 5px solid #0d6efd;
 }
 
 #overlay_titleless_close {
-    background: #7c3aed !important;
+    background: #0d6efd !important;
 }
 
 .png-warning .clearfix:before {
@@ -678,8 +679,8 @@ ul {
 }
 
 .show-preview {
-    border: 1.5px solid #7c3aed;
-    color: #7c3aed !important;
+    border: 1.5px solid #0d6efd;
+    color: #0d6efd !important;
     margin-bottom: 0.5rem;
     font-size: large;
     font-weight: 500;
@@ -687,8 +688,8 @@ ul {
 
 .show-preview:hover {
     color: white !important;
-    background-color: #7c3aed;
-    border-color: #7c3aed;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
 }
 
 .clickable-icon {
@@ -696,7 +697,7 @@ ul {
     bottom: 10px;
     right: 10px;
     font-size: 32px;
-    color: #7c3aed;
+    color: #0d6efd;
     padding: 10px;
     background: #fff;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* petit bombé simple */
@@ -753,7 +754,7 @@ ul {
 }
 
 .devis-span {
-    color: #7c3aed;
+    color: #0d6efd;
     text-decoration: underline;
     cursor: pointer;
 }
