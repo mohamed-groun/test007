@@ -57,18 +57,18 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="{{ path('app_dashboard') }}">
                 <i class="bi bi-archive"></i>
                 <span>Historique planches</span></a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="{{ path('dashboard_supports') }}">
                 <i class="bi bi-arrows-fullscreen"></i>
                 <span>Personalié les supports</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="{{ path('app_generator_2') }}">
                 <i class="bi bi-pencil-square"></i>
                 <span>Génere une planche</span></a>
         </li>
@@ -82,8 +82,8 @@
             we need To talk
         </div>
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
-                <i class="fas fa-fw fa-chart-area"></i>
+            <a class="nav-link" href="{{ path('app_generator') ~ '#contact' }}">
+            <i class="fas fa-fw fa-chart-area"></i>
                 <span>contact us </span></a>
         </li>
 

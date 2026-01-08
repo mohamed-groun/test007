@@ -321,96 +321,277 @@
             <a href="https://rebrand.ly/flat-ud/" rel="nofollow" target="blank" class="button button-lg radius-10 wow fadeInUp" data-wow-delay=".7s">Purchase Now</a>
         </div>
     </div>
+<style>
+    /* ============================
+   PRICING SECTION
+============================ */
 
+    #pricing {
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    /* Card global */
+    #pricing .card {
+        border-radius: 1.25rem;
+        transition: all 0.35s ease;
+        background: #ffffff;
+    }
+
+    /* Hover animation */
+    #pricing .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.08);
+    }
+
+    /* Card body spacing */
+    #pricing .card-body {
+        padding: 2.5rem 2rem;
+    }
+
+    /* Titles */
+    #pricing h6 {
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        font-weight: 600;
+    }
+
+    #pricing h2 {
+        font-size: 2.4rem;
+        letter-spacing: -0.02em;
+    }
+
+    /* Text */
+    #pricing p {
+        font-size: 0.95rem;
+    }
+
+    /* Feature list */
+    #pricing ul li {
+        font-size: 0.95rem;
+        padding-left: 1.6rem;
+        position: relative;
+    }
+
+    /* Check icon */
+    #pricing ul li::before {
+        content: "✔";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #0d6efd;
+        font-weight: 600;
+    }
+
+    /* Disabled feature */
+    #pricing ul li.text-muted::before {
+        content: "✖";
+        color: #adb5bd;
+    }
+
+    /* Buttons */
+    #pricing .btn {
+        padding: 0.7rem 1.25rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+
+    /* Button hover */
+    #pricing .btn:hover {
+        transform: scale(1.03);
+    }
+
+    /* ============================
+       PRO CARD (HIGHLIGHT)
+    ============================ */
+
+    #pricing .border-primary {
+        border-width: 2px !important;
+    }
+
+    /* Pro badge */
+    #pricing .badge {
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        box-shadow: 0 0.5rem 1rem rgba(13, 110, 253, 0.25);
+    }
+
+    /* Pro card background subtle gradient */
+    #pricing .border-primary .card-body {
+        background: linear-gradient(
+                180deg,
+                rgba(13, 110, 253, 0.04),
+                rgba(255, 255, 255, 1)
+        );
+        border-radius: 1.25rem;
+    }
+
+    /* ============================
+       RESPONSIVE
+    ============================ */
+
+    @media (max-width: 768px) {
+        #pricing h2 {
+            font-size: 2rem;
+        }
+
+        #pricing .card-body {
+            padding: 2rem 1.75rem;
+        }
+    }
+    #pricing .card {
+        border-radius: 1.2rem;
+        transition: all 0.35s ease;
+    }
+
+    #pricing .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 1.5rem 3rem rgba(0,0,0,0.08);
+    }
+
+    #pricing h2 {
+        font-size: 2.2rem;
+    }
+
+    #pricing ul li {
+        font-size: 0.95rem;
+        margin-bottom: 0.6rem;
+        position: relative;
+        padding-left: 1.4rem;
+    }
+
+    #pricing ul li::before {
+        content: "✔";
+        position: absolute;
+        left: 0;
+        color: #0d6efd;
+    }
+
+    #pricing ul li.text-muted::before {
+        content: "✖";
+        color: #adb5bd;
+    }
+
+    #pricing .badge {
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    #pricing ul li.text-muted {
+        text-decoration: line-through;
+        opacity: 0.65;
+    }
+
+
+</style>
     <!-- ========================= pricing style-1 start ========================= -->
-    <section id="pricing" class="pricing-section pricing-style-1 bg-white">
+    <section id="pricing" class="py-5 bg-white">
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10">
-                    <div class="section-title text-center mb-60">
-                        <h3 class="mb-15 wow fadeInUp" data-wow-delay=".2s">
-                            Des tarifs simples et transparents
-                        </h3>
-                        <p class="wow fadeInUp" data-wow-delay=".4s">
-                            Choisissez l’offre qui correspond à votre activité
-                            et commencez à générer vos planches DTF en toute simplicité.
-                        </p>
-                    </div>
+
+            <!-- Title -->
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h3 class="mb-3">Des tarifs simples et flexibles</h3>
+                    <p class="text-muted">
+                        Choisissez l’offre adaptée à vos besoins et optimisez vos planches DTF en quelques clics.
+                    </p>
                 </div>
             </div>
 
-            <div class="row justify-content-center">
+            <!-- Pricing Cards -->
+            <div class="row g-4 justify-content-center">
 
-                <!-- PLAN FREE -->
-                <div class="col-lg-4 col-md-8 col-sm-10">
-                    <div class="single-pricing wow fadeInUp" data-wow-delay=".2s">
-                        <div class="image">
-                            <img src="assets/img/pricing/pricing-1/pricing-1.svg" alt="">
+                <!-- FREE -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow-sm border-0 text-center">
+                        <div class="card-body">
+                            <h6 class="text-uppercase text-muted">Découverte</h6>
+                            <h2 class="fw-bold my-3">Gratuit</h2>
+                            <p class="text-muted small">Pour tester l’outil</p>
+
+                            <ul class="list-unstyled text-start mt-4 mb-4">
+                                <li>✔ Génération de planches DTF</li>
+                                <li>✔ Organisation automatique par IA</li>
+                                <li>✔ Téléchargement des fichiers</li>
+                                <li class="text-muted">✖ Marges et espacements réglables</li>
+                                <li class="text-muted">✖ Sans mention « DTF Optimizer »</li>
+                                <li class="text-muted">✖ Support personnalisé</li>
+                                <li class="text-muted">✖ Historique des PDFs</li>
+                                <li class="text-muted">✖ Favoris d’images</li>
+                            </ul>
+
+                            <a href="{{ path('app_generator_2') }}"
+                               class="btn btn-outline-primary w-100 rounded-pill">
+                                Commencer gratuitement
+                            </a>
                         </div>
-                        <h6>Découverte</h6>
-                        <h4>Gratuit</h4>
-                        <h3>0 €</h3>
-                        <ul>
-                            <li><i class="lni lni-checkmark-circle"></i> Génération de planches DTF</li>
-                            <li><i class="lni lni-checkmark-circle"></i> Organisation automatique par IA</li>
-                            <li><i class="lni lni-checkmark-circle"></i> Choix des marges et espacements</li>
-                            <li><i class="lni lni-checkmark-circle"></i> Téléchargement des fichiers</li>
-                            <li class="text-muted"><i class="lni lni-close"></i> Stockage limité</li>
-                        </ul>
-                        <a href="{{ path('app_generator_2') }}" class="button radius-30">
-                            Commencer gratuitement
-                        </a>
                     </div>
                 </div>
 
-                <!-- PLAN PRO -->
-                <div class="col-lg-4 col-md-8 col-sm-10">
-                    <div class="single-pricing active wow fadeInUp" data-wow-delay=".4s">
-                        <span class="button button-sm radius-30 popular-badge">Le plus populaire</span>
-                        <div class="image">
-                            <img src="assets/img/pricing/pricing-1/pricing-2.svg" alt="">
+                <!-- 1 DAY PASS -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow border border-primary text-center">
+                        <div class="card-body">
+                            <h6 class="text-uppercase text-primary">Pass 1 jour</h6>
+                            <h2 class="fw-bold my-3">1,90 €</h2>
+                            <p class="text-muted small">Idéal pour une commande urgente</p>
+
+                            <ul class="list-unstyled text-start mt-4 mb-4">
+                                <li>✔ Génération de planches DTF</li>
+                                <li>✔ Organisation automatique par IA</li>
+                                <li>✔ Téléchargement illimité</li>
+                                <li>✔ Sans mention « DTF Optimizer »</li>
+                                <li>✔ Support personnalisé</li>
+                                <li>✔ Marges et espacements réglables</li>
+                                <li class="text-muted">✖ Historique des PDFs</li>
+                                <li class="text-muted">✖ Favoris d’images</li>
+                            </ul>
+
+                            <a href="{{ path('app_generator_2') }}"
+                               class="btn btn-primary w-100 rounded-pill">
+                                Acheter le pass 24h
+                            </a>
                         </div>
-                        <h6>Professionnel</h6>
-                        <h4>Créateurs & Marques</h4>
-                        <h3>19 € / mois</h3>
-                        <ul>
-                            <li><i class="lni lni-checkmark-circle"></i> Toutes les fonctionnalités Free</li>
-                            <li><i class="lni lni-checkmark-circle"></i> Logos en favoris</li>
-                            <li><i class="lni lni-checkmark-circle"></i> Stockage des images & planches</li>
-                            <li><i class="lni lni-checkmark-circle"></i> Choix manuel ou automatique des formats</li>
-                            <li><i class="lni lni-checkmark-circle"></i> Téléchargement illimité</li>
-                        </ul>
-                        <a href="{{ path('app_generator_2') }}" class="button radius-30">
-                            Passer en Pro
-                        </a>
                     </div>
                 </div>
 
-                <!-- PLAN PARTENAIRE / IMPRIMEUR -->
-                <div class="col-lg-4 col-md-8 col-sm-10">
-                    <div class="single-pricing wow fadeInUp" data-wow-delay=".6s">
-                        <div class="image">
-                            <img src="assets/img/pricing/pricing-1/pricing-3.svg" alt="">
+                <!-- MONTHLY -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow-lg border-primary text-center position-relative">
+
+            <span class="badge bg-primary position-absolute top-0 start-50 translate-middle rounded-pill px-3 py-2">
+                Le meilleur choix
+            </span>
+
+                        <div class="card-body">
+                            <h6 class="text-uppercase text-primary">Abonnement mensuel</h6>
+                            <h2 class="fw-bold my-3">9,99 €</h2>
+                            <p class="text-muted small">Pour les créateurs réguliers</p>
+
+                            <ul class="list-unstyled text-start mt-4 mb-4">
+                                <li>✔ Génération de planches DTF</li>
+                                <li>✔ Organisation automatique par IA</li>
+                                <li>✔ Téléchargement illimité</li>
+                                <li>✔ Sans mention « DTF Optimizer »</li>
+                                <li>✔ Support personnalisé</li>
+                                <li>✔ Marges et espacements réglables</li>
+                                <li>✔ Historique complet des PDFs</li>
+                                <li>✔ Favoris d’images (accès rapide)</li>
+                            </ul>
+
+                            <a href="{{ path('app_generator_2') }}"
+                               class="btn btn-primary w-100 rounded-pill">
+                                S’abonner maintenant
+                            </a>
                         </div>
-                        <h6>Partenaire</h6>
-                        <h4>Imprimeurs DTF</h4>
-                        <h3>Sur devis</h3>
-                        <ul>
-                            <li><i class="lni lni-checkmark-circle"></i> Toutes les fonctionnalités Pro</li>
-                            <li><i class="lni lni-checkmark-circle"></i> Présence sur notre plateforme</li>
-                            <li><i class="lni lni-checkmark-circle"></i> Réception de commandes clients</li>
-                            <li><i class="lni lni-checkmark-circle"></i> Gestion des délais & dates d’expédition</li>
-                            <li><i class="lni lni-checkmark-circle"></i> Intégration sur votre site (API)</li>
-                        </ul>
-                        <a href="#contact" class="button radius-30">
-                            Devenir partenaire
-                        </a>
                     </div>
                 </div>
 
             </div>
+
         </div>
     </section>
+
 
     <!-- ========================= pricing style-1 end ========================= -->
 

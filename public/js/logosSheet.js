@@ -471,6 +471,7 @@ async function submitForm(action) {
         alert("Veuillez ajouter au moins une image ou PDF !");
         return;
     }
+    showPreloader();
 
     const formData = new FormData();
 
@@ -543,8 +544,22 @@ async function submitForm(action) {
             alert("Erreur lors du téléchargement : " + error.message);
         }
     }
+    hidePreloader();
 }
 
+function showPreloader() {
+    $('#preloader').css('display', 'flex'); // afficher l'élément
+    setTimeout(() => {
+        $('#preloader').css('opacity', '0.7'); // puis augmenter l'opacité
+    }, 10); // petit délai pour que le transition fonctionne
+}
+
+function hidePreloader() {
+    $('#preloader').css('opacity', '0'); // diminuer l'opacité
+    setTimeout(() => {
+        $('#preloader').css('display', 'none'); // puis masquer complètement
+    }, 500); // délai = temps de transition CSS
+}
 /* =========================================================
    RENDER PREVIEW: inversed (comme PHP)
 ========================================================= */
@@ -557,20 +572,6 @@ function eq2(a, b) {
 function normalizeKey(u) {
     try { return new URL(String(u), window.location.origin).pathname; }
     catch { return String(u || ""); }
-}
-
-function sheetSignature(sheet) {
-    return JSON.stringify(
-        sheet.map(i => ({
-            n: normalizeKey(i.name),
-            x: round2(i.x),
-            y: round2(i.y),
-            w: round2(i.width),
-            h: round2(i.height),
-            r: i.rotated,
-            inv: i.inversed
-        }))
-    );
 }
 
 
@@ -638,9 +639,29 @@ function drawInversedFitSlot(ctx, imgOrCanvas, x, y, w, h, scale) {
     ctx.restore();
 }
 
+async function loadPdfAsCanvas(url, scale = 2) {
+    const pdf = await pdfjsLib.getDocument(url).promise;
+    const page = await pdf.getPage(1); // première page
+
+    const viewport = page.getViewport({ scale });
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+
+    await page.render({
+        canvasContext: ctx,
+        viewport
+    }).promise;
+
+    return canvas;
+}
+
+
 async function renderPreview(data) {
-    applyInversedFromFiles(data);
     console.log(data);
+    applyInversedFromFiles(data);
 
     const container = document.getElementById('canvasContainer');
     if (!container) return;
@@ -652,187 +673,82 @@ async function renderPreview(data) {
         return;
     }
 
-    // util pour signature de feuille (déduplication)
-    function sheetSignature(sheet) {
-        return JSON.stringify(
-            sheet.map(i => ({
-                n: normalizeKey(i.name),
-                x: round2(i.x),
-                y: round2(i.y),
-                w: round2(i.width),
-                h: round2(i.height),
-                r: Number(i.rotated),
-                inv: Number(i.inversed)
-            }))
-        );
-    }
-
     for (const supportKey in packingResult) {
         const support = packingResult[supportKey];
-
         const sheets = Array.isArray(support?.sheets) ? support.sheets : [];
         if (!sheets.length) continue;
 
-        const tauxArr = Array.isArray(support?.taux) ? support.taux : [];
-        const binsUsed = Number(support?.bins_used ?? 0);
-
-        const supportWidth = Number(support?.width);
-        const supportHeight = Number(support?.height);
-
-        if (
-            !Number.isFinite(supportWidth) ||
-            !Number.isFinite(supportHeight) ||
-            supportWidth <= 0 ||
-            supportHeight <= 0
-        ) continue;
-
-        // 🔁 Regroupement des feuilles identiques
-        const groupedSheets = [];
-        const map = new Map();
-
-        sheets.forEach((sheet, index) => {
-            const sig = sheetSignature(sheet);
-            if (!map.has(sig)) {
-                const entry = {
-                    sheet,
-                    count: 1,
-                    taux: Number(tauxArr[index] ?? tauxArr[0] ?? 0)
-                };
-                map.set(sig, entry);
-                groupedSheets.push(entry);
-            } else {
-                map.get(sig).count++;
-            }
-        });
-
         const supportGroup = document.createElement('div');
         supportGroup.className = 'support-group';
-
         const sheetsRow = document.createElement('div');
         sheetsRow.className = 'sheets-row';
-
         supportGroup.appendChild(sheetsRow);
         container.appendChild(supportGroup);
 
-        for (let i = 0; i < groupedSheets.length; i++) {
-            const { sheet, count, taux } = groupedSheets[i];
-            if (!Array.isArray(sheet)) continue;
-
+        for (let i = 0; i < sheets.length; i++) {
+            const sheet = sheets[i];
             const card = document.createElement('div');
             card.className = 'sheet-card';
-
-            const title = document.createElement('div');
-            title.className = 'support-title';
-            title.textContent = supportKey;
-
-            const subtitle = document.createElement('div');
-            subtitle.className = 'support-subtitle';
-            subtitle.textContent =
-                count > 1
-                    ? `× ${count} feuilles identiques`
-                    : `1 feuille`;
-
-            const header = document.createElement('div');
-            header.className = 'sheet-header';
-            header.innerHTML = `
-                <span>Feuille ${i + 1}</span>
-                <span>${Number.isFinite(taux) ? taux.toFixed(2) : '0.00'}%</span>
+            card.innerHTML = `
+                <div class="support-title">${supportKey}</div>
+                <div class="support-subtitle">Feuille ${i + 1}</div>
+                <div class="sheet-header">
+                    <span>Items: ${sheet.length}</span>
+                </div>
+                <div class="canvas-wrapper"><canvas></canvas></div>
             `;
-
-            const canvasWrapper = document.createElement('div');
-            canvasWrapper.className = 'canvas-wrapper';
-
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvasWrapper.appendChild(canvas);
-
-            card.appendChild(title);
-            card.appendChild(subtitle);
-            card.appendChild(header);
-            card.appendChild(canvasWrapper);
             sheetsRow.appendChild(card);
 
-            // 🎨 Canvas scale
-            const maxWidth = 250;
-            const maxHeight = 350;
-            let scale = Math.min(
-                maxWidth / supportWidth,
-                maxHeight / supportHeight
-            );
-            scale *= 1.5;
+            const canvas = card.querySelector('canvas');
+            const ctx = canvas.getContext('2d');
 
-            canvas.width = Math.round(supportWidth * scale);
-            canvas.height = Math.round(supportHeight * scale);
+            // Dimensions
+            const supportWidth = Number(support?.width);
+            const supportHeight = Number(support?.height);
+            let scale = Math.min(250 / supportWidth, 350 / supportHeight) * 1.5;
+            canvas.width = supportWidth * scale;
+            canvas.height = supportHeight * scale;
 
             ctx.fillStyle = '#f3f4f6';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             ctx.strokeStyle = '#111827';
             ctx.lineWidth = 1.2;
             ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-            // 🟦 Banner
-            if (data?.with_banner) {
-                const bannerHeightPx = 10 * scale;
-                const yBanner = canvas.height - bannerHeightPx;
-
-                ctx.fillStyle = '#2563eb';
-                ctx.fillRect(0, yBanner, canvas.width, bannerHeightPx);
-
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 12px Arial';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(
-                    'Made by Logos Sheet',
-                    canvas.width / 2,
-                    yBanner + bannerHeightPx / 2
-                );
-            }
-
-            // 🖼️ Dessin des items
+            // Draw items
             for (const item of sheet) {
-                if (!item || !item.name) continue;
-
-                const x = Number(item.x);
-                const y = Number(item.y);
-                const w = Number(item.width);
-                const h = Number(item.height);
-
-                if (![x, y, w, h].every(Number.isFinite)) continue;
-
-                const inv = Number(item.inversed) === 1;
+                const x = item.x, y = item.y, w = item.width, h = item.height;
                 const url = encodeURI(item.name);
 
                 if (!imageCache[url]) {
                     const img = new Image();
                     img.crossOrigin = 'anonymous';
                     img.src = url;
-                    imageCache[url] = new Promise(resolve => {
-                        img.onload = () => resolve(img);
-                        img.onerror = () => resolve(null);
+                    imageCache[url] = new Promise(res => {
+                        img.onload = () => res(img);
+                        img.onerror = () => res(null);
                     });
                 }
 
-                const img = await imageCache[url];
-                if (!img) continue;
+                let drawable;
 
-                if (inv) {
-                    drawInversedFitSlot(ctx, img, x, y, w, h, scale);
+                if (url.toLowerCase().endsWith('.pdf')) {
+                    drawable = await loadPdfAsCanvas(url);
                 } else {
-                    ctx.drawImage(
-                        img,
-                        x * scale,
-                        y * scale,
-                        w * scale,
-                        h * scale
-                    );
+                    drawable = await imageCache[url];
                 }
+
+                if (!drawable) continue;
+                if (item.inversed) {
+                    drawInversedFitSlot(ctx, drawable, x, y, w, h, scale);
+                } else {
+                    ctx.drawImage(drawable, x * scale, y * scale, w * scale, h * scale);
+                }
+
             }
         }
     }
 }
-
 
 
 /* =========================================================
