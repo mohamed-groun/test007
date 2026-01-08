@@ -135,7 +135,9 @@
                                     {% endif %}
 
                                     <div class="card-body">
-
+                                        <p class="mb-2">
+                                            📄 <b>{{ pdf.id }}</b>
+                                        </p>
                                         {# Date #}
                                         <p class="text-muted mb-2">
                                             📅 {{ pdf.createdAt|date('d/m/Y H:i') }}

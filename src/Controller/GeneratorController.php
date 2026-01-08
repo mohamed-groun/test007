@@ -197,7 +197,7 @@ final class GeneratorController extends AbstractController
         $pdfParam->setName('pack-result-' . $now->format('Ymd-His'));
         $pdfParam->setIdUser($user ? $user->getId() : null);
 
-        // Si tu veux stocker une taille support, prends le premier support, sinon null
+        // Si tu veux stocker une taille support, prends le premier support, sinon null a corriger
 
         $pdfParam->setWidth($supportDetails[0]['width']);
         $pdfParam->setHeight($supportDetails[0]['height']);

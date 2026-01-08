@@ -19,7 +19,11 @@ final class DashboardController extends AbstractController
     public function index(EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-        $pdfs = $em->getRepository(PdfParametres::class)->findBy(['id_user' => $user->getId()]);
+        $pdfs = $em->getRepository(PdfParametres::class)->findBy(
+            ['id_user' => $user->getId()],  // critère
+            ['created_at' => 'DESC']         // tri
+        );
+
         $images_favorites = $em->getRepository(ImagesFavorites::class)->findBy(['id_user' => $user->getId()]);
 
         // On récupère juste les liens des images favorites
@@ -148,9 +152,5 @@ final class DashboardController extends AbstractController
             ]
         ]);
     }
-
-
-
-
 
 }
