@@ -2,6 +2,10 @@ parameters:
     uploads_directory: '%kernel.project_dir%/public/uploads'
     app.base_path: '%kernel.project_dir%/public/'
 
+    paypal.client_id: '%env(PAYPAL_CLIENT_ID)%'
+    paypal.secret: '%env(PAYPAL_SECRET)%'
+    paypal.mode: '%env(PAYPAL_MODE)%'
+
 services:
     _defaults:
         autowire: true
@@ -17,3 +21,9 @@ services:
     App\Services\PdfsGeneratorService:
         arguments:
             $basePath: '%app.base_path%'
+
+    App\Services\PayPalService:
+        arguments:
+            $clientId: '%paypal.client_id%'
+            $secret: '%paypal.secret%'
+            $mode: '%paypal.mode%'

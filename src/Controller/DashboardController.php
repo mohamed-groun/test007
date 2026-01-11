@@ -79,7 +79,6 @@ final class DashboardController extends AbstractController
     }
 
 
-
 #[Route('/support/add', name: 'support_add', methods: ['POST'])]
     public function addSupport(Request $request, EntityManagerInterface $em): JsonResponse
     {

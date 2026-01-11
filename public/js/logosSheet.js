@@ -502,7 +502,7 @@ async function submitForm(action) {
     formData.append('space_between_logos', document.getElementById('space_between_logos').value);
 
     if (action === 'preview') {
-        const response = await fetch('/generator/calculate', { method: 'POST', body: formData });
+        const response = await fetch(window.routes.generatorCalculate, { method: 'POST', body: formData });
         const data = await response.json();
 
         if (data.status !== 'success') {
@@ -526,7 +526,7 @@ async function submitForm(action) {
         downloadData.append('with_banner', with_banner);
 
         try {
-            const response = await fetch('/generator/download', { method: 'POST', body: downloadData });
+            const response = await fetch(window.routes.generatorDownload, { method: 'POST', body: downloadData });
             if (!response.ok) throw new Error('Erreur serveur');
 
             const blob = await response.blob();

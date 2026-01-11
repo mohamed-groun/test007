@@ -17,15 +17,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-
+#[Route('/{_locale}',requirements: ['_locale' => 'fr|en'],defaults: ['_locale' => 'fr'])]
 final class GeneratorController extends AbstractController
 {
     #[Route('/', name: 'app_generator')]
     public function index(): Response
     {
-
         return $this->render('generator/index.html.twig');
     }
+
 
     #[Route('/index2', name: 'app_generator_2')]
     public function index2(EntityManagerInterface $em): Response
@@ -159,8 +159,8 @@ final class GeneratorController extends AbstractController
             $roll = $em->getRepository(Roll::class)->findOneBy(['id_user' => $user->getId()])
                 ?? $em->getRepository(Roll::class)->findOneBy(['id_user' => null]);
 
-            $min = (int) $roll->getMinHeight();
-            $max = (int) $roll->getMaxHeight();
+            $min = (int)$roll->getMinHeight();
+            $max = (int)$roll->getMaxHeight();
 
             for ($i = $min; $i <= $max; $i += 10) {
                 $usableHeight = $i * 10;
@@ -168,8 +168,8 @@ final class GeneratorController extends AbstractController
                     $usableHeight -= 10; // 1 cm = 10 mm
                 }
                 $supportDetails[] = [
-                    'id' => $i+1000,
-                    'label' => $roll->getWidth() .'*' .$i,
+                    'id' => $i + 1000,
+                    'label' => $roll->getWidth() . '*' . $i,
                     'width' => $roll->getWidth() * 10,
                     'height' => $usableHeight,
                 ];
@@ -273,7 +273,7 @@ final class GeneratorController extends AbstractController
 
         return $this->file(
             $zipPath,
-            'order_'.$pdf->getId().'.zip',
+            'order_' . $pdf->getId() . '.zip',
             ResponseHeaderBag::DISPOSITION_ATTACHMENT
         );
     }
@@ -314,6 +314,4 @@ final class GeneratorController extends AbstractController
 
         return $this->json(['success' => false, 'message' => 'Action invalide'], 400);
     }
-
-
 }
