@@ -8,6 +8,7 @@
             {{ message }}
         </div>
     {% endfor %}
+    <script src="https://www.paypal.com/sdk/js?client-id=ARqrKQ49s0JlXx_3OaHlnvKzbjwPZQCaBoDHCY4ffpg3Hcmo7YAOjupMTqcwgyIpcoaL1qEjHJDbUSDJ&currency=EUR&components=buttons,funding-eligibility"></script>
 
     <!-- ========================= hero-section-wrapper-2 start ========================= -->
     <section id="home" class="hero-section-wrapper-2">
@@ -620,21 +621,44 @@
                                 <li class="text-muted">✖ Favoris d’images</li>
                             </ul>
 
-                            <a href="{{ path('paypal_pass_day') }}"
-                               class="btn btn-primary w-100 rounded-pill">
-                                Acheter le pass 24h
-                            </a>
+                            <button
+                                    class="btn btn-primary w-100"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#paypalModal">
+                                Acheter
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="paypalModal" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">Paiement</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body text-center">
+                                <p>Choisissez votre méthode de paiement :</p>
+
+                                <!-- Conteneur PayPal -->
+                                <div id="paypal-button-container"></div>
+                                <div id="paypal-subscribe-button"></div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
 
-                <!-- MONTHLY -->
+                <!-- ABONNEMENT MENSUEL -->
                 <div class="col-lg-4 col-md-6">
                     <div class="card h-100 shadow-lg border-primary text-center position-relative">
 
-            <span class="badge bg-primary position-absolute top-0 start-50 translate-middle rounded-pill px-3 py-2">
-                Le meilleur choix
-            </span>
+        <span class="badge bg-primary position-absolute top-0 start-50 translate-middle rounded-pill px-3 py-2">
+            Le meilleur choix
+        </span>
 
                         <div class="card-body">
                             <h6 class="text-uppercase text-primary">Abonnement mensuel</h6>
@@ -652,13 +676,25 @@
                                 <li>✔ Favoris d’images (accès rapide)</li>
                             </ul>
 
-                            <a href="{{ path('paypal_subscribe') }}"
-                               class="btn btn-primary w-100 rounded-pill">
+                            <button
+                                    class="btn btn-primary w-100"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#paypalSubscribeModal">
                                 S’abonner maintenant
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
+
+                <!-- MODAL PAYPAL ABONNEMENT -->
+                <div class="modal fade" id="paypalSubscribeModal" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">Abonnement Mensuel</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button
+
 
             </div>
 
@@ -776,6 +812,60 @@
             </div>
         </div>
     </section>
+    <script>
+        paypal.Buttons({
+
+            style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'paypal' },
+
+            // Autoriser PayPal + carte bancaire
+            funding: { allowed: [paypal.FUNDING.CARD, paypal.FUNDING.PAYPAL] },
+
+            createOrder: function(data, actions) {
+                return fetch('{{ path('paypal_pass_day') }}', { method: 'POST' })
+                    .then(res => res.json())
+                    .then(order => order.id); // récupère l'ID pour l'overlay
+            },
+
+            onApprove: function(data, actions) {
+                return fetch('{{ path('paypal_capture') }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ orderID: data.orderID })
+                })
+                    .then(res => res.json())
+                    .then(details => {
+                        alert('Paiement réussi !');
+                        window.location.reload();
+                    });
+            }
+
+        }).render('#paypal-button-container');
+    </script>
+    <script>
+        paypal.Buttons({
+
+            style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'subscribe' },
+
+            createSubscription: function(data, actions) {
+                return actions.subscription.create({
+                    plan_id: 'P-XXXXXXXX' // TON PLAN MENSUEL PAYPAL
+                });
+            },
+
+            onApprove: function(data, actions) {
+                return fetch('{{ path("paypal_subscription_success") }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ subscriptionID: data.subscriptionID })
+                }).then(() => {
+                    alert('Abonnement réussi 🎉');
+                    window.location.reload();
+                });
+            }
+
+        }).render('#paypal-subscribe-button');
+    </script>
+
     <!-- ========================= contact style-6 end ========================= -->
 
     <!-- ========================= clients-logo start =========================

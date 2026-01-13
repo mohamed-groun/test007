@@ -24,6 +24,6 @@ services:
 
     App\Services\PayPalService:
         arguments:
-            $clientId: '%paypal.client_id%'
-            $secret: '%paypal.secret%'
-            $mode: '%paypal.mode%'
+            $clientId: '%env(PAYPAL_CLIENT_ID)%'
+            $secret: '%env(PAYPAL_SECRET)%'
+            $mode: '%env(PAYPAL_MODE)%'

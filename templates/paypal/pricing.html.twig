@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tarifs{% endblock %}
+
+{% block body %}
+    <script src="https://www.paypal.com/sdk/js?client-id=TON_CLIENT_ID&currency=EUR&components=buttons,funding-eligibility"></script>
+
+    <div class="container py-5">
+
+        <h1 class="mb-4 text-center">Nos offres</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+
+                <div class="card shadow">
+                    <div class="card-body text-center">
+
+                        <h5 class="card-title">Pass 1 jour</h5>
+                        <p class="display-6 fw-bold">2,99 €</p>
+
+                        <p class="text-muted">
+                            Accès complet pendant 24h
+                        </p>
+
+                        <!-- Bouton ouverture modal -->
+                        <button
+                                class="btn btn-primary w-100"
+                                data-bs-toggle="modal"
+                                data-bs-target="#paypalModal">
+                            Acheter
+                        </button>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal Bootstrap -->
+    <div class="modal fade" id="paypalModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Paiement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <p>Choisissez votre méthode de paiement :</p>
+
+                    <!-- Conteneur PayPal -->
+                    <div id="paypal-button-container"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

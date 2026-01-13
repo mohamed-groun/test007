@@ -21,16 +21,29 @@ class PayPalService {
 
 private function getAccessToken(): string
 {
-    $response = $this->client->request('POST',
+
+
+    $response = $this->client->request(
+        'POST',
         $this->baseUrl . '/v1/oauth2/token',
         [
             'auth_basic' => [$this->clientId, $this->secret],
-            'body' => ['grant_type' => 'client_credentials']
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
+            'body' => 'grant_type=client_credentials',
         ]
     );
 
     return $response->toArray()['access_token'];
 }
+
+public function captureOrder(string $orderId): array
+{
+    return $this->request('POST', "/v2/checkout/orders/$orderId/capture", []);
+}
+
 
 /* ================= PRODUCT ================= */
 
@@ -79,12 +92,15 @@ public function createSubscription(string $planId, string $returnUrl, string $ca
         'plan_id' => $planId,
         'application_context' => [
             'brand_name' => 'MonSite',
+            'locale' => 'fr-FR',
+            'shipping_preference' => 'NO_SHIPPING',
+            'user_action' => 'SUBSCRIBE_NOW',
             'return_url' => $returnUrl,
-            'cancel_url' => $cancelUrl,
-            'user_action' => 'SUBSCRIBE_NOW'
+            'cancel_url' => $cancelUrl
         ]
     ]);
 }
+
 
 /* ================= UTILS ================= */
 
@@ -146,5 +162,36 @@ public function createOneTimePayment(
 
     throw new \Exception('Lien PayPal introuvable');
 }
+
+public function createOrder(float $amount, string $description, string $returnUrl, string $cancelUrl): string
+{
+    // Crée un order PayPal et retourne juste l'ID
+    $order = $this->request('POST', '/v2/checkout/orders', [
+        'intent' => 'CAPTURE',
+        'purchase_units' => [[
+            'amount' => [
+                'currency_code' => 'EUR',
+                'value' => number_format($amount, 2, '.', '')
+            ],
+            'description' => $description
+        ]],
+        'application_context' => [
+            'return_url' => $returnUrl,
+            'cancel_url' => $cancelUrl
+        ]
+    ]);
+
+    return $order['id']; // <-- pour JS SDK
+}
+
+public function getSubscription(string $subscriptionId): array
+{
+    return $this->request(
+        'GET',
+        "/v1/billing/subscriptions/$subscriptionId",
+        []
+    );
+}
+
 
 }
