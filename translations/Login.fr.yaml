@@ -1,0 +1,16 @@
+# login.fr.yaml
+
+login.title: "Connexion"
+login.subtitle: "Entrez vos informations pour continuer"
+login.email: "Email"
+login.password: "Mot de passe"
+login.remember_me: "Se souvenir de moi"
+login.submit: "Se connecter"
+login.register_text: "Vous n'avez pas de compte ?"
+login.register_link: "Inscrivez-vous ici"
+login.logged_in_as: "Vous êtes connecté en tant que %user%,"
+login.logout: "Déconnexion"
+
+# Erreurs de sécurité (Symfony les utilise souvent)
+security.invalid_credentials: "Identifiants invalides."
+security.csrf_invalid: "Jeton CSRF invalide."

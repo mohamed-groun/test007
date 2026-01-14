@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -19,10 +20,7 @@ class PayPalService {
 
 /* ================= TOKEN ================= */
 
-private function getAccessToken(): string
-{
-
-
+private function getAccessToken(): string {
     $response = $this->client->request(
         'POST',
         $this->baseUrl . '/v1/oauth2/token',
@@ -39,73 +37,27 @@ private function getAccessToken(): string
     return $response->toArray()['access_token'];
 }
 
-public function captureOrder(string $orderId): array
-{
-    return $this->request('POST', "/v2/checkout/orders/$orderId/capture", []);
-}
+public function captureOrder(string $orderId): array {
+    $token = $this->getAccessToken();
 
-
-/* ================= PRODUCT ================= */
-
-public function createProduct(): array
-{
-    return $this->request('POST', '/v1/catalogs/products', [
-        'name' => 'Abonnement Premium',
-        'type' => 'SERVICE'
-    ]);
-}
-
-/* ================= PLAN ================= */
-
-public function createPlan(string $productId, float $price): array
-{
-    return $this->request('POST', '/v1/billing/plans', [
-        'product_id' => $productId,
-        'name' => 'Plan Mensuel',
-        'billing_cycles' => [[
-            'frequency' => [
-                'interval_unit' => 'MONTH',
-                'interval_count' => 1
+    $response = $this->client->request('POST',
+        $this->baseUrl . "/v2/checkout/orders/$orderId/capture",
+        [
+            'headers' => [
+                'Authorization' => "Bearer $token",
+                'Content-Type' => 'application/json'
             ],
-            'tenure_type' => 'REGULAR',
-            'sequence' => 1,
-            'total_cycles' => 0,
-            'pricing_scheme' => [
-                'fixed_price' => [
-                    'value' => number_format($price, 2, '.', ''),
-                    'currency_code' => 'EUR'
-                ]
-            ]
-        ]],
-        'payment_preferences' => [
-            'auto_bill_outstanding' => true,
-            'payment_failure_threshold' => 3
         ]
-    ]);
+    );
+
+    return $response->toArray();
 }
 
-/* ================= SUBSCRIPTION ================= */
-
-public function createSubscription(string $planId, string $returnUrl, string $cancelUrl): array
-{
-    return $this->request('POST', '/v1/billing/subscriptions', [
-        'plan_id' => $planId,
-        'application_context' => [
-            'brand_name' => 'MonSite',
-            'locale' => 'fr-FR',
-            'shipping_preference' => 'NO_SHIPPING',
-            'user_action' => 'SUBSCRIBE_NOW',
-            'return_url' => $returnUrl,
-            'cancel_url' => $cancelUrl
-        ]
-    ]);
-}
 
 
 /* ================= UTILS ================= */
 
-private function request(string $method, string $uri, array $payload): array
-{
+private function request(string $method, string $uri, array $payload): array {
     $token = $this->getAccessToken();
 
     $response = $this->client->request($method,
@@ -122,16 +74,6 @@ private function request(string $method, string $uri, array $payload): array
     return $response->toArray();
 }
 
-public function getApproveLink(array $subscription): string
-{
-    foreach ($subscription['links'] as $link) {
-        if ($link['rel'] === 'approve') {
-            return $link['href'];
-        }
-    }
-
-    throw new \Exception('Lien PayPal introuvable');
-}
 
 public function createOneTimePayment(
     float $amount,
@@ -163,8 +105,7 @@ public function createOneTimePayment(
     throw new \Exception('Lien PayPal introuvable');
 }
 
-public function createOrder(float $amount, string $description, string $returnUrl, string $cancelUrl): string
-{
+public function createOrder(float $amount, string $description, string $returnUrl, string $cancelUrl): string {
     // Crée un order PayPal et retourne juste l'ID
     $order = $this->request('POST', '/v2/checkout/orders', [
         'intent' => 'CAPTURE',
@@ -183,15 +124,4 @@ public function createOrder(float $amount, string $description, string $returnUr
 
     return $order['id']; // <-- pour JS SDK
 }
-
-public function getSubscription(string $subscriptionId): array
-{
-    return $this->request(
-        'GET',
-        "/v1/billing/subscriptions/$subscriptionId",
-        []
-    );
-}
-
-
 }

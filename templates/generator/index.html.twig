@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello GeneratorController!{% endblock %}
+{% trans_default_domain 'HomePage' %}
+{% block title %}{{ 'page.home.title'|trans }}{% endblock %}
 
 {% block body %}
     {% for message in app.flashes('success') %}
@@ -18,13 +18,11 @@
                 <div class="row align-items-end">
                     <div class="col-lg-5">
                         <div class="hero-content-wrapper" style="    padding-left: 2rem;">
-                            <h4 class="wow fadeInUp" data-wow-delay=".2s">Générateur DTF intelligent     <i class="lni lni-exit"></i> {{ 'aaa'|trans({}, 'HomePage') }}</h4>
-                            <h2 class="mb-30 wow fadeInUp" data-wow-delay=".4s">Créez automatiquement vos planches et bobines DTF optimisées</h2>
-                            <p class="mb-50 wow fadeInUp" data-wow-delay=".6s"> Importez vos images, indiquez les quantités, et laissez notre application organiser
-                                automatiquement vos visuels pour un rendu professionnel, optimisé et prêt à l’impression.
-                                Gagnez du temps, réduisez les pertes et imprimez plus efficacement.</p>
+                            <h4 class="wow fadeInUp" data-wow-delay=".2s">{{ 'hero.subtitle'|trans }}</h4>
+                            <h2 class="mb-30 wow fadeInUp" data-wow-delay=".4s">{{ 'hero.title'|trans }}</h2>
+                            <p class="mb-50 wow fadeInUp" data-wow-delay=".6s"> {{ 'hero.description'|trans }}</p>
                             <div class="buttons">
-                                <a href="{{ path('app_generator_2') }}" rel="nofollow" target="blank" class="button button-lg radius-10 wow fadeInUp" data-wow-delay=".7s">Générer ma planche DTF</a>
+                                <a href="{{ path('app_generator_2') }}" rel="nofollow" target="blank" class="button button-lg radius-10 wow fadeInUp" data-wow-delay=".7s"> {{ 'hero.cta'|trans }}</a>
                             </div>
                         </div>
                     </div>
@@ -143,8 +141,11 @@
     <section id="how-it-works" class="py-5 bg-light">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="fw-bold">Comment ça marche ?</h2>
-                <p class="text-muted">Transformez vos images en quelques clics avec notre IA</p>
+                <h2 class="fw-bold">
+                    {{ 'how.title'|trans }}
+                </h2>
+
+                <p class="text-muted"> {{ 'how.subtitle'|trans }}</p>
             </div>
 
             <div class="row g-4">
@@ -154,8 +155,11 @@
                         <div class="icon mb-3">
                             <i class="bi bi-upload"></i>
                         </div>
-                        <h5 class="fw-bold">1. Charger vos fichiers</h5>
-                        <p class="text-muted">Importez vos images PNG ou PDF de haute qualité. Configurez largeur, longueur et quantité. <strong>Simple et rapide !</strong></p>
+                        <p class="text-muted">
+                            {{ 'how.step1.text'|trans }}
+                            <strong>{{ 'how.step1.strong'|trans }}</strong>
+                        </p>
+
                     </div>
                 </div>
 
@@ -165,8 +169,11 @@
                         <div class="icon mb-3">
                             <i class="bi bi-sliders"></i>
                         </div>
-                        <h5 class="fw-bold">2. Choisir le format</h5>
-                        <p class="text-muted">Sélectionnez le format souhaité ou laissez l’IA choisir le meilleur automatiquement. <strong>Obtenez toujours le meilleur rendu !</strong></p>
+                        <p class="text-muted">
+                            {{ 'how.step2.text'|trans }}
+                            <strong>{{ 'how.step2.strong'|trans }}</strong>
+                        </p>
+
                     </div>
                 </div>
 
@@ -176,8 +183,14 @@
                         <div class="icon mb-3">
                             <i class="bi bi-download"></i>
                         </div>
-                        <h5 class="fw-bold">3. Aperçu et téléchargement</h5>
-                        <p class="text-muted">Prévisualisez votre résultat et téléchargez-le en un clic. <strong>Toutes vos images dans le meilleur format et prêtes à imprimer !</strong></p>
+                        <h5 class="fw-bold">
+                            {{ 'how.step3.title'|trans }}
+                        </h5>
+                        <p class="text-muted">
+                            {{ 'how.step3.text'|trans }}
+                            <strong>{{ 'how.step3.strong'|trans }}</strong>
+                        </p>
+
                     </div>
                 </div>
             </div>
@@ -190,14 +203,8 @@
             <div class="row justify-content-center">
                 <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10">
                     <div class="section-title text-center mb-60">
-                        <h3 class="mb-15 wow fadeInUp" data-wow-delay=".2s">
-                            Des fonctionnalités intelligentes pour le DTF
-                        </h3>
-                        <p class="wow fadeInUp" data-wow-delay=".4s">
-                            Une plateforme complète propulsée par l’intelligence artificielle
-                            pour automatiser, optimiser et accélérer la création de vos planches
-                            et bobines DTF.
-                        </p>
+                        <h3>{{ 'features.title'|trans }}</h3>
+                        <p>{{ 'features.subtitle'|trans }}</p>
                     </div>
                 </div>
             </div>
@@ -214,11 +221,9 @@
                             </svg>
                         </div>
                         <div class="content">
-                            <h5>Système propulsé par l’IA</h5>
+                            <h5>    {{ 'features.ai.title'|trans }}</h5>
                             <p>
-                                Notre intelligence artificielle organise automatiquement
-                                vos images et quantités afin de créer des planches DTF
-                                parfaitement optimisées.
+                                {{ 'features.ai.text'|trans }}
                             </p>
                         </div>
                     </div>
@@ -234,11 +239,9 @@
                             </svg>
                         </div>
                         <div class="content">
-                            <h5>Logos en favoris</h5>
+                            <h5>{{ 'features.favorites.title'|trans }}</h5>
                             <p>
-                                Enregistrez vos logos les plus utilisés
-                                pour les retrouver instantanément
-                                et accélérer la création de vos planches DTF.
+                                {{ 'features.favorites.text'|trans }}
                             </p>
                         </div>
                     </div>
@@ -254,12 +257,8 @@
                             </svg>
                         </div>
                         <div class="content">
-                            <h5>Choix des formats intelligent</h5>
-                            <p>
-                                Choisissez un ou plusieurs formats de planche,
-                                ou laissez l’IA sélectionner automatiquement
-                                la meilleure disposition pour vous.
-                            </p>
+                            <h5>{{ 'features.format.title'|trans }}</h5>
+                            <p>{{ 'features.format.text'|trans }}</p>
                         </div>
                     </div>
                 </div>
@@ -274,12 +273,8 @@
                             </svg>
                         </div>
                         <div class="content">
-                            <h5>Stockage & historique</h5>
-                            <p>
-                                Toutes vos images et planches DTF générées
-                                sont stockées en toute sécurité et restent
-                                téléchargeables à tout moment.
-                            </p>
+                            <h5>{{ 'features.storage.title'|trans }}</h5>
+                            <p>{{ 'features.storage.text'|trans }}</p>
                         </div>
                     </div>
                 </div>
@@ -294,12 +289,8 @@
                             </svg>
                         </div>
                         <div class="content">
-                            <h5>Marges et espacements réglables</h5>
-                            <p>
-                                Ajustez librement les marges et l’espace entre
-                                les images afin d’adapter parfaitement vos
-                                planches aux contraintes d’impression DTF.
-                            </p>
+                            <h5>{{ 'features.margins.title'|trans }}</h5>
+                            <p>{{ 'features.margins.text'|trans }}</p>
                         </div>
                     </div>
                 </div>
@@ -314,12 +305,8 @@
                             </svg>
                         </div>
                         <div class="content">
-                            <h5>Gain de temps & productivité</h5>
-                            <p>
-                                Générez vos planches DTF en quelques secondes
-                                et concentrez-vous sur l’impression
-                                pendant que l’IA s’occupe de l’optimisation.
-                            </p>
+                            <h5>{{ 'features.speed.title'|trans }}</h5>
+                            <p>{{ 'features.speed.text'|trans }}</p>
                         </div>
                     </div>
                 </div>
@@ -565,9 +552,9 @@
             <!-- Title -->
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-8 text-center">
-                    <h3 class="mb-3">Des tarifs simples et flexibles</h3>
+                    <h3 class="mb-3"> {{ 'pricing.title'|trans }}</h3>
                     <p class="text-muted">
-                        Choisissez l’offre adaptée à vos besoins et optimisez vos planches DTF en quelques clics.
+                        {{ 'pricing.subtitle'|trans }}
                     </p>
                 </div>
             </div>
@@ -579,24 +566,24 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="card h-100 shadow-sm border-0 text-center">
                         <div class="card-body">
-                            <h6 class="text-uppercase text-muted">Découverte</h6>
-                            <h2 class="fw-bold my-3">Gratuit</h2>
-                            <p class="text-muted small">Pour tester l’outil</p>
+                            <h6>{{ 'pricing.free.title'|trans }}</h6>
+                            <h2>{{ 'pricing.free.price'|trans }}</h2>
+                            <p>{{ 'pricing.free.subtitle'|trans }}</p>
 
                             <ul class="list-unstyled text-start mt-4 mb-4">
-                                <li>✔ Génération de planches DTF</li>
-                                <li>✔ Organisation automatique par IA</li>
-                                <li>✔ Téléchargement des fichiers</li>
-                                <li class="text-muted">✖ Marges et espacements réglables</li>
-                                <li class="text-muted">✖ Sans mention « DTF Optimizer »</li>
-                                <li class="text-muted">✖ Support personnalisé</li>
-                                <li class="text-muted">✖ Historique des PDFs</li>
-                                <li class="text-muted">✖ Favoris d’images</li>
+                                <li>{{ 'pricing.features.generate'|trans }}</li>
+                                <li>{{ 'pricing.features.ai'|trans }}</li>
+                                <li>{{ 'pricing.features.download'|trans }}</li>
+                                <li class="text-muted">{{ 'pricing.features.margins_disabled'|trans }}</li>
+                                <li class="text-muted">{{ 'pricing.features.branding_disabled'|trans }}</li>
+                                <li class="text-muted">{{ 'pricing.features.support_disabled'|trans }}</li>
+                                <li class="text-muted">{{ 'pricing.features.history_disabled'|trans }}</li>
+                                <li class="text-muted">{{ 'pricing.features.favorites_disabled'|trans }}</li>
                             </ul>
 
                             <a href="{{ path('app_generator_2') }}"
                                class="btn btn-outline-primary w-100 rounded-pill">
-                                Commencer gratuitement
+                                {{ 'pricing.free.cta'|trans }}
                             </a>
                         </div>
                     </div>
@@ -606,27 +593,32 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="card h-100 shadow border border-primary text-center">
                         <div class="card-body">
-                            <h6 class="text-uppercase text-primary">Pass 1 jour</h6>
+                            <h6>{{ 'pricing.day.title'|trans }}</h6>
                             <h2 class="fw-bold my-3">1,90 €</h2>
-                            <p class="text-muted small">Idéal pour une commande urgente</p>
+                            <p>{{ 'pricing.day.subtitle'|trans }}</p>
 
                             <ul class="list-unstyled text-start mt-4 mb-4">
-                                <li>✔ Génération de planches DTF</li>
-                                <li>✔ Organisation automatique par IA</li>
-                                <li>✔ Téléchargement illimité</li>
-                                <li>✔ Sans mention « DTF Optimizer »</li>
-                                <li>✔ Support personnalisé</li>
-                                <li>✔ Marges et espacements réglables</li>
-                                <li class="text-muted">✖ Historique des PDFs</li>
-                                <li class="text-muted">✖ Favoris d’images</li>
+                                <li>{{ 'pricing.features.generate'|trans }}</li>
+                                <li>{{ 'pricing.features.ai'|trans }}</li>
+                                <li>{{ 'pricing.features.download_unlimited'|trans }}</li>
+                                <li>{{ 'pricing.features.no_branding'|trans }}</li>
+                                <li>{{ 'pricing.features.support'|trans }}</li>
+                                <li>{{ 'pricing.features.margins'|trans }}</li>
+                                <li class="text-muted">{{ 'pricing.features.history_disabled'|trans }}</li>
+                                <li class="text-muted">{{ 'pricing.features.favorites_disabled'|trans }}</li>
                             </ul>
-
+                            {% if app.user %}
                             <button
-                                    class="btn btn-primary w-100"
+                                    class="btn btn-primary w-100 rounded-pill"
                                     data-bs-toggle="modal"
                                     data-bs-target="#paypalModal">
-                                Acheter
+                                {{ 'pricing.buy'|trans }}
                             </button>
+                            {% else %}
+                            <a href="{{ path('app_login') }}" class="btn btn-primary w-100 rounded-pill">
+                                {{ 'pricing.login_to_buy'|trans }}
+                            </a>
+                            {% endif %}
 
                         </div>
                     </div>
@@ -636,16 +628,15 @@
                         <div class="modal-content">
 
                             <div class="modal-header">
-                                <h5 class="modal-title">Paiement</h5>
+                                <h5 class="modal-title">{{ 'payment.title'|trans }}</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
 
                             <div class="modal-body text-center">
-                                <p>Choisissez votre méthode de paiement :</p>
+                                <p>{{ 'payment.choose_method'|trans }}</p>
 
                                 <!-- Conteneur PayPal -->
-                                <div id="paypal-button-container"></div>
-                                <div id="paypal-subscribe-button"></div>
+                                <div id="paypal-day-button"></div>
                             </div>
 
                         </div>
@@ -657,58 +648,70 @@
                     <div class="card h-100 shadow-lg border-primary text-center position-relative">
 
         <span class="badge bg-primary position-absolute top-0 start-50 translate-middle rounded-pill px-3 py-2">
-            Le meilleur choix
+      <span>{{ 'pricing.best'|trans }}</span>
         </span>
 
                         <div class="card-body">
-                            <h6 class="text-uppercase text-primary">Abonnement mensuel</h6>
+                            <h6 class="text-uppercase text-primary">{{ 'pricing.month.title'|trans }}</h6>
                             <h2 class="fw-bold my-3">9,99 €</h2>
-                            <p class="text-muted small">Pour les créateurs réguliers</p>
+                            <p class="text-muted small">{{ 'pricing.month.subtitle'|trans }}</p>
 
                             <ul class="list-unstyled text-start mt-4 mb-4">
-                                <li>✔ Génération de planches DTF</li>
-                                <li>✔ Organisation automatique par IA</li>
-                                <li>✔ Téléchargement illimité</li>
-                                <li>✔ Sans mention « DTF Optimizer »</li>
-                                <li>✔ Support personnalisé</li>
-                                <li>✔ Marges et espacements réglables</li>
-                                <li>✔ Historique complet des PDFs</li>
-                                <li>✔ Favoris d’images (accès rapide)</li>
+                                <li>{{ 'pricing.features.generate'|trans }}</li>
+                                <li>{{ 'pricing.features.ai'|trans }}</li>
+                                <li>{{ 'pricing.features.download_unlimited'|trans }}</li>
+                                <li>{{ 'pricing.features.no_branding'|trans }}</li>
+                                <li>{{ 'pricing.features.support'|trans }}</li>
+                                <li>{{ 'pricing.features.margins'|trans }}</li>
+                                <li>{{ 'pricing.features.history'|trans }}</li>
+                                <li>{{ 'pricing.features.favorites'|trans }}</li>
                             </ul>
-
+                            {% if app.user %}
                             <button
-                                    class="btn btn-primary w-100"
+                                    class="btn btn-primary w-100 rounded-pill"
                                     data-bs-toggle="modal"
                                     data-bs-target="#paypalSubscribeModal">
-                                S’abonner maintenant
+                                {{ 'pricing.subscribe'|trans }}
                             </button>
+                            {% else %}
+                                <a href="{{ path('app_login') }}" class="btn btn-primary w-100 rounded-pill">
+                                    {{ 'pricing.login_to_subscribe'|trans }}
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-
-                <!-- MODAL PAYPAL ABONNEMENT -->
                 <div class="modal fade" id="paypalSubscribeModal" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
 
                             <div class="modal-header">
-                                <h5 class="modal-title">Abonnement Mensuel</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button
+                                <h5 class="modal-title">{{ 'payment.title'|trans }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
 
+                            <div class="modal-body text-center">
+                                <p>{{ 'payment.subtitle'|trans }}</p>
 
+                                <!-- Conteneur PayPal year -->
+                                <div id="paypal-year-button"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </div>
     </section>
 
 
     <section id="partner">
         <div class="container pt-60 pb-60">
-            <h4 class="wow fadeInUp" data-wow-delay=".2s">Devenez partenaire</h4>
-            <h2 class="mb-30 wow fadeInUp" data-wow-delay=".4s">Rejoignez notre écosystème DTF .</h2>
-            <p class="mb-50 wow fadeInUp" data-wow-delay=".6s">Vous êtes imprimeur DTF ? Proposez vos services directement sur notre site. Les clients choisissent votre atelier et voient vos délais d’impression et dates d’expédition avant de commander.</p>
+            <h4 class="wow fadeInUp" data-wow-delay=".2s"> {{ 'partner.title'|trans }}</h4>
+            <h2 class="mb-30 wow fadeInUp" data-wow-delay=".4s">{{ 'partner.subtitle'|trans }}</h2>
+            <p class="mb-50 wow fadeInUp" data-wow-delay=".6s">{{ 'partner.text'|trans }}</p>
             <div class="buttons">
-                <a href="#contact" rel="nofollow" target="blank" class="button button-lg radius-10 wow fadeInUp" data-wow-delay=".7s">Contacter nous</a>
+                <a href="#contact" rel="nofollow" target="blank" class="button button-lg radius-10 wow fadeInUp" data-wow-delay=".7s">{{ 'partner.cta'|trans }}</a>
             </div>
         </div>
     </section>
@@ -723,42 +726,42 @@
                         <div class="row">
                                 <div class="col-md-6">
                                     <div class="single-input">
-                                        <label for="name">Name</label>
-                                        <input type="text" id="name" name="name" class="form-input" placeholder="Name">
+                                        <label for="name">   {{ 'contact.name'|trans }}</label>
+                                        <input type="text" id="name" name="name" class="form-input" placeholder="{{ 'contact.name'|trans }}">
                                         <i class="lni lni-user"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="single-input">
-                                        <label for="email">Email</label>
-                                        <input type="email" id="email" name="email" class="form-input" placeholder="Email">
+                                        <label for="email">{{ 'contact.email'|trans }}</label>
+                                        <input type="email" id="email" name="email" class="form-input" placeholder="{{ 'contact.email'|trans }}">
                                         <i class="lni lni-envelope"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="single-input">
-                                        <label for="number">Number</label>
-                                        <input type="text" id="number" name="number" class="form-input" placeholder="Number">
+                                        <label for="number">{{ 'contact.phone'|trans }}</label>
+                                        <input type="text" id="number" name="number" class="form-input" placeholder="{{ 'contact.phone'|trans }}">
                                         <i class="lni lni-phone"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="single-input">
-                                        <label for="subject">Subject</label>
-                                        <input type="text" id="subject" name="subject" class="form-input" placeholder="Subject">
+                                        <label for="subject">{{ 'contact.subject'|trans }}</label>
+                                        <input type="text" id="subject" name="subject" class="form-input" placeholder="{{ 'contact.subject'|trans }}">
                                         <i class="lni lni-text-format"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="single-input">
-                                        <label for="message">Message</label>
-                                        <textarea name="message" id="message" class="form-input" placeholder="Message" rows="6"></textarea>
+                                        <label for="message">{{ 'contact.message'|trans }}</label>
+                                        <textarea name="message" id="message" class="form-input" placeholder="{{ 'contact.message'|trans }}" rows="6"></textarea>
                                         <i class="lni lni-comments-alt"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-button">
-                                        <button type="submit" class="button radius-10">Submit <i class="lni lni-telegram-original"></i> </button>
+                                        <button type="submit" class="button radius-10">{{ 'contact.submit'|trans }} <i class="lni lni-telegram-original"></i> </button>
                                     </div>
                                 </div>
                             </div>
@@ -772,8 +775,8 @@
                 <div class="col-lg-5 order-first order-lg-last">
                     <div class="left-wrapper">
                         <div class="section-title mb-40">
-                            <h3 class="mb-15">Get in touch</h3>
-                            <p>Stop wasting time and money designing and managing a website that doesn’t get results. Happiness guaranteed!</p>
+                            <h3 class="mb-15">{{ 'contact.right.title'|trans }}</h3>
+                            <p>{{ 'contact.right.subtitle'|trans }}</p>
                         </div>
                         <div class="row">
                             <div class="col-lg-12 col-md-6">
@@ -814,58 +817,48 @@
     </section>
     <script>
         paypal.Buttons({
-
             style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'paypal' },
 
-            // Autoriser PayPal + carte bancaire
-            funding: { allowed: [paypal.FUNDING.CARD, paypal.FUNDING.PAYPAL] },
-
-            createOrder: function(data, actions) {
+            createOrder() {
                 return fetch('{{ path('paypal_pass_day') }}', { method: 'POST' })
                     .then(res => res.json())
-                    .then(order => order.id); // récupère l'ID pour l'overlay
+                    .then(order => order.id);
             },
 
-            onApprove: function(data, actions) {
+            onApprove(data) {
                 return fetch('{{ path('paypal_capture') }}', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ orderID: data.orderID })
-                })
-                    .then(res => res.json())
-                    .then(details => {
-                        alert('Paiement réussi !');
-                        window.location.reload();
-                    });
-            }
-
-        }).render('#paypal-button-container');
-    </script>
-    <script>
-        paypal.Buttons({
-
-            style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'subscribe' },
-
-            createSubscription: function(data, actions) {
-                return actions.subscription.create({
-                    plan_id: 'P-XXXXXXXX' // TON PLAN MENSUEL PAYPAL
-                });
-            },
-
-            onApprove: function(data, actions) {
-                return fetch('{{ path("paypal_subscription_success") }}', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ subscriptionID: data.subscriptionID })
                 }).then(() => {
-                    alert('Abonnement réussi 🎉');
+                    alert("{{ 'payment.success_day'|trans }}");
                     window.location.reload();
                 });
             }
-
-        }).render('#paypal-subscribe-button');
+        }).render('#paypal-day-button');
     </script>
+    <script>
+        paypal.Buttons({
+            style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
 
+            createOrder() {
+                return fetch('{{ path('paypal_pass_year') }}', { method: 'POST' })
+                    .then(res => res.json())
+                    .then(order => order.id);
+            },
+
+            onApprove(data) {
+                return fetch('{{ path('paypal_capture_year') }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ orderID: data.orderID })
+                }).then(() => {
+                    alert("{{ 'payment.success_year'|trans }}");
+                    window.location.reload();
+                });
+            }
+        }).render('#paypal-year-button');
+    </script>
     <!-- ========================= contact style-6 end ========================= -->
 
     <!-- ========================= clients-logo start =========================

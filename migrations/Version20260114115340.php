@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251221142520 extends AbstractMigration
+final class Version20260114115340 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,12 @@ final class Version20251221142520 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE pdf_parametres ADD images_sheets LONGTEXT NOT NULL, ADD images LONGTEXT NOT NULL, ADD created_at DATETIME NOT NULL, DROP images_json, DROP images_positions');
+        $this->addSql('ALTER TABLE user_subscription ADD CONSTRAINT FK_230A18D1A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE pdf_parametres ADD images_json LONGTEXT NOT NULL, ADD images_positions LONGTEXT NOT NULL, DROP images_sheets, DROP images, DROP created_at');
+        $this->addSql('ALTER TABLE user_subscription DROP FOREIGN KEY FK_230A18D1A76ED395');
     }
 }

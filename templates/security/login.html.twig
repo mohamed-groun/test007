@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
-
+{% trans_default_domain 'Login' %}
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
     <div class="container d-flex align-items-center justify-content-center vh-100">
         <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%; border-radius: 12px;">
             <div class="text-center mb-4">
-                <h2 class="fw-bold">Se connecter</h2>
-                <p class="text-muted">Entrez vos informations pour continuer</p>
+                <h2 class="fw-bold">{{ 'login.title'|trans }}</h2>
+                <p class="text-muted">{{ 'login.subtitle'|trans }}</p>
             </div>
 
             <form method="post">
@@ -23,12 +23,12 @@
                 {% endif %}
 
                 <div class="mb-3">
-                    <label for="inputEmail" class="form-label">Email</label>
+                    <label for="inputEmail" class="form-label">{{ 'login.email'|trans }}</label>
                     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control form-control-lg" autocomplete="email" required autofocus>
                 </div>
 
                 <div class="mb-3">
-                    <label for="inputPassword" class="form-label">Mot de passe</label>
+                    <label for="inputPassword" class="form-label">{{ 'login.password'|trans }}</label>
                     <input type="password" name="password" id="inputPassword" class="form-control form-control-lg" autocomplete="current-password" required>
                 </div>
 
@@ -37,15 +37,15 @@
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" name="_remember_me" id="rememberMe">
                     <label class="form-check-label" for="rememberMe">
-                        Se souvenir de moi
+                        {{ 'login.remember_me'|trans }}
                     </label>
                 </div>
 
-                <button class="btn btn-primary w-100 btn-lg mb-3" type="submit">Se connecter</button>
+                <button class="btn btn-primary w-100 btn-lg mb-3" type="submit"> {{ 'login.submit'|trans }}</button>
 
                 <div class="text-center">
-                    <span class="text-muted">Vous n'avez pas de compte ?</span>
-                    <a href="{{ path('app_register') }}">Inscrivez-vous ici</a>
+                    <span class="text-muted">{{ 'login.register_text'|trans }}</span>
+                    <a href="{{ path('app_register') }}">{{ 'login.register_link'|trans }}</a>
                 </div>
             </form>
         </div>

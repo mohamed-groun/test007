@@ -13,7 +13,7 @@
 /vendor/
 /bin/
 /tests/
-/translations/
+###/translations/ ###
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###

@@ -1,0 +1,125 @@
+# translations/HomePage.fr.yaml
+Home: "Accueil"
+StartNow: "Commencer maintenant"
+Pricing: "Tarifs"
+Partenaria: "Partenaires"
+Contact: "Contact"
+QuickLink: "Liens rapides"
+About: "À propos"
+Service: "Services"
+HelpSupport: "Aide & Support"
+SupportCenter: "Centre de support"
+LiveChat: "Chat en direct"
+FAQ: "FAQ"
+TermsConditions: "Conditions générales"
+logout: "Se déconnecter"
+Login: "Connexion"
+
+# HERO
+hero.subtitle: "Générateur DTF intelligent"
+hero.title: "Créez automatiquement vos planches et bobines DTF optimisées"
+hero.description: "Importez vos images, indiquez les quantités, et laissez notre application organiser automatiquement vos visuels pour un rendu professionnel, optimisé et prêt à l’impression. Gagnez du temps, réduisez les pertes et imprimez plus efficacement."
+hero.cta: "Générer ma planche DTF"
+
+# HOW IT WORKS
+how.title: "Comment ça marche ?"
+how.subtitle: "Transformez vos images en quelques clics avec notre IA"
+
+how.step1.title: "1. Charger vos fichiers"
+how.step1.text: "Importez vos images PNG ou PDF de haute qualité. Simple et rapide !"
+how.step1.strong: "Simple et rapide !"
+
+how.step2.title: "2. Choisir le format"
+how.step2.text: "Sélectionnez le format souhaité ou laissez l’IA choisir automatiquement."
+how.step2.strong: "Obtenez toujours le meilleur rendu !"
+
+how.step3.title: "3. Aperçu et téléchargement"
+how.step3.text: "Prévisualisez votre résultat et téléchargez-le en un clic."
+how.step3.strong: "Toutes vos images dans le meilleur format et prêtes à imprimer !"
+
+# FEATURES
+features.title: "Des fonctionnalités intelligentes pour le DTF"
+features.subtitle: "Une plateforme complète propulsée par l’intelligence artificielle pour automatiser, optimiser et accélérer la création de vos planches DTF."
+
+features.ai.title: "Système propulsé par l’IA"
+features.ai.text: "Organisation automatique et optimisation parfaite."
+
+features.favorites.title: "Logos en favoris"
+features.favorites.text: "Accédez rapidement à vos logos les plus utilisés."
+
+features.format.title: "Choix des formats intelligent"
+features.format.text: "Disposition optimale sélectionnée automatiquement."
+
+features.storage.title: "Stockage & historique"
+features.storage.text: "Accès permanent à vos planches générées."
+
+features.margins.title: "Marges et espacements réglables"
+features.margins.text: "Adaptation parfaite aux contraintes d’impression."
+
+features.speed.title: "Gain de temps & productivité"
+features.speed.text: "Création de planches DTF en quelques secondes."
+
+# PRICING
+pricing.title: "Des tarifs simples et flexibles"
+pricing.subtitle: "Choisissez l’offre adaptée à vos besoins"
+
+pricing.free.title: "Découverte"
+pricing.free.subtile: "Pour tester l’outil"
+pricing.free.price: "Gratuit"
+pricing.free.cta: "Commencer gratuitement"
+
+pricing.day.title: "Pass 1 jour"
+pricing.day.price: "1,90 €"
+pricing.day.cta: "Acheter"
+
+pricing.month.title: "Abonnement mensuel"
+pricing.month.price: "9,99 €"
+pricing.month.cta: "S’abonner maintenant"
+pricing.best: "Le meilleur choix"
+
+pricing.features.generate: "Génération de planches DTF"
+pricing.features.ai: "Organisation automatique par IA"
+pricing.features.download: "Téléchargement des fichiers"
+pricing.features.download_unlimited: "Téléchargement illimité"
+pricing.features.no_branding: "Sans mention « DTF Optimizer »"
+pricing.features.support: "Support personnalisé"
+pricing.features.margins: "Marges et espacements réglables"
+
+pricing.features.history_disabled: "Historique des PDFs"
+pricing.features.favorites_disabled: "Favoris d’images"
+
+pricing.features.history: "Historique complet des PDFs"
+pricing.features.favorites: "Favoris d’images (accès rapide)"
+pricing.features.margins_disabled: "Marges et espacements réglables"
+pricing.features.branding_disabled: "Sans mention « DTF Optimizer »"
+pricing.features.support_disabled: "Support personnalisé"
+
+
+# Boutons abonnements / achat
+pricing.subscribe: "S’abonner maintenant"
+pricing.login_to_subscribe: "Connectez-vous pour vous abonner"
+pricing.buy: "Acheter"
+pricing.login_to_buy: "Connectez-vous pour acheter"
+
+
+
+# PARTNER
+partner.title: "Devenez partenaire"
+partner.subtitle: "Rejoignez notre écosystème DTF"
+partner.text: "Vous êtes imprimeur DTF ? Proposez vos services directement sur notre site."
+partner.cta: "Contactez-nous"
+
+# CONTACT
+contact.title: "Contact"
+contact.subtitle: "Get in touch"
+contact.submit: "Envoyer"
+# Contact form
+contact.name: "Nom"
+contact.email: "Email"
+contact.phone: "Téléphone"
+contact.subject: "Sujet"
+contact.message: "Message"
+contact.right.title: "Nous contacter"
+
+
+
