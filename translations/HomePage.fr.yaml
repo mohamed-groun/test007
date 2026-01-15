@@ -94,14 +94,17 @@ pricing.features.margins_disabled: "Marges et espacements réglables"
 pricing.features.branding_disabled: "Sans mention « DTF Optimizer »"
 pricing.features.support_disabled: "Support personnalisé"
 
+payment.subtitle: "Choisissez votre méthode de paiement :"
+payment.success_year: "Votre paiement annuel a été effectué avec succès ! 🎉"
+
+payment.title1: "Accès 1 jour → Profitez de tout pour 24h seulement"
+payment.title2: "Abonnement Mensuel → Accès illimité à toutes les fonctionnalités"
 
 # Boutons abonnements / achat
 pricing.subscribe: "S’abonner maintenant"
 pricing.login_to_subscribe: "Connectez-vous pour vous abonner"
 pricing.buy: "Acheter"
 pricing.login_to_buy: "Connectez-vous pour acheter"
-
-
 
 # PARTNER
 partner.title: "Devenez partenaire"

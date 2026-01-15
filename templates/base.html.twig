@@ -192,16 +192,44 @@
                                     display: inline-block;
                                     z-index: 1;
                                 }
+                                /* Nom de l'utilisateur avec effet */
+                                .dropdown-toggle {
+                                    position: relative;  /* nécessaire pour la couronne */
+
+                                }
+
+                                /* Couronne */
+                                .throne-icon {
+                                    position: absolute; /* permet rotation et placement précis */
+                                    top: -1rem;       /* légèrement au-dessus */
+                                    left: -0.3rem;      /* légèrement à gauche */
+                                    font-size: 1.6rem;  /* taille de la couronne */
+                                    color: gold;        /* couleur royale */
+                                    transform: rotate(-20deg); /* inclinaison */
+                                }
+                                .throne-icon i {
+                                    color: gold;
+                                    transform: rotate(-15deg);
+                                    text-shadow: 1px 1px 3px rgba(0,0,0,0.4); /* petit relief pour la couronne */
+                                }
+
+
+
                             </style>
                             {% if app.user %}
                                 <div class="dropdown">
+
                                     <a class="test dropdown-toggle"
                                        href="#"
                                        id="userDropdown"
                                        role="button"
                                        data-bs-toggle="dropdown"
                                        aria-expanded="false">
-                                        {{ app.user.firstName }} {{ app.user.lastName }}
+                                         <span class="ms-2 throne-icon">
+                                                  {% if is_premium %}
+                 <i class="fa-solid fa-crown"></i>
+                                             {% endif %}
+            </span> {{ app.user.firstName }} {{ app.user.lastName }}
                                     </a>
 
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
@@ -342,7 +370,7 @@
             "preventDuplicates": true,
             "showDuration": "3000",
             "hideDuration": "5000",
-            "timeOut": "4000",            // Durée d'affichage
+            "timeOut": "6000",            // Durée d'affichage
             "extendedTimeOut": "1000",
             "showEasing": "swing",
             "hideEasing": "linear",

@@ -18,6 +18,7 @@ final class DashboardController extends AbstractController
 #[Route('/dashboard', name: 'app_dashboard')]
     public function index(EntityManagerInterface $em): Response
     {
+
         $user = $this->getUser();
         $pdfs = $em->getRepository(PdfParametres::class)->findBy(
             ['id_user' => $user->getId()],  // critère
@@ -31,13 +32,14 @@ final class DashboardController extends AbstractController
 
         $pdfsView = [];
         foreach ($pdfs as $pdf) {
+ //           dump($pdf);
             $pdfsView[] = [
                 'id' => $pdf->getId(),
                 'createdAt' => $pdf->getCreatedAt(),
                 'images' => json_decode($pdf->getImages(), true),
             ];
         }
-
+//die('d');
         return $this->render('dashboard/dashboard-user.html.twig', [
             'pdfs' => $pdfsView,
             'favorites' => $favoritesLinks, // ⚡ On passe ça à Twig

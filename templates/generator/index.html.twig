@@ -624,16 +624,16 @@
                     </div>
                 </div>
                 <div class="modal fade" id="paypalModal" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
                         <div class="modal-content">
 
                             <div class="modal-header">
-                                <h5 class="modal-title">{{ 'payment.title'|trans }}</h5>
+                                <h5 class="modal-title">{{ 'payment.title1'|trans }}</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
 
                             <div class="modal-body text-center">
-                                <p>{{ 'payment.choose_method'|trans }}</p>
+                                <p>{{ 'payment.subtitle'|trans }}</p>
 
                                 <!-- Conteneur PayPal -->
                                 <div id="paypal-day-button"></div>
@@ -682,11 +682,11 @@
                     </div>
                 </div>
                 <div class="modal fade" id="paypalSubscribeModal" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
                         <div class="modal-content">
 
                             <div class="modal-header">
-                                <h5 class="modal-title">{{ 'payment.title'|trans }}</h5>
+                                <h5 class="modal-title">{{ 'payment.title2'|trans }}</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
 
@@ -853,8 +853,15 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ orderID: data.orderID })
                 }).then(() => {
-                    alert("{{ 'payment.success_year'|trans }}");
-                    window.location.reload();
+                    // Ferme le modal PayPal
+                    const modalElement  = document.getElementById('paypalSubscribeModal');
+                    if (modalElement) {
+                        const modalInstance = bootstrap.Modal.getInstance(modalElement)
+                            || new bootstrap.Modal(modalElement);
+                        modalInstance.hide();
+                    }
+                    toastr.success("{{ 'payment.success_year'|trans }}", "Succès !");
+                //    window.location.reload();
                 });
             }
         }).render('#paypal-year-button');

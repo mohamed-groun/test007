@@ -192,10 +192,14 @@ final class GeneratorController extends AbstractController
             $space_between_logos
         );
 
+        if(isset($result['error_id'])) {
+            return new JsonResponse($result, 400);
+        }
         // Enregistrement DB (attention: tu utilisais $support hors scope si plusieurs supports)
         $pdfParam = new PdfParametres();
         $pdfParam->setName('pack-result-' . $now->format('Ymd-His'));
         $pdfParam->setIdUser($user ? $user->getId() : null);
+
 
         // Si tu veux stocker une taille support, prends le premier support, sinon null a corriger
 
@@ -231,7 +235,7 @@ final class GeneratorController extends AbstractController
         EntityManagerInterface $em
     ): Response
     {
-
+        ini_set('memory_limit', '2G');
         $id_file = $request->request->get('id_file');
 
         $with_banner = (bool)$request->request->get('with_banner', false);

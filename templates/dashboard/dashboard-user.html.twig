@@ -13,7 +13,7 @@
                rel="stylesheet"> -->
 
        <!-- Custom styles for this template-->
-        <link href="assets-admin/css/sb-admin-2.min.css" rel="stylesheet">
+        <link href="assets-admin/css/sb-admin-2.min.css?v=1" rel="stylesheet">
         <!-- CSS Toastr
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
  -->
@@ -39,18 +39,10 @@
 
 
 <!-- Page Wrapper -->
-<div id="wrapper">
-
+<div id="wrapper" style="padding-top: 2rem;">
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-        <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-            <div class="sidebar-brand-icon rotate-n-15">
-                <i class="fas fa-laugh-wink"></i>
-            </div>
-            <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
-        </a>
+    <div>
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="padding: 1rem;margin: 1rem;border-radius: 1rem">
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
@@ -98,30 +90,31 @@
 
 
     </ul>
+    </div>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content-wrapper" class="d-flex flex-column" style="padding: 1rem; margin: 1rem; border-radius: 2rem">
 
         <!-- Main Content -->
-        <div id="content" class="pt-4">
+        <div id="content" class="">
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
-                <!-- Page Heading -->
+                <!-- Page Heading
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                   <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-                </div>
-                <div class="container mt-4">
+                </div>-->
+                <div class="mt-4">
 
                     <h3 class="mb-4">Historique de mes PDFs</h3>
 
                     <div class="row">
                         {% for pdf in pdfs %}
-                            <div class="col-md-4 mb-4">
+                            <div class="col-md-3 mb-4">
                                 <div class="card shadow-sm h-100">
 
                                     {# Image principale #}
@@ -136,7 +129,7 @@
 
                                     <div class="card-body">
                                         <p class="mb-2">
-                                            📄 <b>{{ pdf.id }}</b>
+                                            📄 <b>Commande :  {{ pdf.id }}</b>
                                         </p>
                                         {# Date #}
                                         <p class="text-muted mb-2">

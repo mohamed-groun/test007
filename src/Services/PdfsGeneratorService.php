@@ -150,7 +150,6 @@ class PdfsGeneratorService
         }
 
         $path = $this->normalizePng($path);
-        dump($path, file_exists($path));
         $ext  = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
         $x = $img['x'] * $scale;

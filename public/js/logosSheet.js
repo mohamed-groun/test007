@@ -108,6 +108,7 @@ async function handleFiles(files) {
         card.classList.add("preview-card");
         card.dataset.fileId = fileId;
 
+        // Input hidden pour le nom du fichier
         const fileNameInput = document.createElement("input");
         fileNameInput.type = "hidden";
         fileNameInput.name = "files_name[]";
@@ -165,16 +166,21 @@ async function handleFiles(files) {
         const container = document.createElement("div");
         container.classList.add("mt-3", "p-3");
 
+        // Width input
         const widthInput = document.createElement("input");
         widthInput.type = "number";
         widthInput.name = `files_info[${fileId}][width]`;
         widthInput.classList.add("form-control", "preview-input", "file-width");
+        widthInput.addEventListener("input", () => updateLongueur(fileId));
 
+        // Height input
         const heightInput = document.createElement("input");
         heightInput.type = "number";
         heightInput.name = `files_info[${fileId}][height]`;
         heightInput.classList.add("form-control", "preview-input", "file-height");
+        heightInput.addEventListener("input", () => updateLargeur(fileId));
 
+        // Quantity input
         const qtyInputFull = document.createElement("input");
         qtyInputFull.type = "number";
         qtyInputFull.min = 1;
@@ -182,9 +188,11 @@ async function handleFiles(files) {
         qtyInputFull.name = `files_info[${fileId}][qty]`;
         qtyInputFull.classList.add("form-control", "preview-input", "file-qty");
 
+        // Synchronisation compact/full
         qtyInputFull.addEventListener("input", () => qtyInputCompact.value = qtyInputFull.value);
         qtyInputCompact.addEventListener("input", () => qtyInputFull.value = qtyInputCompact.value);
 
+        // Gestion image
         if (file.type.startsWith("image/")) {
             const img = document.createElement("img");
             const objectUrl = URL.createObjectURL(file);
@@ -198,18 +206,30 @@ async function handleFiles(files) {
             if (dim) {
                 widthInput.value = dim.width_cm;
                 heightInput.value = dim.height_cm;
+
+                // Calculer le ratio et le stocker
+                const ratio = dim.height_cm / dim.width_cm;
+                widthInput.dataset.aspectRatio = ratio;       // pour updateLongueur
+                heightInput.dataset.aspectRatio = 1 / ratio;  // pour updateLargeur
             }
-        } else if (file.type === "application/pdf") {
+        }
+        // Gestion PDF
+        else if (file.type === "application/pdf") {
             const pdfData = await getPdfDimensionsAndThumbnail(file, 0.5);
             pdfData.canvas.classList.add("preview-img");
             imgContainer.appendChild(pdfData.canvas);
 
             widthInput.value = pdfData.width_cm;
             heightInput.value = pdfData.height_cm;
+
+            const ratio = pdfData.height_cm / pdfData.width_cm;
+            widthInput.dataset.aspectRatio = ratio;
+            heightInput.dataset.aspectRatio = 1 / ratio;
         }
 
         card.appendChild(imgContainer);
 
+        // Ajouter les inputs au container
         const widthDiv = document.createElement("div");
         widthDiv.innerHTML = `<label>Width (cm)</label>`;
         widthDiv.appendChild(widthInput);
@@ -227,6 +247,7 @@ async function handleFiles(files) {
         container.appendChild(qtyDiv);
         card.appendChild(container);
 
+        // Toggle collapsed
         toggleBtn.addEventListener("click", () => {
             const collapsed = card.classList.toggle("collapsed");
             imgContainer.style.display = collapsed ? "none" : "block";
@@ -242,6 +263,35 @@ async function handleFiles(files) {
     }
 
     $("#preloader").hide();
+}
+
+// Fonctions de mise à jour
+function updateLongueur(fileId) {
+    const inputWidth = $(`input[name="files_info[${fileId}][width]"]`);
+    const inputHeight = $(`input[name="files_info[${fileId}][height]"]`);
+
+    const width = parseFloat(inputWidth.val());
+    if (!width) return;
+
+    const aspectRatio = parseFloat(inputWidth.data('aspect-ratio'));
+    if (!aspectRatio) return;
+
+    const newHeight = width * aspectRatio;
+    inputHeight.val(newHeight.toFixed(2));
+}
+
+function updateLargeur(fileId) {
+    const inputWidth = $(`input[name="files_info[${fileId}][width]"]`);
+    const inputHeight = $(`input[name="files_info[${fileId}][height]"]`);
+
+    const height = parseFloat(inputHeight.val());
+    if (!height) return;
+
+    const aspectRatio = parseFloat(inputHeight.data('aspect-ratio'));
+    if (!aspectRatio) return;
+
+    const newWidth = height * aspectRatio;
+    inputWidth.val(newWidth.toFixed(2));
 }
 
 /* =========================================================
@@ -361,6 +411,7 @@ async function displayFavoriteImages(favoriteImages) {
         widthInput.type = "number";
         widthInput.name = `files_info[${fileId}][width]`;
         widthInput.classList.add("form-control", "preview-input", "file-width");
+        widthInput.addEventListener("input", () => updateLongueur(fileId));
 
         const heightInput = document.createElement("input");
         heightInput.type = "number";
@@ -390,7 +441,13 @@ async function displayFavoriteImages(favoriteImages) {
             if (dim) {
                 widthInput.value = dim.width_cm;
                 heightInput.value = dim.height_cm;
+
+                // ← AJOUTER CE QUI SUIT
+                const ratio = dim.height_cm / dim.width_cm;   // ratio hauteur / largeur
+                widthInput.dataset.aspectRatio = ratio;       // pour updateLongueur
+                heightInput.dataset.aspectRatio = 1 / ratio;  // pour updateLargeur
             }
+
         } else if (file.type === "application/pdf") {
             const pdfData = await getPdfDimensionsAndThumbnail(file, 0.5);
             pdfData.canvas.classList.add("preview-img");
@@ -398,7 +455,13 @@ async function displayFavoriteImages(favoriteImages) {
 
             widthInput.value = pdfData.width_cm;
             heightInput.value = pdfData.height_cm;
+            const ratio = pdfData.height_cm / pdfData.width_cm;
+            widthInput.dataset.aspectRatio = ratio;
+            heightInput.dataset.aspectRatio = 1 / ratio;
+
         }
+        widthInput.addEventListener("input", () => updateLongueur(fileId));
+        heightInput.addEventListener("input", () => updateLargeur(fileId));
 
         card.appendChild(imgContainer);
 
@@ -437,6 +500,7 @@ async function displayFavoriteImages(favoriteImages) {
 }
 
 
+
 /* =========================================================
    Image dimensions via backend
 ========================================================= */
@@ -468,7 +532,7 @@ const pdfCache = {};
 ========================================================= */
 async function submitForm(action) {
     if (selectedFiles.length === 0) {
-        alert("Veuillez ajouter au moins une image ou PDF !");
+        toastr.error("Veuillez ajouter au moins une image ou PDF !");
         return;
     }
     showPreloader();
@@ -506,7 +570,14 @@ async function submitForm(action) {
         const data = await response.json();
 
         if (data.status !== 'success') {
-            console.error(data);
+            const { error_id, error_vars } = data;
+            let message = error_vars?.note ?? "Erreur inconnue";
+            if (error_vars?.image_width && error_vars?.image_height) {
+                message += ` (${error_vars.image_width}×${error_vars.image_height}px)`;
+            }
+
+            toastr.error(message, error_id);
+            hidePreloader();
             return;
         }
 
@@ -690,32 +761,56 @@ async function renderPreview(data) {
             const card = document.createElement('div');
             card.className = 'sheet-card';
             card.innerHTML = `
-                <div class="support-title">${supportKey}</div>
-                <div class="support-subtitle">Feuille ${i + 1}</div>
-                <div class="sheet-header">
-                    <span>Items: ${sheet.length}</span>
-                </div>
-                <div class="canvas-wrapper"><canvas></canvas></div>
-            `;
+        <div class="canvas-wrapper">
+                <div class="support-presentation">
+        <div class="support-title">Format : ${supportKey}</div>
+        <div class="support-subtitle">Numero : ${i + 1}</div>
+        <div class="sheet-header">
+            <span>Nombre d images de dans : ${sheet.length}</span>
+        </div>
+        </div>
+        <canvas></canvas>
+        </div>
+    `;
             sheetsRow.appendChild(card);
 
             const canvas = card.querySelector('canvas');
             const ctx = canvas.getContext('2d');
 
-            // Dimensions
-            const supportWidth = Number(support?.width);
-            const supportHeight = Number(support?.height);
-            let scale = Math.min(250 / supportWidth, 350 / supportHeight) * 1.5;
+            // Dimensions réelles
+            const supportWidth = Number(support.width);
+            const supportHeight = Number(support.height);
+
+            // Facteur d'agrandissement libre (tu peux ajuster ici)
+            console.log(supportWidth);
+            var scale = 1;
+            if(supportWidth< 300) {
+                 scale = 2;
+            }
+       // par exemple ×2 pour agrandir
+
+            // Définir la taille réelle du canvas
             canvas.width = supportWidth * scale;
             canvas.height = supportHeight * scale;
 
-            ctx.fillStyle = '#f3f4f6';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Optionnel : ajuster l'affichage CSS pour être fidèle
+            canvas.style.width = `${supportWidth * scale}px`;
+            canvas.style.height = `${supportHeight * scale}px`;
+
+            // 🔹 Ajuster la largeur de la div de présentation
+            const supportPresentation = card.querySelector('.support-presentation');
+            supportPresentation.style.width = `${canvas.width}px`;
+
+            // Fond
+       //     ctx.fillStyle = '#f3f4f6';
+       //     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Bordure
             ctx.strokeStyle = '#111827';
-            ctx.lineWidth = 1.2;
+            ctx.lineWidth = 1.5;
             ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-            // Draw items
+            // Dessiner les items
             for (const item of sheet) {
                 const x = item.x, y = item.y, w = item.width, h = item.height;
                 const url = encodeURI(item.name);
@@ -739,14 +834,15 @@ async function renderPreview(data) {
                 }
 
                 if (!drawable) continue;
+
                 if (item.inversed) {
                     drawInversedFitSlot(ctx, drawable, x, y, w, h, scale);
                 } else {
                     ctx.drawImage(drawable, x * scale, y * scale, w * scale, h * scale);
                 }
-
             }
         }
+
     }
 }
 
