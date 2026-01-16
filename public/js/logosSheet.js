@@ -570,19 +570,33 @@ async function submitForm(action) {
         const data = await response.json();
 
         if (data.status !== 'success') {
-            const { error_id, error_vars } = data;
-            let message = error_vars?.note ?? "Erreur inconnue";
+            const { message, error_vars, error_id } = data;
+
+            let text =
+                message
+                ?? error_vars?.note
+                ?? "Erreur inconnue";
+
             if (error_vars?.image_width && error_vars?.image_height) {
-                message += ` (${error_vars.image_width}×${error_vars.image_height}px)`;
+                text += ` (${error_vars.image_width}×${error_vars.image_height}px)`;
             }
 
-            toastr.error(message, error_id);
+            // 👉 Premium = warning, autres = error
+            if (error_id === 'PREMIUM_REQUIRED') {
+                toastr.warning(text, 'Abonnement Premium');
+            } else {
+                toastr.error(text, error_id ?? 'Erreur');
+            }
+
             hidePreloader();
             return;
         }
 
         await renderPreview(data);
+
         $('#download_button').attr('data-id-file', data.id_file);
+        $('#download_button').removeClass('d-none');
+        $('#preview_button').addClass('d-none');
     }
 
     if (action === 'download') {
@@ -756,23 +770,40 @@ async function renderPreview(data) {
         supportGroup.appendChild(sheetsRow);
         container.appendChild(supportGroup);
 
+        // Cache pour détecter les sheets identiques
+        const sheetCache = {};
+
         for (let i = 0; i < sheets.length; i++) {
             const sheet = sheets[i];
+            const sheetKey = JSON.stringify(sheet);
+
+            // Si déjà présent, incrémenter compteur et mettre à jour le texte
+            if (sheetCache[sheetKey]) {
+                sheetCache[sheetKey].count++;
+                const subtitle = sheetCache[sheetKey].card.querySelector('.support-subtitle');
+                subtitle.textContent = `Répliqué : ${sheetCache[sheetKey].count} fois`;
+                continue;
+            }
+
+            // Créer la carte canvas
             const card = document.createElement('div');
             card.className = 'sheet-card';
             card.innerHTML = `
-        <div class="canvas-wrapper">
-                <div class="support-presentation">
-        <div class="support-title">Format : ${supportKey}</div>
-        <div class="support-subtitle">Numero : ${i + 1}</div>
-        <div class="sheet-header">
-            <span>Nombre d images de dans : ${sheet.length}</span>
-        </div>
-        </div>
-        <canvas></canvas>
-        </div>
-    `;
+                <div class="canvas-wrapper">
+                    <div class="support-presentation">
+                        <div class="support-title">Format : ${supportKey}</div>
+                        <div class="support-subtitle">Répliqué : 1 fois</div>
+                        <div class="sheet-header">
+                            <span>Nombre d'images dedans : ${sheet.length}</span>
+                        </div>
+                    </div>
+                    <canvas></canvas>
+                </div>
+            `;
             sheetsRow.appendChild(card);
+
+            // Stocker dans le cache
+            sheetCache[sheetKey] = { card, count: 1 };
 
             const canvas = card.querySelector('canvas');
             const ctx = canvas.getContext('2d');
@@ -781,29 +812,20 @@ async function renderPreview(data) {
             const supportWidth = Number(support.width);
             const supportHeight = Number(support.height);
 
-            // Facteur d'agrandissement libre (tu peux ajuster ici)
-            console.log(supportWidth);
-            var scale = 1;
-            if(supportWidth< 300) {
-                 scale = 2;
-            }
-       // par exemple ×2 pour agrandir
+            // Facteur d'agrandissement
+            let scale = 1;
+            if (supportWidth < 300) scale = 2;
+            if (supportWidth < 220) scale = 3;
+            if (supportWidth < 150) scale = 4;
+            if (supportWidth < 110) scale = 5;
 
-            // Définir la taille réelle du canvas
             canvas.width = supportWidth * scale;
             canvas.height = supportHeight * scale;
-
-            // Optionnel : ajuster l'affichage CSS pour être fidèle
             canvas.style.width = `${supportWidth * scale}px`;
             canvas.style.height = `${supportHeight * scale}px`;
 
-            // 🔹 Ajuster la largeur de la div de présentation
             const supportPresentation = card.querySelector('.support-presentation');
             supportPresentation.style.width = `${canvas.width}px`;
-
-            // Fond
-       //     ctx.fillStyle = '#f3f4f6';
-       //     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // Bordure
             ctx.strokeStyle = '#111827';
@@ -826,7 +848,6 @@ async function renderPreview(data) {
                 }
 
                 let drawable;
-
                 if (url.toLowerCase().endsWith('.pdf')) {
                     drawable = await loadPdfAsCanvas(url);
                 } else {
@@ -841,11 +862,23 @@ async function renderPreview(data) {
                     ctx.drawImage(drawable, x * scale, y * scale, w * scale, h * scale);
                 }
             }
-        }
 
+            // Ajouter la bande si demandé
+            if (data.with_banner) {
+                const bannerHeightPx = 38 * scale; // 1 cm ≈ 38px
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillRect(0, canvas.height - bannerHeightPx, canvas.width, bannerHeightPx);
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = `${12 * scale}px sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('Made with love DTF optimizer', canvas.width / 2, canvas.height - bannerHeightPx / 2);
+            }
+
+        }
     }
 }
-
 
 /* =========================================================
    PDF render helper (IMPORTANT: return promise)

@@ -101,7 +101,8 @@
         <div class="col-sm-12 col-lg-7">
             <div class="panel-2 panel-preview-2">
             <h5 class="mb-3 text-center">Aperçu du PDF</h5>
-                <div id="canvasContainer" class="supports-row"></div>
+                <div id="canvasContainer" class="supports-row">
+                </div>
             </div>
         </div>
 <style>
@@ -178,14 +179,14 @@
 
                 <!-- Band -->
                 <div class="form-check form-switch mb-4">
-                    <input class="form-check-input" type="checkbox" id="with_banner" name="with_banner">
+                    <input class="form-check-input" type="checkbox" id="with_banner" name="with_banner" checked>
                     <label class="form-check-label" for="band">
-                        Supprimer la bande de logos
+                        Afficher la bande bleue en bas du PDF
                     </label>
                 </div>
 
                 <!-- Button -->
-                <button type="button"
+                <button id="preview_button" type="button"
                         onclick="submitForm('preview')"
                         class="btn btn-primary w-100 btn-download">
        Apercue
@@ -196,7 +197,7 @@
 
                     <button id="download_button" type="button" data-id-file=""
                             onclick="submitForm('download')"
-                            class="btn btn-primary w-100 btn-download">
+                            class="btn btn-primary w-100 btn-download d-none">
                         Télécharger le PDF
                     </button>
 
@@ -218,4 +219,62 @@
         });
     });
 </script>
+    <h5 class="mb-3 text-center">Aperçu du PDF</h5>
+    <div id="canvasContainer" class="supports-row"></div>
+
+    <script>
+        function createDefaultRenderPreviewCanvas() {
+            const container = document.getElementById("canvasContainer");
+            container.innerHTML = ''; // vider le container
+
+            // Créer une carte similaire à renderPreview
+            const card = document.createElement('div');
+            card.className = 'sheet-card';
+            card.innerHTML = `
+        <div class="canvas-wrapper">
+            <canvas></canvas>
+        </div>
+    `;
+            container.appendChild(card);
+
+            const canvas = card.querySelector('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Dimensions par défaut (A4)
+            const supportWidth = 210;  // mm
+            const supportHeight = 297; // mm
+            const scale = 2; // facteur d'agrandissement
+            canvas.width = supportWidth * scale;
+            canvas.height = supportHeight * scale;
+            canvas.style.width = `${canvas.width}px`;
+            canvas.style.height = `${canvas.height}px`;
+
+            // Bordure
+            ctx.strokeStyle = '#111827';
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+            // Zone placeholder pour items (gris clair)
+            ctx.fillStyle = 'rgba(238,238,238,0.3)'; // gris clair mais semi-transparent
+            ctx.fillRect(10 * scale, 10 * scale, canvas.width - 20 * scale, canvas.height - 60 * scale);
+
+            // Banner bleu en bas
+            const bannerHeightPx = 38 * scale;
+            ctx.fillStyle = 'rgba(59,130,246,0.6)'; // bleu semi-transparent
+            ctx.fillRect(0, canvas.height - bannerHeightPx, canvas.width, bannerHeightPx);
+
+            // Texte sur le banner
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `${12 * scale}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('Made with love DTF optimizer', canvas.width / 2, canvas.height - bannerHeightPx / 2);
+        }
+
+        // Créer le canvas par défaut au chargement
+        createDefaultRenderPreviewCanvas();
+    </script>
+
+
+
 {% endblock %}

@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Roll;
+use App\Entity\UserSubscription;
 use App\Services\MultiPackService;
 use App\Entity\Supports;
 use App\Entity\PdfParametres;
@@ -58,6 +59,8 @@ final class GeneratorController extends AbstractController
         $user = $this->getUser();
         $now = new \DateTimeImmutable();
 
+        $isPremium =  $em->getRepository(UserSubscription::class)->isActiveForUser($user->getId());
+
         // Fichiers uploadés
         $files = $request->files->get('files', []);
 
@@ -69,6 +72,23 @@ final class GeneratorController extends AbstractController
         $margin = $request->request->get('margin');
         $space_between_logos = $request->request->get('space_between_logos');
         $with_banner = (bool)$request->request->get('with_banner', false);
+        if ($with_banner == 0 && $isPremium == false) {
+            return $this->premiumError(
+                'Passez à l’abonnement Premium pour supprimer la bande en bas du format.'
+            );
+        }
+
+        if ($space_between_logos != "0.5" && $isPremium == false) {
+            return $this->premiumError(
+                'Passez à l’abonnement Premium pour modifier l’espace entre les images.'
+            );
+        }
+
+        if ($margin != "0.5" && $isPremium == false) {
+            return $this->premiumError(
+                'Passez à l’abonnement Premium pour modifier la marge entre l’image et le bord.'
+            );
+        }
 
         $fileDetails = [];
 
@@ -236,6 +256,7 @@ final class GeneratorController extends AbstractController
     ): Response
     {
         ini_set('memory_limit', '2G');
+
         $id_file = $request->request->get('id_file');
 
         $with_banner = (bool)$request->request->get('with_banner', false);
@@ -318,4 +339,14 @@ final class GeneratorController extends AbstractController
 
         return $this->json(['success' => false, 'message' => 'Action invalide'], 400);
     }
+
+    private function premiumError(string $message): JsonResponse
+    {
+        return new JsonResponse([
+            'status' => 'failed',
+            'error_id' => 'PREMIUM_REQUIRED',
+            'message' => $message
+        ], 403);
+    }
+
 }
