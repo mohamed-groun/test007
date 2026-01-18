@@ -13,6 +13,11 @@ class ImageController extends AbstractController
     public function imageInfo(Request $request): JsonResponse
     {
         $uploadedFile = $request->files->get('file');
+      /*  dd([
+            'error' => $uploadedFile->getError(),
+            'errorMessage' => $uploadedFile->getErrorMessage(),
+            'size' => $uploadedFile->getSize(),
+        ]); */
 
         if (!$uploadedFile) {
             return new JsonResponse(['error' => 'No file uploaded'], 400);

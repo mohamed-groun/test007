@@ -1,280 +1,218 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'generator' %}
+
 {% block body %}
-    <style>
-        body {
-            background-color: rgba(240, 240, 240, 0.7);
-            background-image: radial-gradient(#ccc 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
 
-        .favorite-color {
-            background:  #ffc107;
-        }
-
-        #canvasContainer {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            padding: 1rem;
-        }
-
-     .sheet-header {
-         display: flex;
-         justify-content: space-between;
-         font-size: 12px;
-         color: #374151;
-         margin-bottom: 0.5rem;
-     }
-
-        .canvas-wrapper {
-            display: flex;
-            flex-direction: column; /* <-- ça met les enfants verticalement */
-            align-items: center;    /* centre horizontalement */
-            gap: 1rem;              /* espace entre la présentation et le canvas */
-            padding: 0.5rem;
-        }
-
-        .support-presentation {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            padding: 25px 35px;
-            text-align: center;
-            display: inline-block; /* important pour suivre la largeur du canvas */
-        }
-
-        .support-title {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .support-subtitle {
-            font-size: 1.2rem;
-            color: #555;
-            margin-bottom: 15px;
-        }
-
-</style>
-
+    <!-- Custom styles for this template-->
+    <link href="{{ asset('assets/css/generator.css') }}" rel="stylesheet">
     <div class="container-fluid py-4">
-    <div class="row g-4">
+        <div class="row g-4">
+            {# Colonne gauche : import d'images #}
+            <div class="col-sm-12 col-lg-2">
+                <div class="panel*2">
+                    <form id="upload-form">
+                        <div>
+                            <div id="drop-area"
+                                 class="border rounded-4 p-2 text-center shadow-sm cursor-pointer position-relative"
+                                 onclick="document.getElementById('fileElem').click()">
 
-        <!-- Colonne gauche : import d'images -->
-        <div class="col-sm-12 col-lg-2">
-            <div class="panel*2">
-                <form id="upload-form">
-                    <div>
-                        <div id="drop-area"
-                             class="border rounded-4 p-2 text-center shadow-sm cursor-pointer position-relative"
-                             onclick="document.getElementById('fileElem').click()">
-                            <div class="cloud-icon-container-2">
-                                <i class="bi bi-cloud-arrow-down-fill fs-10" style="color: #0d6efd; font-size: 4.5rem"></i>
+                                <div class="cloud-icon-container-2">
+                                    <i class="bi bi-cloud-arrow-down-fill fs-10"
+                                       style="color: #0d6efd; font-size: 4.5rem"></i>
+                                </div>
+
+                                <p class="text-title-photo mb-1">
+                                    {{ 'generator.upload.drag_drop'|trans }}
+                                </p>
+
+                                <p class="text-violet">
+                                    {{ 'generator.upload.or'|trans }}
+                                </p>
+
+                                <p class="btn btn-light file-button">
+                                    {{ 'generator.upload.choose_files'|trans }}
+                                </p>
+
+                                <input type="file"
+                                       id="fileElem"
+                                       multiple
+                                       accept="image/png,application/pdf"
+                                       style="display:none;">
                             </div>
-                            <p class="text-title-photo mb-1">Glissez vos visuels, L'IA se chargera du reste...</p>
-                            <p class="text-violet">ou</p>
-
-                            <p class="btn btn-light file-button">Choisissez vos visuels (PNG ou PDF)</p>
-                            <input type="file" id="fileElem" multiple accept="image/png,application/pdf"
-                                   style="display:none;">
-                            <!-- Icône positionnée en bas à gauche
-                            <i class="fa-brands fa-confluence clickable-icon" data-bs-toggle="modal" data-bs-target="#ModalParams"
-                               onclick="event.stopPropagation()"></i>  -->
                         </div>
+
+                        <div id="error-image" style="color: red"></div>
+                        <div class="preview col-mobile" id="preview"></div>
+                        <input type="hidden" id="id_format_choice" name="format-choice" value="1">
+                    </form>
+                </div>
+            </div>
+
+            {# Colonne centrale : aperçu PDF #}
+            <div class="col-sm-12 col-lg-7">
+                <div class="panel-2 panel-preview-2">
+                    <h5 class="mb-3 text-center">
+                        {{ 'generator.page.pdf_preview'|trans }}
+                    </h5>
+
+                    <div id="canvasContainer" class="supports-row"></div>
+                </div>
+            </div>
+
+            {# Colonne droite : configuration #}
+            <div class="col-sm-12 col-lg-3">
+                <div class="config-card">
+                    <h5 class="config-title">
+                        {{ 'generator.config.title'|trans }}
+                    </h5>
+
+                    <div class="form-group mb-4">
+                        <label class="form-label">
+                            {{ 'generator.config.format.label'|trans }}
+                        </label>
+
+                        <select class="select2 form-control"
+                                id="support"
+                                name="support[]"
+                                multiple="multiple"
+                                onchange="toggleButtons(false);">
+                            {% for support in supports %}
+                                <option value="{{ support.id }}">
+                                    {{ support.name }} — {{ support.description }}
+                                </option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    <!---
-                    <p class="text-end fs-4">
-                        <span class="">Pas encore les fichiers?       </span>
-                        <u onclick="addStandardImageToPreview()" class="text-violet cursor-pointer">
-                            Je souhaite faire une simulation sans logos
-                        </u>
-                    </p>
-                    -->
-                    <div id="error-image" style="color: red"></div>
-                    <div class="preview col-mobile" id="preview"></div>
-                    <input type="hidden" id="id_format_choice" name="format-choice" value="1">
-                </form>
-            </div>
-        </div>
 
-        <!-- Colonne centrale : aperçu PDF -->
-        <div class="col-sm-12 col-lg-7">
-            <div class="panel-2 panel-preview-2">
-            <h5 class="mb-3 text-center">Aperçu du PDF</h5>
-                <div id="canvasContainer" class="supports-row">
-                </div>
-            </div>
-        </div>
-<style>
-    .config-card {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    }
+                    <div class="form-group d-flex align-items-center justify-content-between mb-3">
+                        <label class="form-label mb-0">
+                            {{ 'generator.config.spacing.label'|trans }}
+                        </label>
+                        <input type="number"
+                               class="form-control form-control-sm input-small"
+                               id="space_between_logos"
+                               name="space_between_logos"
+                               min="0.2"
+                               max="2"
+                               value="0.5"
+                               onchange="toggleButtons(false);">
+                    </div>
 
-    .config-title {
-        font-weight: 600;
-        margin-bottom: 1.5rem;
-        color: #1f2937;
-    }
+                    <div class="form-group d-flex align-items-center justify-content-between mb-3">
+                        <label class="form-label mb-0">
+                            {{ 'generator.config.margin.label'|trans }}
+                        </label>
+                        <input type="number"
+                               class="form-control form-control-sm input-small"
+                               id="margin"
+                               name="margin"
+                               min="0.2"
+                               max="2"
+                               value="0.5"
+                               onchange="toggleButtons(false);">
+                    </div>
 
-    .form-label {
-        font-size: 0.9rem;
-        font-weight: 500;
-        color: #374151;
-    }
+                    <div class="form-check form-switch mb-4">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               id="with_banner"
+                               name="with_banner"
+                               checked
+                               onchange="toggleButtons(false);">
+                        <label class="form-check-label" for="band">
+                            {{ 'generator.config.banner.label'|trans }}
+                        </label>
+                    </div>
 
-    .input-small {
-        width: 70px;
-        text-align: center;
-    }
-
-    .btn-download {
-        border-radius: 12px;
-        font-weight: 600;
-        padding: 0.75rem;
-        transition: all 0.2s ease;
-        margin-bottom : 1rem;
-    }
-
-    .btn-download:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-    }
-
-
-</style>
-        <!-- Colonne droite : configuration -->
-        <div class="col-sm-12 col-lg-3">
-            <div class="config-card">
-                <h5 class="config-title">Configuration</h5>
-
-                <!-- Format -->
-                <div class="form-group mb-4">
-                    <label class="form-label">Format</label>
-                    <select class="select2 form-control" id="support" name="support[]" multiple="multiple">
-                        {% for support in supports %}
-                            <option value="{{ support.id }}">
-                                {{ support.name }} — {{ support.description }}
-                            </option>
-                        {% endfor %}
-                    </select>
-
-                </div>
-
-                <!-- Spacing -->
-                <div class="form-group d-flex align-items-center justify-content-between mb-3">
-                    <label class="form-label mb-0">Espacement entre logos</label>
-                    <input type="number" class="form-control form-control-sm input-small"
-                           id="space_between_logos" name="space_between_logos" min="0.2"  max="2" value="0.5">
-                </div>
-
-                <!-- Margin -->
-                <div class="form-group d-flex align-items-center justify-content-between mb-3">
-                    <label class="form-label mb-0">Marge intérieure</label>
-                    <input type="number" class="form-control form-control-sm input-small"
-                           id="margin" name="margin" min="0.2"  max="2" value="0.5">
-                </div>
-
-                <!-- Band -->
-                <div class="form-check form-switch mb-4">
-                    <input class="form-check-input" type="checkbox" id="with_banner" name="with_banner" checked>
-                    <label class="form-check-label" for="band">
-                        Afficher la bande bleue en bas du PDF
-                    </label>
-                </div>
-
-                <!-- Button -->
-                <button id="preview_button" type="button"
-                        onclick="submitForm('preview')"
-                        class="btn btn-primary w-100 btn-download">
-       Apercue
-                </button><br>
-
-
-                <!-- TÉLÉCHARGEMENT-->
-
-                    <button id="download_button" type="button" data-id-file=""
-                            onclick="submitForm('download')"
-                            class="btn btn-primary w-100 btn-download d-none">
-                        Télécharger le PDF
+                    <button id="preview_button"
+                            type="button"
+                            onclick="submitForm('preview')"
+                            class="btn btn-primary w-100 btn-download">
+                        {{ 'generator.config.buttons.preview'|trans }}
                     </button>
 
+                    <button id="download_button"
+                            type="button"
+                            data-id-file=""
+                            onclick="submitForm('download')"
+                            class="btn btn-primary w-100 btn-download d-none">
+                        {{ 'generator.config.buttons.download'|trans }}
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script>
-    const favoriteImages = {{ favorites|json_encode|raw }};
-</script>
+
+    <script>
+        const favoriteImages = {{ favorites|json_encode|raw }};
+    </script>
 {% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
-<script>
-    $(document).ready(function () {
-        $('#support').select2({
-            placeholder: "Sélectionnez des supports",
-            allowClear: true
+    <script src="{{ asset('js/logosSheet.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#support').select2({
+                placeholder: "{{ 'generator.config.format.placeholder'|trans }}",
+                allowClear: true
+            });
         });
-    });
-</script>
-    <h5 class="mb-3 text-center">Aperçu du PDF</h5>
-    <div id="canvasContainer" class="supports-row"></div>
+    </script>
 
     <script>
         function createDefaultRenderPreviewCanvas() {
             const container = document.getElementById("canvasContainer");
-            container.innerHTML = ''; // vider le container
+            container.innerHTML = '';
 
-            // Créer une carte similaire à renderPreview
             const card = document.createElement('div');
             card.className = 'sheet-card';
             card.innerHTML = `
-        <div class="canvas-wrapper">
-            <canvas></canvas>
-        </div>
-    `;
+            <div class="canvas-wrapper">
+                <canvas></canvas>
+            </div>
+        `;
             container.appendChild(card);
 
             const canvas = card.querySelector('canvas');
             const ctx = canvas.getContext('2d');
 
-            // Dimensions par défaut (A4)
-            const supportWidth = 210;  // mm
-            const supportHeight = 297; // mm
-            const scale = 2; // facteur d'agrandissement
+            const supportWidth = 210;
+            const supportHeight = 297;
+            const scale = 2;
+
             canvas.width = supportWidth * scale;
             canvas.height = supportHeight * scale;
-            canvas.style.width = `${canvas.width}px`;
-            canvas.style.height = `${canvas.height}px`;
+            canvas.style.width = canvas.width + 'px';
+            canvas.style.height = canvas.height + 'px';
 
-            // Bordure
             ctx.strokeStyle = '#111827';
             ctx.lineWidth = 1.5;
             ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-            // Zone placeholder pour items (gris clair)
-            ctx.fillStyle = 'rgba(238,238,238,0.3)'; // gris clair mais semi-transparent
-            ctx.fillRect(10 * scale, 10 * scale, canvas.width - 20 * scale, canvas.height - 60 * scale);
+            ctx.fillStyle = 'rgba(238,238,238,0.3)';
+            ctx.fillRect(
+                10 * scale,
+                10 * scale,
+                canvas.width - 20 * scale,
+                canvas.height - 60 * scale
+            );
 
-            // Banner bleu en bas
             const bannerHeightPx = 38 * scale;
-            ctx.fillStyle = 'rgba(59,130,246,0.6)'; // bleu semi-transparent
+            ctx.fillStyle = 'rgba(59,130,246,0.6)';
             ctx.fillRect(0, canvas.height - bannerHeightPx, canvas.width, bannerHeightPx);
 
-            // Texte sur le banner
             ctx.fillStyle = '#ffffff';
             ctx.font = `${12 * scale}px sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText('Made with love DTF optimizer', canvas.width / 2, canvas.height - bannerHeightPx / 2);
+            ctx.fillText(
+                "{{ 'generator.canvas.footer_text'|trans }}",
+                canvas.width / 2,
+                canvas.height - bannerHeightPx / 2
+            );
         }
 
-        // Créer le canvas par défaut au chargement
         createDefaultRenderPreviewCanvas();
     </script>
-
-
-
 {% endblock %}

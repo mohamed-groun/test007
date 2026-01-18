@@ -1,10 +1,7 @@
-import './bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
- */
-import './styles/app.css';
+import './styles/app.scss';
+import * as bootstrap from 'bootstrap';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+// Exemple pour activer tooltips si tu veux
+document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {
+    new bootstrap.Tooltip(el);
+});

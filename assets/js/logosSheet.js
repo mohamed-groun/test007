@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fileInput.addEventListener('change', async function (event) {
         const files = event.target.files;
         await handleFiles(files);
+        toggleButtons(false);
         event.target.value = "";
     });
 
@@ -83,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const files = e.dataTransfer.files;
         if (files.length > 0) {
             await handleFiles(files);
+            console.log('ici2')
         }
     });
 
@@ -499,15 +501,13 @@ async function displayFavoriteImages(favoriteImages) {
     $("#preloader").hide();
 }
 
-
-
 /* =========================================================
    Image dimensions via backend
 ========================================================= */
 async function getImageDimensions(file) {
     const formData = new FormData();
     formData.append('file', file);
-
+console.log(file)
     try {
         const response = await fetch('/image-info', { method: 'POST', body: formData });
         if (!response.ok) {
@@ -632,6 +632,18 @@ async function submitForm(action) {
     hidePreloader();
 }
 
+
+function toggleButtons(showDownload) {
+    if (showDownload) {
+        $('#download_button').removeClass('d-none');
+        $('#preview_button').addClass('d-none');
+    } else {
+        $('#download_button').addClass('d-none');
+        $('#preview_button').removeClass('d-none');
+    }
+}
+
+
 function showPreloader() {
     $('#preloader').css('display', 'flex'); // afficher l'élément
     setTimeout(() => {
@@ -658,7 +670,6 @@ function normalizeKey(u) {
     try { return new URL(String(u), window.location.origin).pathname; }
     catch { return String(u || ""); }
 }
-
 
 function applyInversedFromFiles(data) {
     const packingResult = data?.packingResult;
@@ -743,9 +754,8 @@ async function loadPdfAsCanvas(url, scale = 2) {
     return canvas;
 }
 
-
 async function renderPreview(data) {
-    console.log(data);
+    toggleButtons(false);
     applyInversedFromFiles(data);
 
     const container = document.getElementById('canvasContainer');

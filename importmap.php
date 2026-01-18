@@ -25,4 +25,48 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
+    'bootstrap' => [
+        'version' => '5.3.2',
+    ],
+    '@popperjs/core' => [
+        'version' => '2.11.8',
+    ],
+    'bootstrap/dist/css/bootstrap.min.css' => [
+        'version' => '5.3.2',
+        'type' => 'css',
+    ],
+    '@fortawesome/fontawesome-free' => [
+        'version' => '6.4.0',
+    ],
+    '@fortawesome/fontawesome-free/css/fontawesome.min.css' => [
+        'version' => '6.4.0',
+        'type' => 'css',
+    ],
+    'flag-icons' => [
+        'version' => '7.2.0',
+    ],
+    'flag-icons/css/flag-icons.min.css' => [
+        'version' => '7.2.0',
+        'type' => 'css',
+    ],
+    'jquery' => [
+        'version' => '4.0.0',
+    ],
+    'toastr' => [
+        'version' => '2.1.4',
+    ],
+    'toastr/build/toastr.min.css' => [
+        'version' => '2.1.4',
+        'type' => 'css',
+    ],
+    'pdfjs-dist' => [
+        'version' => '3.11.174',
+    ],
+    'select2' => [
+        'version' => '4.1.0-rc.0',
+    ],
+    'select2/dist/css/select2.min.css' => [
+        'version' => '4.1.0-rc.0',
+        'type' => 'css',
+    ],
 ];

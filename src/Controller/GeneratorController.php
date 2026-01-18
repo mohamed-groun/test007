@@ -27,7 +27,6 @@ final class GeneratorController extends AbstractController
         return $this->render('generator/index.html.twig');
     }
 
-
     #[Route('/index2', name: 'app_generator_2')]
     public function index2(EntityManagerInterface $em): Response
     {
@@ -35,9 +34,14 @@ final class GeneratorController extends AbstractController
 
         // Récupération des images favorites pour l'utilisateur
         $user = $this->getUser();
-        $imagesFavorites = $em->getRepository(ImagesFavorites::class)->findBy([
-            'id_user' => $user->getId()
-        ]);
+        if ($user) {
+            $imagesFavorites = $em->getRepository(ImagesFavorites::class)->findBy([
+                'id_user' => $user->getId()
+            ]);
+        } else {
+            $imagesFavorites = [];
+        }
+
 
         // On garde juste le lien des images
         $favoritesLinks = array_map(fn($img) => $img->getImageLink(), $imagesFavorites);
@@ -48,203 +52,122 @@ final class GeneratorController extends AbstractController
         ]);
     }
 
-
 #[Route('/generator/calculate', name: 'app_generator_calculate', methods: ['POST'])]
     public function calculate(
         Request $request,
         MultiPackService $multiPackService,
         EntityManagerInterface $em
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $user = $this->getUser();
-        $now = new \DateTimeImmutable();
+        $now  = new \DateTimeImmutable();
 
-        $isPremium =  $em->getRepository(UserSubscription::class)->isActiveForUser($user->getId());
+        $isPremium = $user
+            ? $em->getRepository(UserSubscription::class)->isActiveForUser($user->getId())
+            : false;
 
-        // Fichiers uploadés
-        $files = $request->files->get('files', []);
+        // =============================
+        // Front data
+        // =============================
+        $files          = $request->files->get('files', []);
+        $filesInfo      = $request->request->all('files_info');
+        $fileIds        = $request->request->all('file_ids');
+        $supportIds     = $request->request->get('support');
+        $formatChoice   = $request->request->get('format-choice');
+        $margin         = $request->request->get('margin', '0.5');
+        $spaceBetween   = $request->request->get('space_between_logos', '0.5');
+        $withBanner     = (bool) $request->request->get('with_banner', false);
 
-        // Infos envoyées depuis le front
-        $filesInfo = $request->request->all('files_info');     // files_info[UUID][...]
-        $fileIds = $request->request->all('file_ids');       // file_ids[] dans le même ordre que files[]
-        $support_ids = $request->request->get('support');      // "1,2,3" (string) ou array selon ton front
-        $formatChoice = $request->request->get('format-choice');
-        $margin = $request->request->get('margin');
-        $space_between_logos = $request->request->get('space_between_logos');
-        $with_banner = (bool)$request->request->get('with_banner', false);
-        if ($with_banner == 0 && $isPremium == false) {
-            return $this->premiumError(
-                'Passez à l’abonnement Premium pour supprimer la bande en bas du format.'
-            );
+        // =============================
+        // Premium checks
+        // =============================
+        if (!$isPremium) {
+            if (!$withBanner) {
+                return $this->premiumError(
+                    'Passez à l’abonnement Premium pour supprimer la bande en bas du format.'
+                );
+            }
+
+            if ($spaceBetween !== '0.5') {
+                return $this->premiumError(
+                    'Passez à l’abonnement Premium pour modifier l’espace entre les images.'
+                );
+            }
+
+            if ($margin !== '0.5') {
+                return $this->premiumError(
+                    'Passez à l’abonnement Premium pour modifier la marge.'
+                );
+            }
         }
 
-        if ($space_between_logos != "0.5" && $isPremium == false) {
-            return $this->premiumError(
-                'Passez à l’abonnement Premium pour modifier l’espace entre les images.'
-            );
-        }
+        // =============================
+        // Upload files
+        // =============================
+        $fileDetails = $this->handleFileUploads(
+            $files,
+            $filesInfo,
+            $fileIds,
+            $request,
+            $now,
+            $user
+        );
 
-        if ($margin != "0.5" && $isPremium == false) {
-            return $this->premiumError(
-                'Passez à l’abonnement Premium pour modifier la marge entre l’image et le bord.'
-            );
-        }
-
-        $fileDetails = [];
-
-        // Dossier upload
-        $pathFinale = $user ? '/' . $user->getId() : '/no-user';
-        $uploadDir = $this->getParameter('uploads_directory') . $pathFinale;
-
-        foreach ($files as $index => $file) {
-
-            // ✅ récupère l'UUID associé à ce fichier (même ordre que files[])
-            $uuid = $fileIds[$index] ?? null;
-
-            // ✅ récupère les infos via UUID (sinon tableau vide)
-            $info = ($uuid && isset($filesInfo[$uuid])) ? $filesInfo[$uuid] : [];
-
-            $extension = $file->guessExtension() ?: $file->getClientOriginalExtension();
-            $newFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)
-                . '-' . $now->format('Ymd-His')
-                . '-' . $index
-                . '.' . $extension;
-
-            $file->move($uploadDir, $newFilename);
-
-            $fileUrl = $request->getSchemeAndHttpHost() . '/uploads' . $pathFinale . '/' . $newFilename;
-
-            $fileDetails[] = [
-                'name' => $fileUrl,
-                'file' => $fileUrl,
-                // Le front envoie en cm, ton service attend en mm => *10
-                'width' => isset($info['width']) && $info['width'] !== ''
-                    ? (float)$info['width'] * 10
-                    : null,
-                'height' => isset($info['height']) && $info['height'] !== ''
-                    ? (float)$info['height'] * 10
-                    : null,
-                // ton multipack attend "quantity"
-                'quantity' => isset($info['qty']) && $info['qty'] !== ''
-                    ? (int)$info['qty']
-                    : 1,
-            ];
-        }
-
+        // =============================
         // Supports
-        $supportDetails = [];
+        // =============================
+        $supportDetails = $this->buildSupportDetails(
+            $supportIds,
+            $withBanner,
+            $em,
+            $user
+        );
 
-        // Ton support peut arriver en "1,2,3" ou déjà en array.
-        if (is_array($support_ids)) {
-            $supports_array = $support_ids;
-        } else {
-            $supports_array = array_filter(array_map('trim', explode(',', (string)$support_ids)));
-        }
-
-        foreach ($supports_array as $support_id) {
-            $support = $em->getRepository(Supports::class)->find($support_id);
-
-            if (!$support) {
-                continue;
-            }
-
-            $usableHeight = $support->getHeight() * 10;
-            if ($with_banner) {
-                $usableHeight -= 10; // 1 cm = 10 mm
-            }
-
-            $supportDetails[] = [
-                'id' => $support->getId(),
-                'label' => $support->getName(),
-                'width' => $support->getWidth() * 10,
-                'height' => $usableHeight,
-            ];
-        }
         if (empty($supportDetails)) {
-            $supports = $em->getRepository(Supports::class)->findBy([
-                'id_user' => null
-            ]);
-            foreach ($supports as $support) {
-                $usableHeight = $support->getHeight() * 10;
-                if ($with_banner) {
-                    $usableHeight -= 10; // 1 cm = 10 mm
-                }
-                $supportDetails[] = [
-                    'id' => $support->getId(),
-                    'label' => $support->getName(),
-                    'width' => $support->getWidth() * 10,
-                    'height' => $usableHeight,
-                ];
-            }
-            $roll = $em->getRepository(Roll::class)->findOneBy(['id_user' => $user->getId()])
-                ?? $em->getRepository(Roll::class)->findOneBy(['id_user' => null]);
-
-            $min = (int)$roll->getMinHeight();
-            $max = (int)$roll->getMaxHeight();
-
-            for ($i = $min; $i <= $max; $i += 10) {
-                $usableHeight = $i * 10;
-                if ($with_banner) {
-                    $usableHeight -= 10; // 1 cm = 10 mm
-                }
-                $supportDetails[] = [
-                    'id' => $i + 1000,
-                    'label' => $roll->getWidth() . '*' . $i,
-                    'width' => $roll->getWidth() * 10,
-                    'height' => $usableHeight,
-                ];
-            }
-
+            return new JsonResponse(['error' => 'Aucun support valide'], 400);
         }
 
-
-        // Optionnel : logs debug
-
-        // dump($fileDetails);
-        // dump($margin);
-        // dump($space_between_logos);
-
-        // Appel multipack
+        // =============================
+        // MultiPack
+        // =============================
         $result = $multiPackService->sendMultiPackRequest(
             $supportDetails,
             $fileDetails,
             $margin,
-            $space_between_logos
+            $spaceBetween
         );
 
-        if(isset($result['error_id'])) {
+        if (isset($result['error_id'])) {
             return new JsonResponse($result, 400);
         }
-        // Enregistrement DB (attention: tu utilisais $support hors scope si plusieurs supports)
+
+        // =============================
+        // Persist PDF params
+        // =============================
         $pdfParam = new PdfParametres();
-        $pdfParam->setName('pack-result-' . $now->format('Ymd-His'));
-        $pdfParam->setIdUser($user ? $user->getId() : null);
+        $pdfParam
+            ->setName('pack-result-' . $now->format('Ymd-His'))
+            ->setIdUser($user?->getId())
+        ->setWidth($supportDetails[0]['width'])
+            ->setHeight($supportDetails[0]['height'])
+            ->setImagesSheets(json_encode($result))
+            ->setImages(json_encode($fileDetails));
 
+    $em->persist($pdfParam);
+    $em->flush();
 
-        // Si tu veux stocker une taille support, prends le premier support, sinon null a corriger
+    return new JsonResponse([
+        'status' => 'success',
+        'id_file' => $pdfParam->getId(),
+        'files' => $fileDetails,
+        'with_banner' => $withBanner,
+        'supports' => $supportDetails,
+        'formatChoice' => $formatChoice,
+        'margin' => $margin,
+        'space_between_logos' => $spaceBetween,
+        'packingResult' => $result,
+    ]);
+}
 
-        $pdfParam->setWidth($supportDetails[0]['width']);
-        $pdfParam->setHeight($supportDetails[0]['height']);
-
-        $pdfParam->setImagesSheets(json_encode($result));
-        $pdfParam->setImages(json_encode($fileDetails));
-
-        $em->persist($pdfParam);
-        $em->flush();
-
-        return new JsonResponse([
-            'status' => 'success',
-            'id_file' => $pdfParam->getId(),
-            'files' => $fileDetails,
-            'with_banner' => $with_banner,
-            'supports' => $supportDetails,
-            'formatChoice' => $formatChoice,
-            'margin' => $margin,
-            'space_between_logos' => $space_between_logos,
-            'packingResult' => $result,
-            'message' => 'Données reçues avec dimensions et quantités !'
-        ]);
-    }
 
 
     #[Route('/generator/download', name: 'app_generator_download', methods: ['POST'])]
@@ -348,5 +271,109 @@ final class GeneratorController extends AbstractController
             'message' => $message
         ], 403);
     }
+    private function handleFileUploads(
+        array $files,
+        array $filesInfo,
+        array $fileIds,
+        Request $request,
+        \DateTimeImmutable $now,
+        ?User $user
+    ): array {
+        $details = [];
+
+        $path = $user ? '/' . $user->getId() : '/no-user';
+        $uploadDir = $this->getParameter('uploads_directory') . $path;
+
+        foreach ($files as $index => $file) {
+            $uuid = $fileIds[$index] ?? null;
+            $info = $uuid && isset($filesInfo[$uuid]) ? $filesInfo[$uuid] : [];
+
+            $extension = $file->guessExtension() ?: $file->getClientOriginalExtension();
+            $filename  = sprintf(
+                '%s-%s-%d.%s',
+                pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+                $now->format('Ymd-His'),
+                $index,
+                $extension
+            );
+
+            $file->move($uploadDir, $filename);
+
+            $url = $request->getSchemeAndHttpHost() . '/uploads' . $path . '/' . $filename;
+
+            $details[] = [
+                'name'     => $url,
+                'file'     => $url,
+                'width'    => isset($info['width']) ? (float) $info['width'] * 10 : null,
+                'height'   => isset($info['height']) ? (float) $info['height'] * 10 : null,
+                'quantity' => isset($info['qty']) ? (int) $info['qty'] : 1,
+            ];
+        }
+
+        return $details;
+    }
+
+    private function buildSupportDetails(
+        mixed $supportIds,
+        bool $withBanner,
+        EntityManagerInterface $em,
+        ?User $user
+    ): array {
+        $supports = [];
+
+        $ids = is_array($supportIds)
+            ? $supportIds
+            : array_filter(explode(',', (string) $supportIds));
+
+        foreach ($ids as $id) {
+            if (!$support = $em->getRepository(Supports::class)->find($id)) {
+                continue;
+            }
+
+            $supports[] = $this->formatSupport($support, $withBanner);
+        }
+
+        if (!empty($supports)) {
+            return $supports;
+        }
+
+        // Default supports
+        foreach ($em->getRepository(Supports::class)->findBy(['id_user' => null]) as $support) {
+            $supports[] = $this->formatSupport($support, $withBanner);
+        }
+
+        // Roll
+        $roll = $em->getRepository(Roll::class)->findOneBy([
+            'id_user' => $user?->getId()
+    ]);
+
+    if (!$roll) {
+        return $supports;
+    }
+
+    for ($h = $roll->getMinHeight(); $h <= $roll->getMaxHeight(); $h += 10) {
+        $height = $h * 10 - ($withBanner ? 10 : 0);
+
+        $supports[] = [
+            'id'     => $h + 1000,
+            'label'  => $roll->getWidth() . '*' . $h,
+            'width'  => $roll->getWidth() * 10,
+            'height' => $height,
+        ];
+    }
+
+    return $supports;
+}
+
+    private function formatSupport(Supports $support, bool $withBanner): array
+    {
+        return [
+            'id'     => $support->getId(),
+            'label'  => $support->getName(),
+            'width'  => $support->getWidth() * 10,
+            'height' => ($support->getHeight() * 10) - ($withBanner ? 10 : 0),
+        ];
+    }
+
 
 }

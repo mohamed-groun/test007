@@ -1,0 +1,33 @@
+generator:
+  page:
+    pdf_preview: "Aperçu du PDF"
+
+  upload:
+    drag_drop: "Glissez vos visuels, l'IA se chargera du reste..."
+    or: "ou"
+    choose_files: "Choisissez vos visuels (PNG ou PDF)"
+    no_files: "Pas encore les fichiers ?"
+    simulation: "Je souhaite faire une simulation sans logos"
+
+  config:
+    title: "Configuration"
+
+    format:
+      label: "Format"
+      placeholder: "Sélectionnez des supports"
+
+    spacing:
+      label: "Espacement entre logos"
+
+    margin:
+      label: "Marge intérieure"
+
+    banner:
+      label: "Afficher la bande bleue en bas du PDF"
+
+    buttons:
+      preview: "Aperçu"
+      download: "Télécharger le PDF"
+
+  canvas:
+    footer_text: "Made with love – DTF Optimizer"
