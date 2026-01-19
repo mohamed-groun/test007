@@ -35,6 +35,9 @@ class PdfParametres
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $id_user = null;
 
+    #[ORM\Column]
+    private ?int $download_count = null;
+
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
@@ -125,6 +128,18 @@ class PdfParametres
     public function setIdUser(?string $id_user): static
     {
         $this->id_user = $id_user;
+
+        return $this;
+    }
+
+    public function getDownloadCount(): ?int
+    {
+        return $this->download_count;
+    }
+
+    public function setDownloadCount(int $download_count): static
+    {
+        $this->download_count = $download_count;
 
         return $this;
     }

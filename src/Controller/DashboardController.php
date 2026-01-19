@@ -12,18 +12,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class DashboardController extends AbstractController
 {
 #[Route('/dashboard', name: 'app_dashboard')]
-    public function index(EntityManagerInterface $em): Response
+    public function index(EntityManagerInterface $em , TranslatorInterface $translator): Response
     {
 
         $user = $this->getUser();
-        $pdfs = $em->getRepository(PdfParametres::class)->findBy(
-            ['id_user' => $user->getId()],  // critère
-            ['created_at' => 'DESC']         // tri
-        );
+        $pdfs = $em->getRepository(PdfParametres::class)->findByUserWithDownloads($user->getId());
 
         $images_favorites = $em->getRepository(ImagesFavorites::class)->findBy(['id_user' => $user->getId()]);
 
@@ -32,14 +30,33 @@ final class DashboardController extends AbstractController
 
         $pdfsView = [];
         foreach ($pdfs as $pdf) {
- //           dump($pdf);
+        $result =  json_decode($pdf->getImagessheets(), true) ;
+
+            $output = '<div class="mb-2">';
+            $output .= '<h6 class="fw-bold mb-2">📐 '.$translator->trans('formats_generated', [], 'Dashboard') .'</h6>';
+            $output .= '<ul class="list-unstyled mb-0">';
+
+            foreach ($result as $format => $data) {
+                if ($data['total_sheets'] > 0) {
+                    $output .= '<li>';
+                    $output .= '• <strong>' . htmlspecialchars($format) . '</strong>';
+                    $output .= ' × ' . $data['total_sheets'];
+                    $output .= '</li>';
+                }
+            }
+
+            $output .= '</ul>';
+            $output .= '</div>';
+
             $pdfsView[] = [
                 'id' => $pdf->getId(),
                 'createdAt' => $pdf->getCreatedAt(),
                 'images' => json_decode($pdf->getImages(), true),
+                'titre' => $output,
             ];
+
         }
-//die('d');
+//dump($pdfsView); die();
         return $this->render('dashboard/dashboard-user.html.twig', [
             'pdfs' => $pdfsView,
             'favorites' => $favoritesLinks, // ⚡ On passe ça à Twig
@@ -80,9 +97,8 @@ final class DashboardController extends AbstractController
         ]);
     }
 
-
-#[Route('/support/add', name: 'support_add', methods: ['POST'])]
-    public function addSupport(Request $request, EntityManagerInterface $em): JsonResponse
+    #[Route('/support/add', name: 'support_add', methods: ['POST'])]
+    public function addSupport(Request $request, EntityManagerInterface $em, TranslatorInterface $translator): JsonResponse
     {
         $user = $this->getUser();
 
@@ -93,7 +109,7 @@ final class DashboardController extends AbstractController
         ) {
             return new JsonResponse([
                 'status' => 'error',
-                'message' => 'Veuillez remplir tous les champs obligatoires.'
+                'message' => $translator->trans('support.error_required_fields', [], 'Dashboard')
             ], 400);
         }
 
@@ -109,7 +125,7 @@ final class DashboardController extends AbstractController
 
         return new JsonResponse([
             'status' => 'success',
-            'message' => 'Support ajouté avec succès !',
+            'message' => $translator->trans('support.success_added', [], 'Dashboard'),
             'support' => [
                 'id' => $support->getId(),
                 'name' => $support->getName(),
@@ -120,8 +136,8 @@ final class DashboardController extends AbstractController
         ]);
     }
 
-#[Route('/roll/save', name: 'roll_save', methods: ['POST'])]
-    public function saveRoll(Request $request, EntityManagerInterface $em): JsonResponse
+    #[Route('/roll/save', name: 'roll_save', methods: ['POST'])]
+    public function saveRoll(Request $request, EntityManagerInterface $em,  TranslatorInterface $translator): JsonResponse
     {
         $user = $this->getUser();
 
@@ -144,7 +160,7 @@ final class DashboardController extends AbstractController
 
         return new JsonResponse([
             'status' => 'success',
-            'message' => 'Bobine mise à jour avec succès !',
+            'message' => $translator->trans('roll.success_updated', [], 'Dashboard'),
             'roll' => [
                 'width' => $roll->getWidth(),
                 'min_height' => $roll->getMinHeight(),
@@ -153,5 +169,30 @@ final class DashboardController extends AbstractController
             ]
         ]);
     }
+
+    #[Route('/support/{id}/delete', name: 'support_delete', methods: ['POST'])]
+    public function delete(Supports $support, EntityManagerInterface $em, Request $request): Response
+    {
+        $token = $request->request->get('_token');
+
+        if (!$this->isCsrfTokenValid('delete_support' . $support->getId(), $token)) {
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(['status' => 'error', 'message' => 'Invalid CSRF token'], 400);
+            }
+            $this->addFlash('error', 'Invalid CSRF token');
+            return $this->redirectToRoute('dashboard_supports');
+        }
+
+        $em->remove($support);
+        $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(['status' => 'success']);
+        }
+
+        $this->addFlash('success', 'Support supprimé !');
+        return $this->redirectToRoute('dashboard_supports');
+    }
+
 
 }

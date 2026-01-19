@@ -1,9 +1,25 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'Dashboard' %}
     {% block stylesheets %}
         <!-- Custom fonts for this template-->
         {{ parent() }}
         <link href="assets-admin/css/sb-admin-2.css" rel="stylesheet">
+<style>
+    .btn-trash {
+        color: #6c757d;
+        border: none;
+        border-radius: 4px;
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
 
+    .btn-trash:hover {
+        color: #dc3545; /* fond rouge au hover */
+    }
+
+
+</style>
     {% endblock %}
 {% block body %}
 
@@ -11,62 +27,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
-            </a>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">
-                    <i class="bi bi-archive"></i>
-                    <span>Historique planches</span></a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">
-                    <i class="bi bi-arrows-fullscreen"></i>
-                    <span>Personalié les supports</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">
-                    <i class="bi bi-pencil-square"></i>
-                    <span>Génere une planche</span></a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                we need To talk
-            </div>
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>contact us </span></a>
-            </li>
-
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
-
-        </ul>
+        {% include 'includes/sidebar.html.twig' %}
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -117,16 +78,26 @@
                         <div id="supportsList" class="row">
                             {% for support in userSupports %}
                                 <div class="col-md-4 mb-3">
-                                    <div class="card border-primary">
+                                    <div class="card border-primary position-relative">
                                         <div class="card-body">
                                             <h5 class="card-title">{{ support.name }}</h5>
                                             <p class="card-text">
                                                 {{ support.width }} × {{ support.height }} cm<br>
                                                 {{ support.description }}
                                             </p>
+
+                                            {# Bouton supprimer #}
+                                            <button class="btn btn-sm btn-trash position-absolute top-0 end-0 m-2 delete-support-btn"
+                                                    data-id="{{ support.id }}"
+                                                    data-token="{{ csrf_token('delete_support' ~ support.id) }}">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+
+
                                         </div>
                                     </div>
                                 </div>
+
                             {% else %}
                                 <p class="text-muted">Vous n'avez pas encore de supports personnalisés</p>
                             {% endfor %}
@@ -193,13 +164,23 @@
                                             <p class="card-text">
                                                 Largeur : {{ roll.width }} cm<br>
                                                 Hauteur : {{ roll.minHeight }} - {{ roll.maxHeight }} cm<br>
-                                                {{ roll.description }}
+                                                <b>{{ roll.description }}</b>
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             {% else %}
-                                <p class="text-muted">Vous n'avez pas encore configuré votre bobine</p>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card border-success">
+                                        <div class="card-body">
+                                            <p class="card-text">
+                                                Largeur : 54 cm<br>
+                                                Hauteur : 100 - 900 cm<br>
+                                                <b>Roll-up de 54 cm de largeur,  de 100 à 900 cm de hauteur</b>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             {% endif %}
                         </div>
 
@@ -371,6 +352,34 @@
                     sidebar.classList.toggle('d-none');
                 });
             }
+        });
+
+    </script>
+    <script>
+        // Supprimer un support en AJAX
+        $(document).on('click', '.delete-support-btn', function(e) {
+            e.preventDefault();
+
+            const button = $(this);
+            const supportId = button.data('id');
+            const csrfToken = button.data('token');
+
+            $.ajax({
+                url: '/support/' + supportId + '/delete',
+                method: 'POST',
+                data: { _token: csrfToken },
+                success: function(response) {
+                    toastr.success('Support supprimé !');
+
+                    // Supprime la carte
+                    button.closest('.col-md-4').fadeOut(300, function() {
+                        $(this).remove();
+                    });
+                },
+                error: function(xhr) {
+                    toastr.error(xhr.responseJSON?.message || 'Erreur lors de la suppression.');
+                }
+            });
         });
 
     </script>

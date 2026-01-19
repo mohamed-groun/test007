@@ -150,6 +150,9 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        var message_succes1 ="{{ 'message_succes1' |trans }}"
+    </script>
     <script src="{{ asset('js/logosSheet.js') }}"></script>
     <script>
         $(document).ready(function () {

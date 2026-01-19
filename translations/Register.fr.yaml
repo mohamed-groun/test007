@@ -1,0 +1,13 @@
+# register.fr.yaml
+
+title: "Inscription"
+create_account: "Créer un compte"
+fill_form: "Remplissez le formulaire pour commencer"
+email: "Email"
+firstname: "Prénom"
+lastname: "Nom"
+password: "Mot de passe"
+agree_terms: "J’accepte les conditions d’utilisation"
+submit: "S’inscrire"
+already_account: "Vous avez déjà un compte ?"
+login_here: "Connectez-vous ici"

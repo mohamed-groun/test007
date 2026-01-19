@@ -1,9 +1,23 @@
-#preview {
+/* ==============================
+   GENERAL STYLES
+   ============================== */
+body {
+    padding-top: 4rem;
+}
+
+/* ==============================
+   FLEX CONTAINERS
+   ============================== */
+#preview,
+#allowed-formats-section .preview-coupe-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
 }
 
+/* ==============================
+   PREVIEW CARDS
+   ============================== */
 .preview-card {
     width: 100%;
     background: white;
@@ -60,20 +74,16 @@
     font-size: 0.85rem;
 }
 
-
-/* Container pour toutes les cards */
-#allowed-formats-section .preview-coupe-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-/* Card moderne */
+/* ==============================
+   COUPE CARDS
+   ============================== */
 .coupe-card {
     width: 240px;
+    max-width: 300px;
     background: white;
     border-radius: 18px;
-    padding: 15px;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
     box-shadow: 0 4px 12px rgba(30, 10, 60, 0.12);
     position: relative;
     transition: transform 0.15s ease, box-shadow 0.2s ease;
@@ -84,14 +94,21 @@
     box-shadow: 0 10px 25px rgba(30, 10, 60, 0.18);
 }
 
-/* Inputs */
+.coupe-image {
+    display: block;
+    max-width: 100%;
+    max-height: 150px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
 .coupe-input {
     border-radius: 10px !important;
     font-size: 0.85rem;
     margin-bottom: 8px;
 }
 
-/* Delete icon */
 .coupe-delete {
     position: absolute;
     top: 8px;
@@ -120,30 +137,18 @@
     margin-bottom: 3px;
 }
 
-
-.coupe-card {
-    position: relative;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    max-width: 300px; /* largeur max de la carte */
-}
-
-.coupe-image {
-    display: block;
-    max-width: 100%;   /* l'image ne dépassera jamais la largeur de la carte */
-    max-height: 150px; /* ajuste selon ton besoin */
-    object-fit: contain; /* l'image garde ses proportions */
-    margin-bottom: 10px; /* espace sous l'image */
-    border-radius: 4px;
-}
-
-
+/* ==============================
+   DROP AREA
+   ============================== */
 #drop-area.drag-over {
     border-color: #7c3aed !important;
     background-color: rgba(124, 58, 237, 0.05);
     transition: .2s ease-in-out;
 }
+
+/* ==============================
+   PREVIEW NAVBAR
+   ============================== */
 .preview-navbar {
     display: flex;
     justify-content: space-between;
@@ -165,10 +170,6 @@
     max-width: 70%;
 }
 
-.preview-compact .form-control {
-    flex: 0 0 auto !important;
-}
-
 .preview-compact {
     display: flex;
     align-items: center;
@@ -177,10 +178,85 @@
     padding: 10px;
 }
 
+.preview-compact .form-control {
+    flex: 0 0 auto !important;
+}
+
 .compact-qty {
-    width: 90px;           /* largeur fixe */
+    width: 90px;
     min-width: 90px;
-    height: 38px;          /* hauteur standard Bootstrap */
+    height: 38px;
     font-size: 14px;
     padding: 6px 8px;
+}
+
+/* ==============================
+   NAVBAR
+   ============================== */
+.header.header-2 .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    z-index: 9999;
+}
+
+.navbar {
+    align-items: flex-start;
+}
+
+.navbar-brand img {
+    height: 100%;
+    width: auto;
+}
+
+.navbar-nav {
+    margin-top: 15px;
+}
+
+.navbar-nav .nav-item a {
+    padding: 6px 14px;
+    line-height: 1.2;
+}
+
+/* ==============================
+   USER NAME & THRONE ICON
+   ============================== */
+.user-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #585978;
+    transition: all 0.3s ease-out 0s;
+    padding: 10px 30px;
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+}
+
+.dropdown-toggle {
+    position: relative;  /* nécessaire pour la couronne */
+}
+
+.throne-icon {
+    position: absolute;
+    top: -1rem;
+    left: -0.3rem;
+    font-size: 1.6rem;
+    color: gold;
+    transform: rotate(-20deg);
+}
+
+.throne-icon i {
+    color: gold;
+    transform: rotate(-15deg);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+}
+
+/* ==============================
+   TOAST
+   ============================== */
+#toast-container > div {
+    padding: 20px 15px 20px 50px;
+    opacity: 1;
 }

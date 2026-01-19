@@ -1,0 +1,50 @@
+{% trans_default_domain 'Dashboard' %}
+<div>
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"
+        style="padding: 1rem;margin: 1rem;border-radius: 1rem">
+
+        <hr class="sidebar-divider my-0">
+
+        <li class="nav-item  {% if app.request.attributes.get('_route') == 'app_dashboard' %} active{% endif %}">
+            <a class="nav-link" href="{{ path('app_dashboard') }}">
+                <i class="bi bi-archive"></i>
+                <span>{{ 'sidebar_historique_planches'|trans }}</span>
+            </a>
+        </li>
+
+        <li class="nav-item {% if app.request.attributes.get('_route') == 'dashboard_supports' %} active{% endif %}">
+            <a class="nav-link" href="{{ path('dashboard_supports') }}">
+                <i class="bi bi-arrows-fullscreen"></i>
+                <span>{{ 'sidebar_personnaliser_supports'|trans }}</span>
+            </a>
+        </li>
+
+
+        <li class="nav-item {% if app.request.attributes.get('_route') == 'app_generator_2' %} active{% endif %} ">
+            <a class="nav-link" href="{{ path('app_generator_2') }}">
+                <i class="bi bi-pencil-square"></i>
+                <span>{{ 'sidebar_generer_planche'|trans }}</span>
+            </a>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <div class="sidebar-heading">
+            {{ 'sidebar_we_need_to_talk'|trans }}
+        </div>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_generator') ~ '#contact' }}">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>{{ 'sidebar_contact_us'|trans }}</span>
+            </a>
+        </li>
+
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
+    </ul>
+</div>

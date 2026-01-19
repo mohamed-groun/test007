@@ -16,6 +16,21 @@ class PdfParametresRepository extends ServiceEntityRepository
         parent::__construct($registry, PdfParametres::class);
     }
 
+    /**
+     * Récupère les PDF d'un utilisateur avec download_count > 0, triés par date décroissante
+     */
+    public function findByUserWithDownloads(int $userId): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.id_user = :userId')
+            ->andWhere('p.download_count > 0')
+            ->setParameter('userId', $userId)
+            ->orderBy('p.created_at', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
     //    /**
     //     * @return PdfParametres[] Returns an array of PdfParametres objects
     //     */

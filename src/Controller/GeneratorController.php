@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-#[Route('/{_locale}',requirements: ['_locale' => 'fr|en'],defaults: ['_locale' => 'fr'])]
+#[Route('/{_locale}',requirements: ['_locale' => 'fr|en|es|it|de'],defaults: ['_locale' => 'fr'])]
 final class GeneratorController extends AbstractController
 {
     #[Route('/', name: 'app_generator')]
@@ -108,8 +108,7 @@ final class GeneratorController extends AbstractController
             $filesInfo,
             $fileIds,
             $request,
-            $now,
-            $user
+            $now
         );
 
         // =============================
@@ -119,7 +118,6 @@ final class GeneratorController extends AbstractController
             $supportIds,
             $withBanner,
             $em,
-            $user
         );
 
         if (empty($supportDetails)) {
@@ -147,9 +145,10 @@ final class GeneratorController extends AbstractController
         $pdfParam
             ->setName('pack-result-' . $now->format('Ymd-His'))
             ->setIdUser($user?->getId())
-        ->setWidth($supportDetails[0]['width'])
+            ->setWidth($supportDetails[0]['width'])
             ->setHeight($supportDetails[0]['height'])
             ->setImagesSheets(json_encode($result))
+            ->setDownloadCount(0)
             ->setImages(json_encode($fileDetails));
 
     $em->persist($pdfParam);
@@ -192,7 +191,7 @@ final class GeneratorController extends AbstractController
         //dd($images);
         $zipPath = $outputDir . '/order_' . $pdf->getId() . '.zip';
 
-// 🔥 CACHE ZIP
+        // 🔥 CACHE ZIP
         if (file_exists($zipPath)) {
             return $this->file(
                 $zipPath,
@@ -201,7 +200,7 @@ final class GeneratorController extends AbstractController
             );
         }
 
-// Sinon on génère
+         // Sinon on génère
         $generatedFiles = $pdfsGenerator->generatePdfsFromJson(
             $json,
             $images,
@@ -217,6 +216,15 @@ final class GeneratorController extends AbstractController
             $zip->close();
         } else {
             throw new \RuntimeException("Impossible de créer le ZIP");
+        }
+
+        if ($pdf) {
+            // Incrémenter le compteur
+            $pdf->setDownloadCount($pdf->getDownloadCount() + 1);
+
+            // Persister le changement
+            $em->persist($pdf);
+            $em->flush();
         }
 
         return $this->file(
@@ -276,11 +284,10 @@ final class GeneratorController extends AbstractController
         array $filesInfo,
         array $fileIds,
         Request $request,
-        \DateTimeImmutable $now,
-        ?User $user
+        \DateTimeImmutable $now
     ): array {
         $details = [];
-
+        $user = $this->getUser();
         $path = $user ? '/' . $user->getId() : '/no-user';
         $uploadDir = $this->getParameter('uploads_directory') . $path;
 
@@ -316,10 +323,10 @@ final class GeneratorController extends AbstractController
     private function buildSupportDetails(
         mixed $supportIds,
         bool $withBanner,
-        EntityManagerInterface $em,
-        ?User $user
+        EntityManagerInterface $em
     ): array {
         $supports = [];
+        $user = $this->getUser();
 
         $ids = is_array($supportIds)
             ? $supportIds

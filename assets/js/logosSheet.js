@@ -168,27 +168,30 @@ async function handleFiles(files) {
         const container = document.createElement("div");
         container.classList.add("mt-3", "p-3");
 
-        // Width input
+// Width input
         const widthInput = document.createElement("input");
         widthInput.type = "number";
         widthInput.name = `files_info[${fileId}][width]`;
         widthInput.classList.add("form-control", "preview-input", "file-width");
         widthInput.addEventListener("input", () => updateLongueur(fileId));
+        widthInput.addEventListener("change", () => toggleButtons(false));
 
-        // Height input
+// Height input
         const heightInput = document.createElement("input");
         heightInput.type = "number";
         heightInput.name = `files_info[${fileId}][height]`;
         heightInput.classList.add("form-control", "preview-input", "file-height");
         heightInput.addEventListener("input", () => updateLargeur(fileId));
+        heightInput.addEventListener("change", () => toggleButtons(false));
 
-        // Quantity input
+// Quantity input
         const qtyInputFull = document.createElement("input");
         qtyInputFull.type = "number";
         qtyInputFull.min = 1;
         qtyInputFull.value = 1;
         qtyInputFull.name = `files_info[${fileId}][qty]`;
         qtyInputFull.classList.add("form-control", "preview-input", "file-qty");
+        qtyInputFull.addEventListener("change", () => toggleButtons(false));
 
         // Synchronisation compact/full
         qtyInputFull.addEventListener("input", () => qtyInputCompact.value = qtyInputFull.value);
@@ -625,6 +628,7 @@ async function submitForm(action) {
 
             a.remove();
             window.URL.revokeObjectURL(url);
+            toastr.success(message_succes1);
         } catch (error) {
             alert("Erreur lors du téléchargement : " + error.message);
         }

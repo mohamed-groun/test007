@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Inscription{% endblock %}
+{% trans_default_domain 'Register' %}
+{% block title %}{{ 'title'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container d-flex align-items-center justify-content-center vh-100">
         <div class="card shadow-lg p-4" style="max-width: 450px; width: 100%; border-radius: 15px;">
             <div class="text-center mb-4">
-                <h2 class="fw-bold">Créer un compte</h2>
-                <p class="text-muted">Remplissez le formulaire pour commencer</p>
+                <h2 class="fw-bold">{{ 'create_account'|trans }}</h2>
+                <p class="text-muted">{{ 'fill_form'|trans }}</p>
             </div>
 
             {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
@@ -19,11 +19,11 @@
 
             {# Email #}
             <div class="mb-3">
-                <label for="{{ registrationForm.email.vars.id }}" class="form-label">Email</label>
+                <label for="{{ registrationForm.email.vars.id }}" class="form-label">{{ 'email'|trans }}</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-envelope"></i></span>
                     {% set emailClass = registrationForm.email.vars.errors|length > 0 ? 'form-control form-control-lg is-invalid' : 'form-control form-control-lg' %}
-                    {{ form_widget(registrationForm.email, {'attr': {'class': emailClass, 'placeholder': 'Email'}}) }}
+                    {{ form_widget(registrationForm.email, {'attr': {'class': emailClass, 'placeholder': 'email'|trans}}) }}
                     <div class="invalid-feedback">
                         {{ form_errors(registrationForm.email)|join('<br>')|raw }}
                     </div>
@@ -32,11 +32,11 @@
 
             {# Prénom #}
             <div class="mb-3">
-                <label for="{{ registrationForm.firstname.vars.id }}" class="form-label">Prénom</label>
+                <label for="{{ registrationForm.firstname.vars.id }}" class="form-label">{{ 'firstname'|trans }}</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                     {% set firstnameClass = registrationForm.firstname.vars.errors|length > 0 ? 'form-control form-control-lg is-invalid' : 'form-control form-control-lg' %}
-                    {{ form_widget(registrationForm.firstname, {'attr': {'class': firstnameClass, 'placeholder': 'Prénom'}}) }}
+                    {{ form_widget(registrationForm.firstname, {'attr': {'class': firstnameClass, 'placeholder': 'firstname'|trans}}) }}
                     <div class="invalid-feedback">
                         {{ form_errors(registrationForm.firstname)|join('<br>')|raw }}
                     </div>
@@ -45,11 +45,11 @@
 
             {# Nom #}
             <div class="mb-3">
-                <label for="{{ registrationForm.lastname.vars.id }}" class="form-label">Nom</label>
+                <label for="{{ registrationForm.lastname.vars.id }}" class="form-label">{{ 'lastname'|trans }}</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
                     {% set lastnameClass = registrationForm.lastname.vars.errors|length > 0 ? 'form-control form-control-lg is-invalid' : 'form-control form-control-lg' %}
-                    {{ form_widget(registrationForm.lastname, {'attr': {'class': lastnameClass, 'placeholder': 'Nom'}}) }}
+                    {{ form_widget(registrationForm.lastname, {'attr': {'class': lastnameClass, 'placeholder': 'lastname'|trans}}) }}
                     <div class="invalid-feedback">
                         {{ form_errors(registrationForm.lastname)|join('<br>')|raw }}
                     </div>
@@ -58,11 +58,11 @@
 
             {# Mot de passe #}
             <div class="mb-3">
-                <label for="{{ registrationForm.plainPassword.vars.id }}" class="form-label">Mot de passe</label>
+                <label for="{{ registrationForm.plainPassword.vars.id }}" class="form-label">{{ 'password'|trans }}</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
                     {% set passwordClass = registrationForm.plainPassword.vars.errors|length > 0 ? 'form-control form-control-lg is-invalid' : 'form-control form-control-lg' %}
-                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': passwordClass, 'placeholder': 'Mot de passe'}}) }}
+                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': passwordClass, 'placeholder': 'password'|trans}}) }}
                     <div class="invalid-feedback">
                         {{ form_errors(registrationForm.plainPassword)|join('<br>')|raw }}
                     </div>
@@ -73,17 +73,17 @@
             <div class="form-check mb-3">
                 {% set agreeClass = registrationForm.agreeTerms.vars.errors|length > 0 ? 'form-check-input is-invalid' : 'form-check-input' %}
                 {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': agreeClass}}) }}
-                {{ form_label(registrationForm.agreeTerms, 'J’accepte les conditions d’utilisation', {'label_attr': {'class': 'form-check-label'}}) }}
+                {{ form_label(registrationForm.agreeTerms, 'agree_terms'|trans, {'label_attr': {'class': 'form-check-label'}}) }}
                 <div class="invalid-feedback d-block">
                     {{ form_errors(registrationForm.agreeTerms)|join('<br>')|raw }}
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-lg w-100 mb-3 btn-animate">S’inscrire</button>
+            <button type="submit" class="btn btn-primary btn-lg w-100 mb-3 btn-animate">{{ 'submit'|trans }}</button>
 
             <div class="text-center">
-                <span class="text-muted">Vous avez déjà un compte ?</span>
-                <a href="{{ path('app_login') }}">Connectez-vous ici</a>
+                <span class="text-muted">{{ 'already_account'|trans }}</span>
+                <a href="{{ path('app_login') }}">{{ 'login_here'|trans }}</a>
             </div>
 
             {{ form_end(registrationForm) }}
@@ -102,8 +102,6 @@
             background-color: #fff;
             border-radius: 15px;
         }
-
-
 
         .form-control:focus {
             border-color: #0d6efd;
@@ -133,7 +131,4 @@
             }
         }
     </style>
-
-    <!-- Bootstrap Icons CDN pour les icônes -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 {% endblock %}

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class ContactController extends AbstractController
@@ -18,7 +19,8 @@ class ContactController extends AbstractController
     public function submit(
         Request $request,
         EntityManagerInterface $em,
-        CsrfTokenManagerInterface $csrfTokenManager
+        CsrfTokenManagerInterface $csrfTokenManager,
+        TranslatorInterface $translator
     ): Response {
         $token = new CsrfToken('contact_form', $request->request->get('_token'));
 
@@ -37,15 +39,10 @@ class ContactController extends AbstractController
         $em->persist($contact);
         $em->flush();
 
-        $this->addFlash('success', 'Thank you');
+        $message = $translator->trans('contact_success', [], 'HomePage');
+        $this->addFlash('success', $message);
 
         return $this->redirectToRoute('app_generator'); // or wherever your contact section is
     }
-
-
-
-
-
-
 
 }

@@ -3,11 +3,7 @@
 {% block title %}{{ 'page.home.title'|trans }}{% endblock %}
 
 {% block body %}
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
-    {% endfor %}
+
     <script src="https://www.paypal.com/sdk/js?client-id=ARqrKQ49s0JlXx_3OaHlnvKzbjwPZQCaBoDHCY4ffpg3Hcmo7YAOjupMTqcwgyIpcoaL1qEjHJDbUSDJ&currency=EUR&components=buttons,funding-eligibility"></script>
 
     <!-- ========================= hero-section-wrapper-2 start ========================= -->
@@ -22,7 +18,9 @@
                             <h2 class="mb-30 wow fadeInUp" data-wow-delay=".4s">{{ 'hero.title'|trans }}</h2>
                             <p class="mb-50 wow fadeInUp" data-wow-delay=".6s"> {{ 'hero.description'|trans }}</p>
                             <div class="buttons">
-                                <a href="{{ path('app_generator_2') }}" rel="nofollow" target="blank" class="button button-lg radius-10 wow fadeInUp" data-wow-delay=".7s"> {{ 'hero.cta'|trans }}</a>
+                                <a href="{{ path('app_generator_2') }}" rel="nofollow" target="blank"
+                                   class="button button-lg radius-10 wow fadeInUp"
+                                   data-wow-delay=".7s"> {{ 'hero.cta'|trans }}</a>
                             </div>
                         </div>
                     </div>
@@ -84,7 +82,7 @@
         .step-card {
             background: #ffffff;
             border-radius: 1rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s, box-shadow 0.3s;
             padding: 2rem 1.5rem; /* augmente l'espace intérieur */
         }
@@ -92,7 +90,7 @@
         /* Hover effet */
         .step-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
         }
 
         /* Icônes circulaires */
@@ -132,6 +130,7 @@
                 font-size: 2.5rem;
                 margin-bottom: 1rem;
             }
+
             .step-card h5.fw-bold {
                 margin-bottom: 0.8rem;
             }
@@ -197,7 +196,6 @@
         </div>
     </section>
 
-
     <section id="feature" class="feature-section feature-style-5">
         <div class="container">
             <div class="row justify-content-center">
@@ -216,8 +214,10 @@
                     <div class="single-feature wow fadeInUp" data-wow-delay=".2s">
                         <div class="icon">
                             <i class="lni lni-bulb"></i>
-                            <svg width="110" height="72" viewBox="0 0 110 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M110 54.7589C110 85.0014 85.3757 66.2583 55 66.2583C24.6243 66.2583 0 85.0014 0 54.7589C0 24.5164 24.6243 0 55 0C85.3757 0 110 24.5164 110 54.7589Z" fill="#EBF4FF"/>
+                            <svg width="110" height="72" viewBox="0 0 110 72" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M110 54.7589C110 85.0014 85.3757 66.2583 55 66.2583C24.6243 66.2583 0 85.0014 0 54.7589C0 24.5164 24.6243 0 55 0C85.3757 0 110 24.5164 110 54.7589Z"
+                                      fill="#EBF4FF"/>
                             </svg>
                         </div>
                         <div class="content">
@@ -234,8 +234,10 @@
                     <div class="single-feature wow fadeInUp" data-wow-delay=".4s">
                         <div class="icon">
                             <i class="lni lni-star"></i>
-                            <svg width="110" height="72" viewBox="0 0 110 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M110 54.7589C110 85.0014 85.3757 66.2583 55 66.2583C24.6243 66.2583 0 85.0014 0 54.7589C0 24.5164 24.6243 0 55 0C85.3757 0 110 24.5164 110 54.7589Z" fill="#EBF4FF"/>
+                            <svg width="110" height="72" viewBox="0 0 110 72" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M110 54.7589C110 85.0014 85.3757 66.2583 55 66.2583C24.6243 66.2583 0 85.0014 0 54.7589C0 24.5164 24.6243 0 55 0C85.3757 0 110 24.5164 110 54.7589Z"
+                                      fill="#EBF4FF"/>
                             </svg>
                         </div>
                         <div class="content">
@@ -252,8 +254,10 @@
                     <div class="single-feature wow fadeInUp" data-wow-delay=".6s">
                         <div class="icon">
                             <i class="lni lni-layout"></i>
-                            <svg width="110" height="72" viewBox="0 0 110 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M110 54.7589C110 85.0014 85.3757 66.2583 55 66.2583C24.6243 66.2583 0 85.0014 0 54.7589C0 24.5164 24.6243 0 55 0C85.3757 0 110 24.5164 110 54.7589Z" fill="#EBF4FF"/>
+                            <svg width="110" height="72" viewBox="0 0 110 72" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M110 54.7589C110 85.0014 85.3757 66.2583 55 66.2583C24.6243 66.2583 0 85.0014 0 54.7589C0 24.5164 24.6243 0 55 0C85.3757 0 110 24.5164 110 54.7589Z"
+                                      fill="#EBF4FF"/>
                             </svg>
                         </div>
                         <div class="content">
@@ -268,8 +272,10 @@
                     <div class="single-feature wow fadeInUp" data-wow-delay=".2s">
                         <div class="icon">
                             <i class="lni lni-cloud-upload"></i>
-                            <svg width="110" height="72" viewBox="0 0 110 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M110 54.7589C110 85.0014 85.3757 66.2583 55 66.2583C24.6243 66.2583 0 85.0014 0 54.7589C0 24.5164 24.6243 0 55 0C85.3757 0 110 24.5164 110 54.7589Z" fill="#EBF4FF"/>
+                            <svg width="110" height="72" viewBox="0 0 110 72" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M110 54.7589C110 85.0014 85.3757 66.2583 55 66.2583C24.6243 66.2583 0 85.0014 0 54.7589C0 24.5164 24.6243 0 55 0C85.3757 0 110 24.5164 110 54.7589Z"
+                                      fill="#EBF4FF"/>
                             </svg>
                         </div>
                         <div class="content">
@@ -284,8 +290,10 @@
                     <div class="single-feature wow fadeInUp" data-wow-delay=".4s">
                         <div class="icon">
                             <i class="lni lni-ruler-pencil"></i>
-                            <svg width="110" height="72" viewBox="0 0 110 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M110 54.7589C110 85.0014 85.3757 66.2583 55 66.2583C24.6243 66.2583 0 85.0014 0 54.7589C0 24.5164 24.6243 0 55 0C85.3757 0 110 24.5164 110 54.7589Z" fill="#EBF4FF"/>
+                            <svg width="110" height="72" viewBox="0 0 110 72" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M110 54.7589C110 85.0014 85.3757 66.2583 55 66.2583C24.6243 66.2583 0 85.0014 0 54.7589C0 24.5164 24.6243 0 55 0C85.3757 0 110 24.5164 110 54.7589Z"
+                                      fill="#EBF4FF"/>
                             </svg>
                         </div>
                         <div class="content">
@@ -300,8 +308,10 @@
                     <div class="single-feature wow fadeInUp" data-wow-delay=".6s">
                         <div class="icon">
                             <i class="lni lni-timer"></i>
-                            <svg width="110" height="72" viewBox="0 0 110 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M110 54.7589C110 85.0014 85.3757 66.2583 55 66.2583C24.6243 66.2583 0 85.0014 0 54.7589C0 24.5164 24.6243 0 55 0C85.3757 0 110 24.5164 110 54.7589Z" fill="#EBF4FF"/>
+                            <svg width="110" height="72" viewBox="0 0 110 72" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M110 54.7589C110 85.0014 85.3757 66.2583 55 66.2583C24.6243 66.2583 0 85.0014 0 54.7589C0 24.5164 24.6243 0 55 0C85.3757 0 110 24.5164 110 54.7589Z"
+                                      fill="#EBF4FF"/>
                             </svg>
                         </div>
                         <div class="content">
@@ -382,169 +392,171 @@
     </section>
     -->
 
-<style>
-    /* ============================
-   PRICING SECTION
-============================ */
-
-    #pricing {
-        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-
-    /* Card global */
-    #pricing .card {
-        border-radius: 1.25rem;
-        transition: all 0.35s ease;
-        background: #ffffff;
-    }
-
-    /* Hover animation */
-    #pricing .card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.08);
-    }
-
-    /* Card body spacing */
-    #pricing .card-body {
-        padding: 2.5rem 2rem;
-    }
-
-    /* Titles */
-    #pricing h6 {
-        font-size: 0.75rem;
-        letter-spacing: 0.08em;
-        font-weight: 600;
-    }
-
-    #pricing h2 {
-        font-size: 2.4rem;
-        letter-spacing: -0.02em;
-    }
-
-    /* Text */
-    #pricing p {
-        font-size: 0.95rem;
-    }
-
-    /* Feature list */
-    #pricing ul li {
-        font-size: 0.95rem;
-        padding-left: 1.6rem;
-        position: relative;
-    }
-
-    /* Check icon */
-    #pricing ul li::before {
-        content: "✔";
-        position: absolute;
-        left: 0;
-        top: 0;
-        color: #0d6efd;
-        font-weight: 600;
-    }
-
-    /* Disabled feature */
-    #pricing ul li.text-muted::before {
-        content: "✖";
-        color: #adb5bd;
-    }
-
-    /* Buttons */
-    #pricing .btn {
-        padding: 0.7rem 1.25rem;
-        font-weight: 600;
-        font-size: 0.95rem;
-        transition: all 0.3s ease;
-    }
-
-    /* Button hover */
-    #pricing .btn:hover {
-        transform: scale(1.03);
-    }
-
-    /* ============================
-       PRO CARD (HIGHLIGHT)
+    <style>
+        /* ============================
+       PRICING SECTION
     ============================ */
 
-    #pricing .border-primary {
-        border-width: 2px !important;
-    }
-
-    /* Pro badge */
-    #pricing .badge {
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.03em;
-        box-shadow: 0 0.5rem 1rem rgba(13, 110, 253, 0.25);
-    }
-
-    /* Pro card background subtle gradient */
-    #pricing .border-primary .card-body {
-        background: linear-gradient(
-                180deg,
-                rgba(13, 110, 253, 0.04),
-                rgba(255, 255, 255, 1)
-        );
-        border-radius: 1.25rem;
-    }
-
-    /* ============================
-       RESPONSIVE
-    ============================ */
-
-    @media (max-width: 768px) {
-        #pricing h2 {
-            font-size: 2rem;
+        #pricing {
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
+        /* Card global */
+        #pricing .card {
+            border-radius: 1.25rem;
+            transition: all 0.35s ease;
+            background: #ffffff;
+        }
+
+        /* Hover animation */
+        #pricing .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.08);
+        }
+
+        /* Card body spacing */
         #pricing .card-body {
-            padding: 2rem 1.75rem;
+            padding: 2.5rem 2rem;
         }
-    }
-    #pricing .card {
-        border-radius: 1.2rem;
-        transition: all 0.35s ease;
-    }
 
-    #pricing .card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 1.5rem 3rem rgba(0,0,0,0.08);
-    }
+        /* Titles */
+        #pricing h6 {
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
 
-    #pricing h2 {
-        font-size: 2.2rem;
-    }
+        #pricing h2 {
+            font-size: 2.4rem;
+            letter-spacing: -0.02em;
+        }
 
-    #pricing ul li {
-        font-size: 0.95rem;
-        margin-bottom: 0.6rem;
-        position: relative;
-        padding-left: 1.4rem;
-    }
+        /* Text */
+        #pricing p {
+            font-size: 0.95rem;
+        }
 
-    #pricing ul li::before {
-        content: "✔";
-        position: absolute;
-        left: 0;
-        color: #0d6efd;
-    }
+        /* Feature list */
+        #pricing ul li {
+            font-size: 0.95rem;
+            padding-left: 1.6rem;
+            position: relative;
+        }
 
-    #pricing ul li.text-muted::before {
-        content: "✖";
-        color: #adb5bd;
-    }
+        /* Check icon */
+        #pricing ul li::before {
+            content: "✔";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #0d6efd;
+            font-weight: 600;
+        }
 
-    #pricing .badge {
-        font-size: 0.75rem;
-        font-weight: 600;
-    }
-    #pricing ul li.text-muted {
-        text-decoration: line-through;
-        opacity: 0.65;
-    }
+        /* Disabled feature */
+        #pricing ul li.text-muted::before {
+            content: "✖";
+            color: #adb5bd;
+        }
+
+        /* Buttons */
+        #pricing .btn {
+            padding: 0.7rem 1.25rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        /* Button hover */
+        #pricing .btn:hover {
+            transform: scale(1.03);
+        }
+
+        /* ============================
+           PRO CARD (HIGHLIGHT)
+        ============================ */
+
+        #pricing .border-primary {
+            border-width: 2px !important;
+        }
+
+        /* Pro badge */
+        #pricing .badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            box-shadow: 0 0.5rem 1rem rgba(13, 110, 253, 0.25);
+        }
+
+        /* Pro card background subtle gradient */
+        #pricing .border-primary .card-body {
+            background: linear-gradient(
+                    180deg,
+                    rgba(13, 110, 253, 0.04),
+                    rgba(255, 255, 255, 1)
+            );
+            border-radius: 1.25rem;
+        }
+
+        /* ============================
+           RESPONSIVE
+        ============================ */
+
+        @media (max-width: 768px) {
+            #pricing h2 {
+                font-size: 2rem;
+            }
+
+            #pricing .card-body {
+                padding: 2rem 1.75rem;
+            }
+        }
+
+        #pricing .card {
+            border-radius: 1.2rem;
+            transition: all 0.35s ease;
+        }
+
+        #pricing .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.08);
+        }
+
+        #pricing h2 {
+            font-size: 2.2rem;
+        }
+
+        #pricing ul li {
+            font-size: 0.95rem;
+            margin-bottom: 0.6rem;
+            position: relative;
+            padding-left: 1.4rem;
+        }
+
+        #pricing ul li::before {
+            content: "✔";
+            position: absolute;
+            left: 0;
+            color: #0d6efd;
+        }
+
+        #pricing ul li.text-muted::before {
+            content: "✖";
+            color: #adb5bd;
+        }
+
+        #pricing .badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        #pricing ul li.text-muted {
+            text-decoration: line-through;
+            opacity: 0.65;
+        }
 
 
-</style>
+    </style>
     <!-- ========================= pricing style-1 start ========================= -->
     <section id="pricing" class="py-5 bg-white">
         <div class="container">
@@ -608,16 +620,16 @@
                                 <li class="text-muted">{{ 'pricing.features.favorites_disabled'|trans }}</li>
                             </ul>
                             {% if app.user %}
-                            <button
-                                    class="btn btn-primary w-100 rounded-pill"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#paypalModal">
-                                {{ 'pricing.buy'|trans }}
-                            </button>
+                                <button
+                                        class="btn btn-primary w-100 rounded-pill"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#paypalModal">
+                                    {{ 'pricing.buy'|trans }}
+                                </button>
                             {% else %}
-                            <a href="{{ path('app_login') }}" class="btn btn-primary w-100 rounded-pill">
-                                {{ 'pricing.login_to_buy'|trans }}
-                            </a>
+                                <a href="{{ path('app_login') }}" class="btn btn-primary w-100 rounded-pill">
+                                    {{ 'pricing.login_to_buy'|trans }}
+                                </a>
                             {% endif %}
 
                         </div>
@@ -667,12 +679,12 @@
                                 <li>{{ 'pricing.features.favorites'|trans }}</li>
                             </ul>
                             {% if app.user %}
-                            <button
-                                    class="btn btn-primary w-100 rounded-pill"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#paypalSubscribeModal">
-                                {{ 'pricing.subscribe'|trans }}
-                            </button>
+                                <button
+                                        class="btn btn-primary w-100 rounded-pill"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#paypalSubscribeModal">
+                                    {{ 'pricing.subscribe'|trans }}
+                                </button>
                             {% else %}
                                 <a href="{{ path('app_login') }}" class="btn btn-primary w-100 rounded-pill">
                                     {{ 'pricing.login_to_subscribe'|trans }}
@@ -704,14 +716,14 @@
         </div>
     </section>
 
-
     <section id="partner">
         <div class="container pt-60 pb-60">
             <h4 class="wow fadeInUp" data-wow-delay=".2s"> {{ 'partner.title'|trans }}</h4>
             <h2 class="mb-30 wow fadeInUp" data-wow-delay=".4s">{{ 'partner.subtitle'|trans }}</h2>
             <p class="mb-50 wow fadeInUp" data-wow-delay=".6s">{{ 'partner.text'|trans }}</p>
             <div class="buttons">
-                <a href="#contact" rel="nofollow" target="blank" class="button button-lg radius-10 wow fadeInUp" data-wow-delay=".7s">{{ 'partner.cta'|trans }}</a>
+                <a href="#contact" rel="nofollow" target="blank" class="button button-lg radius-10 wow fadeInUp"
+                   data-wow-delay=".7s">{{ 'partner.cta'|trans }}</a>
             </div>
         </div>
     </section>
@@ -723,45 +735,51 @@
                 <div class="col-lg-7">
                     <div class="contact-form-wrapper">
                         <form action="{{ path('contact_submit') }}" method="POST">
-                        <div class="row">
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="single-input">
                                         <label for="name">   {{ 'contact.name'|trans }}</label>
-                                        <input type="text" id="name" name="name" class="form-input" placeholder="{{ 'contact.name'|trans }}">
+                                        <input type="text" id="name" name="name" class="form-input"
+                                               placeholder="{{ 'contact.name'|trans }}">
                                         <i class="lni lni-user"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="single-input">
                                         <label for="email">{{ 'contact.email'|trans }}</label>
-                                        <input type="email" id="email" name="email" class="form-input" placeholder="{{ 'contact.email'|trans }}">
+                                        <input type="email" id="email" name="email" class="form-input"
+                                               placeholder="{{ 'contact.email'|trans }}">
                                         <i class="lni lni-envelope"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="single-input">
                                         <label for="number">{{ 'contact.phone'|trans }}</label>
-                                        <input type="text" id="number" name="number" class="form-input" placeholder="{{ 'contact.phone'|trans }}">
+                                        <input type="text" id="number" name="number" class="form-input"
+                                               placeholder="{{ 'contact.phone'|trans }}">
                                         <i class="lni lni-phone"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="single-input">
                                         <label for="subject">{{ 'contact.subject'|trans }}</label>
-                                        <input type="text" id="subject" name="subject" class="form-input" placeholder="{{ 'contact.subject'|trans }}">
+                                        <input type="text" id="subject" name="subject" class="form-input"
+                                               placeholder="{{ 'contact.subject'|trans }}">
                                         <i class="lni lni-text-format"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="single-input">
                                         <label for="message">{{ 'contact.message'|trans }}</label>
-                                        <textarea name="message" id="message" class="form-input" placeholder="{{ 'contact.message'|trans }}" rows="6"></textarea>
+                                        <textarea name="message" id="message" class="form-input"
+                                                  placeholder="{{ 'contact.message'|trans }}" rows="6"></textarea>
                                         <i class="lni lni-comments-alt"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-button">
-                                        <button type="submit" class="button radius-10">{{ 'contact.submit'|trans }} <i class="lni lni-telegram-original"></i> </button>
+                                        <button type="submit" class="button radius-10">{{ 'contact.submit'|trans }} <i
+                                                    class="lni lni-telegram-original"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -815,58 +833,70 @@
             </div>
         </div>
     </section>
-    <script>
-        paypal.Buttons({
-            style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'paypal' },
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
 
-            createOrder() {
-                return fetch('{{ path('paypal_pass_day') }}', { method: 'POST' })
-                    .then(res => res.json())
-                    .then(order => order.id);
-            },
+        .faq-section {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
-            onApprove(data) {
-                return fetch('{{ path('paypal_capture') }}', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ orderID: data.orderID })
-                }).then(() => {
-                    alert("{{ 'payment.success_day'|trans }}");
-                    window.location.reload();
-                });
-            }
-        }).render('#paypal-day-button');
-    </script>
-    <script>
-        paypal.Buttons({
-            style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
+        .faq-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-            createOrder() {
-                return fetch('{{ path('paypal_pass_year') }}', { method: 'POST' })
-                    .then(res => res.json())
-                    .then(order => order.id);
-            },
+        .accordion-button::after {
+            transition: transform 0.3s ease;
+        }
 
-            onApprove(data) {
-                return fetch('{{ path('paypal_capture_year') }}', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ orderID: data.orderID })
-                }).then(() => {
-                    // Ferme le modal PayPal
-                    const modalElement  = document.getElementById('paypalSubscribeModal');
-                    if (modalElement) {
-                        const modalInstance = bootstrap.Modal.getInstance(modalElement)
-                            || new bootstrap.Modal(modalElement);
-                        modalInstance.hide();
-                    }
-                    toastr.success("{{ 'payment.success_year'|trans }}", "Succès !");
-                //    window.location.reload();
-                });
-            }
-        }).render('#paypal-year-button');
-    </script>
-    <!-- ========================= contact style-6 end ========================= -->
+        .accordion-button.collapsed::after {
+            transform: rotate(0deg);
+        }
+
+        .accordion-button:not(.collapsed)::after {
+            transform: rotate(180deg);
+        }
+    </style>
+    <section id="faq">
+        <div class="faq-section">
+            <h2 class="faq-title">{{ 'faq.title'|trans }}</h2>
+
+            <div class="accordion" id="faqAccordion">
+
+                {% for i in 1..6 %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{ i }}">
+                            <button class="accordion-button {% if i != 1 %}collapsed{% endif %}"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapse{{ i }}"
+                                    aria-expanded="{{ i == 1 ? 'true' : 'false' }}"
+                                    aria-controls="collapse{{ i }}">
+                                {{ ('faq.question' ~ i)|trans }}
+                            </button>
+                        </h2>
+                        <div id="collapse{{ i }}"
+                             class="accordion-collapse collapse {% if i == 1 %}show{% endif %}"
+                             aria-labelledby="heading{{ i }}"
+                             data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                {{ ('faq.answer' ~ i)|trans }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
 
     <!-- ========================= clients-logo start =========================
     <section class="clients-logo-section pt-100 pb-100">
@@ -881,4 +911,67 @@
         </div>
     </section>
 -->
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    {% for message in app.flashes('success') %}
+        <script type="text/javascript">
+            toastr.success('{{ message }}')
+        </script>
+    {% endfor %}
+
+    <script>
+        paypal.Buttons({
+            style: {layout: 'vertical', color: 'blue', shape: 'rect', label: 'paypal'},
+
+            createOrder() {
+                return fetch('{{ path('paypal_pass_day') }}', {method: 'POST'})
+                    .then(res => res.json())
+                    .then(order => order.id);
+            },
+
+            onApprove(data) {
+                return fetch('{{ path('paypal_capture') }}', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({orderID: data.orderID})
+                }).then(() => {
+                    alert("{{ 'payment.success_day'|trans }}");
+                    window.location.reload();
+                });
+            }
+        }).render('#paypal-day-button');
+    </script>
+    <script>
+        paypal.Buttons({
+            style: {layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal'},
+
+            createOrder() {
+                return fetch('{{ path('paypal_pass_year') }}', {method: 'POST'})
+                    .then(res => res.json())
+                    .then(order => order.id);
+            },
+
+            onApprove(data) {
+                return fetch('{{ path('paypal_capture_year') }}', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({orderID: data.orderID})
+                }).then(() => {
+                    // Ferme le modal PayPal
+                    const modalElement = document.getElementById('paypalSubscribeModal');
+                    if (modalElement) {
+                        const modalInstance = bootstrap.Modal.getInstance(modalElement)
+                            || new bootstrap.Modal(modalElement);
+                        modalInstance.hide();
+                    }
+                    toastr.success("{{ 'payment.success_year'|trans }}", "Succès !");
+                    //    window.location.reload();
+                });
+            }
+        }).render('#paypal-year-button');
+    </script>
 {% endblock %}

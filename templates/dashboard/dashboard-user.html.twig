@@ -1,263 +1,144 @@
 {% extends 'base.html.twig' %}
 
-   {% block title %}Dashboard{% endblock %}
-    {% block stylesheets %}
-        <!-- Custom fonts for this template-->
-        {{ parent() }}
-        <!--
-       <link href="assets-admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+{% trans_default_domain 'Dashboard' %}
 
+{% block title %}{{ 'title'|trans }}{% endblock %}
 
-       <link
-               href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-               rel="stylesheet"> -->
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="assets-admin/css/sb-admin-2.min.css?v=1" rel="stylesheet">
+    <style>
+        .favorite-btn {
+            border-radius: 50%;
+        }
 
-       <!-- Custom styles for this template-->
-        <link href="assets-admin/css/sb-admin-2.min.css?v=1" rel="stylesheet">
-        <!-- CSS Toastr
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
- -->
-
-
-
-        <style>
-            .favorite-btn {
-                border-radius: 50%;
-            }
-
-            .favorite-btn.active i {
-                color: #ffc107;
-            }
-
-        </style>
-        {# Ton CSS perso pour Toastr #}
-
-    {% endblock %}
-
+        .favorite-btn.active i {
+            color: #ffc107;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
 
+    <div id="wrapper" style="padding-top: 2rem;">
+        <!-- Sidebar -->
+        {% include 'includes/sidebar.html.twig' %}
+        <!-- End Sidebar -->
 
-<!-- Page Wrapper -->
-<div id="wrapper" style="padding-top: 2rem;">
-    <!-- Sidebar -->
-    <div>
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="padding: 1rem;margin: 1rem;border-radius: 1rem">
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column" style="padding: 1rem; margin: 1rem; border-radius: 2rem">
+            <div id="content">
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
+                <div class="container-fluid">
 
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="{{ path('app_dashboard') }}">
-                <i class="bi bi-archive"></i>
-                <span>Historique planches</span></a>
-        </li>
+                    <div class="mt-4">
+                        <h3 class="mb-4">{{ 'historique_pdfs'|trans }}</h3>
 
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('dashboard_supports') }}">
-                <i class="bi bi-arrows-fullscreen"></i>
-                <span>Personalié les supports</span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('app_generator_2') }}">
-                <i class="bi bi-pencil-square"></i>
-                <span>Génere une planche</span></a>
-        </li>
+                        <div class="row">
+                            {% for pdf in pdfs %}
+                                <div class="col-md-3 mb-4">
+                                    <div class="card shadow-sm h-100">
 
-        <!-- Divider -->
-        <hr class="sidebar-divider">
+<div class="card-title border-bottom pb-2 mb-3" style="    padding: 1rem;">
+{{ pdf.titre |raw }}
+</div>
+                                        <div class="card-body">
+                                            <p class="mb-2">
+                                                📄 <b>{{ 'commande'|trans }} : {{ pdf.id }}</b>
+                                            </p>
+                                            <p class="text-muted mb-2">
+                                                📅 {{ pdf.createdAt|date('d/m/Y H:i') }}
+                                            </p>
 
+                                            <h6 class="fw-bold mb-2 mt-3">
+                                                🖼️ Images utilisées
+                                            </h6>
 
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            we need To talk
-        </div>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('app_generator') ~ '#contact' }}">
-            <i class="fas fa-fw fa-chart-area"></i>
-                <span>contact us </span></a>
-        </li>
-
-
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block">
-
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
-
-
-    </ul>
-    </div>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column" style="padding: 1rem; margin: 1rem; border-radius: 2rem">
-
-        <!-- Main Content -->
-        <div id="content" class="">
-
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-
-                <!-- Page Heading
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                   <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-                </div>-->
-                <div class="mt-4">
-
-                    <h3 class="mb-4">Historique de mes PDFs</h3>
-
-                    <div class="row">
-                        {% for pdf in pdfs %}
-                            <div class="col-md-3 mb-4">
-                                <div class="card shadow-sm h-100">
-
-                                    {# Image principale #}
-                                    {% if pdf.images is not empty %}
-                                        <img
-                                                src="{{ pdf.images[0].file }}"
-                                                class="card-img-top"
-                                                style="height: 200px; object-fit: cover;"
-                                                alt="Image PDF"
-                                        >
-                                    {% endif %}
-
-                                    <div class="card-body">
-                                        <p class="mb-2">
-                                            📄 <b>Commande :  {{ pdf.id }}</b>
-                                        </p>
-                                        {# Date #}
-                                        <p class="text-muted mb-2">
-                                            📅 {{ pdf.createdAt|date('d/m/Y H:i') }}
-                                        </p>
-
-                                        {# Images mini-cards #}
-                                        <div class="row g-2">
-
-                                            {% for img in pdf.images %}
-                                                <div class="col-4">
-                                                    <div class="card position-relative shadow-sm">
-                                                        <img
-                                                                src="{{ img.file }}"
-                                                                class="card-img-top"
-                                                                style="height: 80px; object-fit: cover;"
-                                                                alt="Image"
-                                                        >
-
-                                                        <button
-                                                                type="button"
-                                                                class="btn btn-light btn-sm position-absolute top-0 end-0 m-1 shadow-sm favorite-btn
-                                                                {% if img.file in favorites %}active{% endif %}"
-                                                                data-image="{{ img.file }}"
-                                                                title="Ajouter aux favoris"
-                                                        >
-                                                            <i class="bi bi-star{% if img.file in favorites %}-fill text-warning{% endif %}"></i>
-                                                        </button>
-
+                                            <div class="row g-2">
+                                                {% for img in pdf.images %}
+                                                    <div class="col-6">
+                                                        <div class="card position-relative shadow-sm">
+                                                            <img src="{{ img.file }}" class="card-img-top"
+                                                                 style="height: 80px; object-fit: cover;" alt="Image">
+                                                            <button type="button"
+                                                                    class="btn btn-light btn-sm position-absolute top-0 end-0 m-1 shadow-sm favorite-btn {% if img.file in favorites %}active{% endif %}"
+                                                                    data-image="{{ img.file }}"
+                                                                    title="{{ 'favorite.title'|trans }}">
+                                                                <i class="bi bi-star{% if img.file in favorites %}-fill text-warning{% endif %}"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            {% endfor %}
+                                                {% endfor %}
+                                            </div>
 
+
+                                            <form action="{{ path('app_generator_download') }}" method="POST">
+                                                <input type="hidden" name="id_file" value="{{ pdf.id }}">
+                                                <button type="submit" class="btn btn-primary btn-sm w-100 mt-3">
+                                                    ⬇ {{ 'telecharger_pdf'|trans }}
+                                                </button>
+                                            </form>
                                         </div>
-
-                                        {# Bouton Télécharger #}
-                                        <form action="{{ path('app_generator_download') }}" method="POST">
-                                            <input type="hidden" name="id_file" value="{{ pdf.id }}">
-                                            <button type="submit" class="btn btn-primary btn-sm w-100 mt-3">
-                                                ⬇ Télécharger le PDF
-                                            </button>
-                                        </form>
-
-
                                     </div>
                                 </div>
-                            </div>
-                        {% else %}
-                            <div class="col-12">
-                                <div class="alert alert-info">
-                                    Aucun PDF généré pour le moment.
+                            {% else %}
+                                <div class="col-12">
+                                    <div class="alert alert-info">
+                                        {{ 'aucun_pdf'|trans }}
+                                    </div>
                                 </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     </div>
 
+                    <input type="hidden" id="csrf_favorite" value="{{ csrf_token('favorite_image') }}">
                 </div>
-
-                {# CSRF token hidden pour JS #}
-                <input type="hidden" id="csrf_favorite" value="{{ csrf_token('favorite_image') }}">
-
-
-                <!-- Content Row -->
-
             </div>
-            <!-- /.container-fluid -->
+
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>{{ 'copyright'|trans }}</span>
+                    </div>
+                </div>
+            </footer>
 
         </div>
-        <!-- End of Main Content -->
-
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2021</span>
-                </div>
-            </div>
-        </footer>
-        <!-- End of Footer -->
-
     </div>
-    <!-- End of Content Wrapper -->
 
-</div>
-<!-- End of Page Wrapper -->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
-
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ 'logout_modal.title'|trans }}</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">{{ 'logout_modal.body'|trans }}</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">{{ 'logout_modal.cancel'|trans }}</button>
+                    <a class="btn btn-primary" href="login.html">{{ 'logout_modal.logout'|trans }}</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 
 {% endblock %}
 
-
 {% block javascripts %}
-    <!-- Bootstrap core JavaScript-->
     {{ parent() }}
     <script src="assets-admin/vendor/jquery/jquery.min.js"></script>
     <script src="assets-admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
     <script src="assets-admin/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
     <script src="assets-admin/js/sb-admin-2.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             toastr.options = {
@@ -298,21 +179,19 @@
                             icon.classList.toggle('bi-star-fill');
 
                             if (data.action === 'added') {
-                                toastr.success('Image ajoutée aux favoris !');
+                                toastr.success('{{ "toastr.favorite_added"|trans }}');
                             } else if (data.action === 'removed') {
-                                toastr.info('Image retirée des favoris.');
+                                toastr.info('{{ "toastr.favorite_removed"|trans }}');
                             }
                         } else {
-                            toastr.error('Erreur : ' + data.message);
+                            toastr.error('{{ "toastr.error"|trans }}: ' + data.message);
                         }
                     })
                     .catch(err => {
                         console.error(err);
-                        toastr.error('Une erreur est survenue.');
+                        toastr.error('{{ "toastr.error"|trans }}');
                     });
             });
         });
     </script>
-
-
 {% endblock %}

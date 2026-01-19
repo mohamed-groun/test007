@@ -126,5 +126,23 @@ contact.subject: "Sujet"
 contact.message: "Message"
 contact.right.title: "Nous contacter"
 
+# FAQ
+
+faq:
+  title: "FAQ - Générateur PDF d'images"
+  question1: "Qu'est-ce que fait cette application ?"
+  answer1: "Cette application transforme vos images en PDF optimisés pour l’impression. Vous pouvez définir la taille et le nombre d’exemplaires de chaque image, et elle organise automatiquement les fichiers pour un rendu prêt à imprimer."
+  question2: "Quels formats d’images puis-je utiliser ?"
+  answer2: "Vous pouvez utiliser les formats PNG et PDF."
+  question3: "Puis-je personnaliser la taille et le nombre d’exemplaires de mes images ?"
+  answer3: "Oui, vous pouvez définir la longueur et la largeur de chaque image ainsi que le nombre de copies souhaité. L’application optimise ensuite le PDF pour que tout soit correctement positionné."
+  question4: "Puis-je télécharger le PDF directement ?"
+  answer4: "Oui ! Une fois le PDF généré, vous pouvez le télécharger directement sur votre appareil et l'imprimer."
+  question5: "Comment puis-je télécharger le PDF généré ?"
+  answer5: "Une fois les images chargées, l’application sélectionne le meilleur format et vous permet de télécharger le PDF directement sur votre appareil."
+  question6: "L’application est-elle sécurisée pour mes fichiers ?"
+  answer6: "Oui, vos images et PDFs sont traités de manière sécurisée. Aucun fichier n’est partagé publiquement et les données sont protégées pour garantir votre confidentialité."
+
+contact_success: "Votre message a bien été envoyé. Nous vous contacterons dans les plus brefs délais."
 
 

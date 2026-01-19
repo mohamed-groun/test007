@@ -1,0 +1,28 @@
+# Dashboard.fr.yaml
+title: "Tableau de bord"
+sidebar_historique_planches: "Historique planches"
+sidebar_personnaliser_supports: "Personnaliser les supports"
+sidebar_generer_planche: "Générer une planche"
+sidebar_contact_us: "Contactez-nous"
+sidebar_we_need_to_talk: "Nous devons parler"
+historique_pdfs: "Historique de mes PDFs"
+commande: "Commande"
+date: "Date"
+telecharger_pdf: "Télécharger"
+aucun_pdf: "Aucun PDF généré pour le moment."
+favorite_title: "Ajouter aux favoris"
+logout_modal_title: "Prêt à partir ?"
+logout_modal_body: "Sélectionnez \"Déconnexion\" si vous souhaitez terminer votre session."
+logout_modal_cancel: "Annuler"
+logout_modal_logout: "Déconnexion"
+toastr_favorite_added: "Image ajoutée aux favoris !"
+toastr_favorite_removed: "Image retirée des favoris."
+toastr_error: "Une erreur est survenue."
+copyright: "Copyright © Votre site 2021"
+formats_generated: "Formats générés"
+support:
+  error_required_fields: "Veuillez remplir tous les champs obligatoires."
+  success_added: "Support ajouté avec succès !"
+roll:
+  success_updated: "Bobine mise à jour avec succès !"
+
