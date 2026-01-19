@@ -44,7 +44,7 @@ final class GeneratorController extends AbstractController
 
 
         // On garde juste le lien des images
-        $favoritesLinks = array_map(fn($img) => $img->getImageLink(), $imagesFavorites);
+        $favoritesLinks = array_map(fn ($img) => $img->getImageLink(), $imagesFavorites);
 
         return $this->render('generator/index2.html.twig', [
             'supports' => $supports,
@@ -52,14 +52,15 @@ final class GeneratorController extends AbstractController
         ]);
     }
 
-#[Route('/generator/calculate', name: 'app_generator_calculate', methods: ['POST'])]
+    #[Route('/generator/calculate', name: 'app_generator_calculate', methods: ['POST'])]
     public function calculate(
         Request $request,
         MultiPackService $multiPackService,
         EntityManagerInterface $em
-    ): JsonResponse {
+    ): JsonResponse
+    {
         $user = $this->getUser();
-        $now  = new \DateTimeImmutable();
+        $now = new \DateTimeImmutable();
 
         $isPremium = $user
             ? $em->getRepository(UserSubscription::class)->isActiveForUser($user->getId())
@@ -68,14 +69,14 @@ final class GeneratorController extends AbstractController
         // =============================
         // Front data
         // =============================
-        $files          = $request->files->get('files', []);
-        $filesInfo      = $request->request->all('files_info');
-        $fileIds        = $request->request->all('file_ids');
-        $supportIds     = $request->request->get('support');
-        $formatChoice   = $request->request->get('format-choice');
-        $margin         = $request->request->get('margin', '0.5');
-        $spaceBetween   = $request->request->get('space_between_logos', '0.5');
-        $withBanner     = (bool) $request->request->get('with_banner', false);
+        $files = $request->files->get('files', []);
+        $filesInfo = $request->request->all('files_info');
+        $fileIds = $request->request->all('file_ids');
+        $supportIds = $request->request->get('support');
+        $formatChoice = $request->request->get('format-choice');
+        $margin = $request->request->get('margin', '0.5');
+        $spaceBetween = $request->request->get('space_between_logos', '0.5');
+        $withBanner = (bool)$request->request->get('with_banner', false);
 
         // =============================
         // Premium checks
@@ -144,12 +145,12 @@ final class GeneratorController extends AbstractController
         $pdfParam = new PdfParametres();
         $pdfParam
             ->setName('pack-result-' . $now->format('Ymd-His'))
-            ->setIdUser($user?->getId())
+            ->setIdUser($user ?->getId())
             ->setWidth($supportDetails[0]['width'])
-            ->setHeight($supportDetails[0]['height'])
-            ->setImagesSheets(json_encode($result))
-            ->setDownloadCount(0)
-            ->setImages(json_encode($fileDetails));
+        ->setHeight($supportDetails[0]['height'])
+        ->setImagesSheets(json_encode($result))
+        ->setDownloadCount(0)
+        ->setImages(json_encode($fileDetails));
 
     $em->persist($pdfParam);
     $em->flush();
@@ -166,7 +167,6 @@ final class GeneratorController extends AbstractController
         'packingResult' => $result,
     ]);
 }
-
 
 
     #[Route('/generator/download', name: 'app_generator_download', methods: ['POST'])]
@@ -188,7 +188,13 @@ final class GeneratorController extends AbstractController
 
         $outputDir = $this->getParameter('uploads_directory') . '/pdfs/' . $pdf->getId();
 
-        //dd($images);
+        if ($pdf) {
+            // Incrémenter le compteur
+            $pdf->setDownloadCount($pdf->getDownloadCount() + 1);
+            // Persister le changement
+            $em->persist($pdf);
+            $em->flush();
+        }
         $zipPath = $outputDir . '/order_' . $pdf->getId() . '.zip';
 
         // 🔥 CACHE ZIP
@@ -200,7 +206,7 @@ final class GeneratorController extends AbstractController
             );
         }
 
-         // Sinon on génère
+        // Sinon on génère
         $generatedFiles = $pdfsGenerator->generatePdfsFromJson(
             $json,
             $images,
@@ -218,15 +224,6 @@ final class GeneratorController extends AbstractController
             throw new \RuntimeException("Impossible de créer le ZIP");
         }
 
-        if ($pdf) {
-            // Incrémenter le compteur
-            $pdf->setDownloadCount($pdf->getDownloadCount() + 1);
-
-            // Persister le changement
-            $em->persist($pdf);
-            $em->flush();
-        }
-
         return $this->file(
             $zipPath,
             'order_' . $pdf->getId() . '.zip',
@@ -234,7 +231,7 @@ final class GeneratorController extends AbstractController
         );
     }
 
-#[Route('/generator/favorite', name: 'app_generator_favorite', methods: ['POST'])]
+   #[Route('/generator/favorite', name: 'app_generator_favorite', methods: ['POST'])]
     public function favorite(Request $request, EntityManagerInterface $em)
     {
         $user = $this->getUser();
@@ -279,13 +276,15 @@ final class GeneratorController extends AbstractController
             'message' => $message
         ], 403);
     }
+
     private function handleFileUploads(
         array $files,
         array $filesInfo,
         array $fileIds,
         Request $request,
         \DateTimeImmutable $now
-    ): array {
+    ): array
+    {
         $details = [];
         $user = $this->getUser();
         $path = $user ? '/' . $user->getId() : '/no-user';
@@ -296,7 +295,7 @@ final class GeneratorController extends AbstractController
             $info = $uuid && isset($filesInfo[$uuid]) ? $filesInfo[$uuid] : [];
 
             $extension = $file->guessExtension() ?: $file->getClientOriginalExtension();
-            $filename  = sprintf(
+            $filename = sprintf(
                 '%s-%s-%d.%s',
                 pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
                 $now->format('Ymd-His'),
@@ -309,11 +308,11 @@ final class GeneratorController extends AbstractController
             $url = $request->getSchemeAndHttpHost() . '/uploads' . $path . '/' . $filename;
 
             $details[] = [
-                'name'     => $url,
-                'file'     => $url,
-                'width'    => isset($info['width']) ? (float) $info['width'] * 10 : null,
-                'height'   => isset($info['height']) ? (float) $info['height'] * 10 : null,
-                'quantity' => isset($info['qty']) ? (int) $info['qty'] : 1,
+                'name' => $url,
+                'file' => $url,
+                'width' => isset($info['width']) ? (float)$info['width'] * 10 : null,
+                'height' => isset($info['height']) ? (float)$info['height'] * 10 : null,
+                'quantity' => isset($info['qty']) ? (int)$info['qty'] : 1,
             ];
         }
 
@@ -324,13 +323,14 @@ final class GeneratorController extends AbstractController
         mixed $supportIds,
         bool $withBanner,
         EntityManagerInterface $em
-    ): array {
+    ): array
+    {
         $supports = [];
         $user = $this->getUser();
 
         $ids = is_array($supportIds)
             ? $supportIds
-            : array_filter(explode(',', (string) $supportIds));
+            : array_filter(explode(',', (string)$supportIds));
 
         foreach ($ids as $id) {
             if (!$support = $em->getRepository(Supports::class)->find($id)) {
@@ -351,7 +351,7 @@ final class GeneratorController extends AbstractController
 
         // Roll
         $roll = $em->getRepository(Roll::class)->findOneBy([
-            'id_user' => $user?->getId()
+            'id_user' => $user ?->getId()
     ]);
 
     if (!$roll) {
@@ -362,9 +362,9 @@ final class GeneratorController extends AbstractController
         $height = $h * 10 - ($withBanner ? 10 : 0);
 
         $supports[] = [
-            'id'     => $h + 1000,
-            'label'  => $roll->getWidth() . '*' . $h,
-            'width'  => $roll->getWidth() * 10,
+            'id' => $h + 1000,
+            'label' => $roll->getWidth() . '*' . $h,
+            'width' => $roll->getWidth() * 10,
             'height' => $height,
         ];
     }
@@ -375,12 +375,10 @@ final class GeneratorController extends AbstractController
     private function formatSupport(Supports $support, bool $withBanner): array
     {
         return [
-            'id'     => $support->getId(),
-            'label'  => $support->getName(),
-            'width'  => $support->getWidth() * 10,
+            'id' => $support->getId(),
+            'label' => $support->getName(),
+            'width' => $support->getWidth() * 10,
             'height' => ($support->getHeight() * 10) - ($withBanner ? 10 : 0),
         ];
     }
-
-
 }
