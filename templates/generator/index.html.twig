@@ -50,7 +50,7 @@
                                         aria-label="{{ 'hero.video_alt'|trans }}"
                                 ></video>
                             </div>
-                            <p class="mt-2">{{ 'hero.video_alt'|trans }}</p>
+                            <p class="mt-2 text-center">{{ 'hero.video_alt'|trans }}</p>
                         </div>
                     </div>
                 </div>
@@ -419,9 +419,8 @@
 
         /* Titles */
         #pricing h6 {
-            font-size: 0.75rem;
-            letter-spacing: 0.08em;
-            font-weight: 600;
+            font-size: 1.5rem;
+            letter-spacing: 0.05em;
         }
 
         #pricing h2 {
@@ -577,7 +576,7 @@
                     <div class="card h-100 shadow-sm border-0 text-center">
                         <div class="card-body">
                             <h6>{{ 'pricing.free.title'|trans }}</h6>
-                            <h2>{{ 'pricing.free.price'|trans }}</h2>
+                            <h2 class="fw-bold my-3">{{ 'pricing.free.price'|trans }}</h2>
                             <p>{{ 'pricing.free.subtitle'|trans }}</p>
 
                             <ul class="list-unstyled text-start mt-4 mb-4">
@@ -831,25 +830,6 @@
         </div>
     </section>
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
-        }
-
-        .faq-section {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .faq-title {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
         .accordion-button::after {
             transition: transform 0.3s ease;
         }
@@ -862,10 +842,15 @@
             transform: rotate(180deg);
         }
     </style>
-    <section id="faq">
-        <div class="faq-section">
-            <h2 class="faq-title">{{ 'faq.title'|trans }}</h2>
-
+    <section id="faq" class="py-5 bg-white">
+        <div class="row justify-content-center">
+            <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10">
+                <div class="section-title text-center mb-60">
+                    <h3 class="mb-3"> {{ 'faq.title'|trans }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="container">
             <div class="accordion" id="faqAccordion">
 
                 {% for i in 1..6 %}

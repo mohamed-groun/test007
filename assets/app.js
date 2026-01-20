@@ -9,8 +9,6 @@ import './css/style.css';
 import './css/logosSheet.css';
 import './css/animate.css';
 
-import './css/lindy-uikit.css';
-
 // ==================== JS ====================
 import $ from 'jquery';
 window.$ = $;
