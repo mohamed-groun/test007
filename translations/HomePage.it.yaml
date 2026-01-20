@@ -1,0 +1,155 @@
+Home: "Home"
+StartNow: "Inizia ora"
+Pricing: "Prezzi"
+Partenaria: "Partner"
+Contact: "Contatto"
+QuickLink: "Link veloci"
+About: "Informazioni"
+Service: "Servizi"
+HelpSupport: "Aiuto e supporto"
+SupportCenter: "Centro assistenza"
+LiveChat: "Chat dal vivo"
+FAQ: "FAQ"
+TermsConditions: "Termini e condizioni"
+logout: "Esci"
+Login: "Accedi"
+features: "Funzionalità"
+
+page.home.title: "DTF Optimizer – Crea i tuoi fogli e bobine DTF automaticamente"
+hero.subtitle: "Generatore DTF intelligente"
+hero.title: "Crea fogli e bobine DTF ottimizzati in pochi clic"
+hero.description: "Ottimizza i tuoi fogli e bobine DTF con il nostro generatore intelligente. Importa le immagini, indica dimensioni e quantità e ottieni un PDF pronto per la stampa. Risparmia tempo, riduci gli sprechi e stampa in modo efficiente."
+hero.cta: "Genera il mio foglio DTF"
+hero.video_alt: "Dimostrazione dell'applicazione generatore DTF che ottimizza fogli e bobine per la stampa"
+meta.description: "Genera automaticamente i tuoi fogli e bobine DTF. Importa immagini, indica quantità e dimensioni e ottieni un PDF pronto per la stampa. Software DTF veloce ed efficiente."
+meta.og_title: "DTF Optimizer – Generatore intelligente di fogli DTF"
+meta.og_description: "Ottimizza i tuoi fogli e bobine DTF in pochi clic. Crea un PDF pronto per la stampa e stampa più efficacemente."
+meta.og_image: "https://votre-site.com/assets/images/og-dtf-optimizer.png"
+meta.featureList:
+  - "Generazione automatica di fogli e bobine DTF ottimizzati"
+  - "Riduzione degli sprechi di materiale grazie all’ottimizzazione della stampa"
+  - "Esportazione PDF pronto per la stampa"
+  - "Gestione intelligente delle dimensioni e quantità delle immagini"
+  - "Interfaccia semplice per creare rapidamente i fogli DTF"
+
+# HOW IT WORKS
+how.title: "Come funziona?"
+how.subtitle: "Trasforma le tue immagini in pochi clic con la nostra IA"
+
+how.step1.title: "1. Carica i file"
+how.step1.text: "Carica immagini PNG o PDF di alta qualità. Veloce e semplice!"
+how.step1.strong: "Veloce e semplice!"
+
+how.step2.title: "2. Scegli il formato"
+how.step2.text: "Seleziona il formato desiderato o lascia che l’IA scelga automaticamente."
+how.step2.strong: "Ottieni sempre il miglior risultato!"
+
+how.step3.title: "3. Anteprima e download"
+how.step3.text: "Visualizza in anteprima il risultato e scaricalo con un clic."
+how.step3.strong: "Tutte le tue immagini nel miglior formato e pronte per la stampa!"
+
+# FEATURES
+features.title: "Funzionalità intelligenti per DTF"
+features.subtitle: "Una piattaforma completa basata su intelligenza artificiale per automatizzare, ottimizzare e velocizzare la creazione delle tue tavole DTF."
+
+features.ai.title: "Sistema basato su IA"
+features.ai.text: "Organizzazione automatica e ottimizzazione perfetta."
+
+features.favorites.title: "Loghi preferiti"
+features.favorites.text: "Accesso rapido ai loghi più usati."
+
+features.format.title: "Scelta intelligente del formato"
+features.format.text: "Layout ottimale selezionato automaticamente."
+
+features.storage.title: "Archiviazione e storico"
+features.storage.text: "Accesso permanente alle tavole generate."
+
+features.margins.title: "Margini e spazi regolabili"
+features.margins.text: "Adattamento perfetto ai vincoli di stampa."
+
+features.speed.title: "Risparmio di tempo e produttività"
+features.speed.text: "Creazione di tavole DTF in pochi secondi."
+
+# PRICING
+pricing.title: "Prezzi semplici e flessibili"
+pricing.subtitle: "Scegli il piano adatto alle tue esigenze"
+
+pricing.free.title: "Prova"
+pricing.free.subtitle: "Per testare lo strumento"
+pricing.free.price: "Gratis"
+pricing.free.cta: "Inizia gratis"
+
+pricing.day.title: "Pass 1 giorno"
+pricing.day.subtitle: "Ideale per un ordine urgente"
+pricing.day.price: "1,90 €"
+pricing.day.cta: "Acquista"
+
+pricing.month.title: "Abbonamento mensile"
+pricing.month.subtitle: "Per creatori abituali"
+pricing.month.price: "9,99 €"
+pricing.month.cta: "Abbonati ora"
+pricing.best: "Scelta migliore"
+
+pricing.features.generate: "Generazione di tavole DTF"
+pricing.features.ai: "Organizzazione automatica tramite IA"
+pricing.features.download: "Download file"
+pricing.features.download_unlimited: "Download illimitato"
+pricing.features.no_branding: "Senza marchio 'DTF Optimizer'"
+pricing.features.support: "Supporto personalizzato"
+pricing.features.margins: "Margini e spazi regolabili"
+
+pricing.features.history_disabled: "Storico PDF"
+pricing.features.favorites_disabled: "Preferiti immagini"
+
+pricing.features.history: "Storico completo PDF"
+pricing.features.favorites: "Preferiti immagini (accesso rapido)"
+pricing.features.margins_disabled: "Margini e spazi regolabili"
+pricing.features.branding_disabled: "Senza marchio 'DTF Optimizer'"
+pricing.features.support_disabled: "Supporto personalizzato"
+
+payment.subtitle: "Scegli il metodo di pagamento:"
+payment.success_year: "Il tuo pagamento annuale è stato completato con successo! 🎉"
+payment.success_day: "Il pagamento del pass di 1 giorno è stato completato con successo! 🎉 Goditi l’accesso completo per 24 ore."
+
+payment.title1: "Accesso 1 giorno → Goditi tutto per 24h"
+payment.title2: "Abbonamento mensile → Accesso illimitato a tutte le funzionalità"
+
+pricing.subscribe: "Abbonati ora"
+pricing.login_to_subscribe: "Accedi per abbonarti"
+pricing.buy: "Acquista"
+pricing.login_to_buy: "Accedi per acquistare"
+
+# PARTNER
+partner.title: "Diventa partner"
+partner.subtitle: "Unisciti al nostro ecosistema DTF"
+partner.text: "Sei un stampatore DTF? Offri i tuoi servizi direttamente sul nostro sito."
+partner.cta: "Contattaci"
+
+# CONTACT
+contact.title: "Contatto"
+contact.subtitle: "Mettiti in contatto"
+contact.submit: "Invia"
+contact.name: "Nome"
+contact.email: "Email"
+contact.phone: "Telefono"
+contact.subject: "Oggetto"
+contact.message: "Messaggio"
+contact.right.title: "Contattaci"
+
+# FAQ
+faq:
+  title: "FAQ - Generatore PDF di immagini"
+  question1: "Cosa fa questa applicazione?"
+  answer1: "Questa applicazione trasforma le tue immagini in PDF ottimizzati per la stampa. Puoi definire dimensioni e numero di copie di ogni immagine, e organizza automaticamente i file per un risultato pronto da stampare."
+  question2: "Quali formati di immagine posso usare?"
+  answer2: "Puoi utilizzare i formati PNG e PDF."
+  question3: "Posso personalizzare dimensioni e numero di copie delle immagini?"
+  answer3: "Sì, puoi impostare larghezza e altezza di ogni immagine e il numero di copie desiderato. L’app ottimizza il PDF per una corretta disposizione."
+  question4: "Posso scaricare il PDF direttamente?"
+  answer4: "Sì! Una volta generato, puoi scaricare il PDF direttamente sul tuo dispositivo e stamparlo."
+  question5: "Come scarico il PDF generato?"
+  answer5: "Dopo aver caricato le immagini, l’app seleziona il formato migliore e ti permette di scaricare il PDF direttamente sul dispositivo."
+  question6: "L’app è sicura per i miei file?"
+  answer6: "Sì, le tue immagini e PDF sono trattati in modo sicuro. Nessun file è condiviso pubblicamente e i dati sono protetti per garantirne la privacy."
+
+contact_success: "Il tuo messaggio è stato inviato correttamente. Ti contatteremo al più presto."

@@ -1,0 +1,155 @@
+Home: "Startseite"
+StartNow: "Jetzt starten"
+Pricing: "Preise"
+Partenaria: "Partner"
+Contact: "Kontakt"
+QuickLink: "Schnellzugriff"
+About: "Über uns"
+Service: "Dienstleistungen"
+HelpSupport: "Hilfe & Support"
+SupportCenter: "Support-Center"
+LiveChat: "Live-Chat"
+FAQ: "FAQ"
+TermsConditions: "Allgemeine Geschäftsbedingungen"
+logout: "Abmelden"
+Login: "Anmelden"
+features: "Funktionen"
+
+page.home.title: "DTF Optimizer – Erstellen Sie Ihre DTF-Platten und Rollen automatisch"
+hero.subtitle: "Intelligenter DTF-Generator"
+hero.title: "Erstellen Sie optimierte DTF-Platten und Rollen mit wenigen Klicks"
+hero.description: "Optimieren Sie Ihre DTF-Platten und Rollen mit unserem intelligenten Generator. Importieren Sie Ihre Bilder, geben Sie Größen und Mengen an und erhalten Sie ein druckfertiges PDF. Sparen Sie Zeit, reduzieren Sie Abfall und drucken Sie effizient."
+hero.cta: "Meine DTF-Platte generieren"
+hero.video_alt: "Demo der DTF-Generator-Anwendung, die Platten und Rollen für den Druck optimiert"
+meta.description: "Erstellen Sie automatisch Ihre DTF-Platten und Rollen. Bilder importieren, Mengen und Größen festlegen und ein druckfertiges PDF erhalten. Schnelle und effiziente DTF-Software."
+meta.og_title: "DTF Optimizer – Intelligenter DTF-Platten-Generator"
+meta.og_description: "Optimieren Sie Ihre DTF-Platten und Rollen mit wenigen Klicks. Erstellen Sie ein druckfertiges PDF und drucken Sie effizienter."
+meta.og_image: "https://votre-site.com/assets/images/og-dtf-optimizer.png"
+meta.featureList:
+  - "Automatische Erstellung optimierter DTF-Platten und Rollen"
+  - "Reduzierung von Materialverschwendung durch Druckoptimierung"
+  - "PDF-Export fertig zum Drucken"
+  - "Intelligente Verwaltung von Bildgrößen und Mengen"
+  - "Einfache Oberfläche zur schnellen Erstellung von DTF-Platten"
+
+# HOW IT WORKS
+how.title: "Wie funktioniert es?"
+how.subtitle: "Verwandeln Sie Ihre Bilder in wenigen Klicks mit unserer KI"
+
+how.step1.title: "1. Dateien hochladen"
+how.step1.text: "Laden Sie hochwertige PNG- oder PDF-Bilder hoch. Schnell und einfach!"
+how.step1.strong: "Schnell und einfach!"
+
+how.step2.title: "2. Format wählen"
+how.step2.text: "Wählen Sie das gewünschte Format oder lassen Sie die KI es automatisch auswählen."
+how.step2.strong: "Erzielen Sie immer das beste Ergebnis!"
+
+how.step3.title: "3. Vorschau & Download"
+how.step3.text: "Vorschau Ihres Ergebnisses und Download mit einem Klick."
+how.step3.strong: "Alle Ihre Bilder im besten Format und druckbereit!"
+
+# FEATURES
+features.title: "Intelligente Funktionen für DTF"
+features.subtitle: "Eine vollständige KI-gestützte Plattform zur Automatisierung, Optimierung und Beschleunigung der Erstellung Ihrer DTF-Platten."
+
+features.ai.title: "KI-gestütztes System"
+features.ai.text: "Automatische Organisation und perfekte Optimierung."
+
+features.favorites.title: "Favoriten-Logos"
+features.favorites.text: "Schneller Zugriff auf Ihre am häufigsten verwendeten Logos."
+
+features.format.title: "Intelligente Formatwahl"
+features.format.text: "Optimales Layout automatisch ausgewählt."
+
+features.storage.title: "Speicher & Verlauf"
+features.storage.text: "Permanenter Zugriff auf Ihre generierten Platten."
+
+features.margins.title: "Anpassbare Ränder & Abstände"
+features.margins.text: "Perfekte Anpassung an Druckanforderungen."
+
+features.speed.title: "Zeitersparnis & Produktivität"
+features.speed.text: "Erstellung von DTF-Platten in wenigen Sekunden."
+
+# PRICING
+pricing.title: "Einfache und flexible Preise"
+pricing.subtitle: "Wählen Sie das passende Angebot für Ihre Bedürfnisse"
+
+pricing.free.title: "Entdeckung"
+pricing.free.subtitle: "Zum Testen des Tools"
+pricing.free.price: "Kostenlos"
+pricing.free.cta: "Kostenlos starten"
+
+pricing.day.title: "1-Tages-Pass"
+pricing.day.subtitle: "Ideal für eine dringende Bestellung"
+pricing.day.price: "1,90 €"
+pricing.day.cta: "Kaufen"
+
+pricing.month.title: "Monatliches Abonnement"
+pricing.month.subtitle: "Für regelmäßige Ersteller"
+pricing.month.price: "9,99 €"
+pricing.month.cta: "Jetzt abonnieren"
+pricing.best: "Beste Wahl"
+
+pricing.features.generate: "DTF-Platten generieren"
+pricing.features.ai: "Automatische KI-Organisation"
+pricing.features.download: "Dateien herunterladen"
+pricing.features.download_unlimited: "Unbegrenzter Download"
+pricing.features.no_branding: "Ohne 'DTF Optimizer'-Branding"
+pricing.features.support: "Personalisierter Support"
+pricing.features.margins: "Anpassbare Ränder & Abstände"
+
+pricing.features.history_disabled: "PDF-Verlauf"
+pricing.features.favorites_disabled: "Bildfavoriten"
+
+pricing.features.history: "Vollständiger PDF-Verlauf"
+pricing.features.favorites: "Bildfavoriten (schneller Zugriff)"
+pricing.features.margins_disabled: "Anpassbare Ränder & Abstände"
+pricing.features.branding_disabled: "Ohne 'DTF Optimizer'-Branding"
+pricing.features.support_disabled: "Personalisierter Support"
+
+payment.subtitle: "Wählen Sie Ihre Zahlungsmethode:"
+payment.success_year: "Ihre Jahreszahlung war erfolgreich! 🎉"
+
+payment.title1: "1-Tages-Zugang → 24h Vollzugriff"
+payment.title2: "Monatliches Abonnement → Unbegrenzter Zugriff auf alle Funktionen"
+payment.success_day: "Ihre Zahlung für den 1-Tages-Pass war erfolgreich! 🎉 Genießen Sie 24 Stunden vollen Zugriff."
+
+pricing.subscribe: "Jetzt abonnieren"
+pricing.login_to_subscribe: "Melden Sie sich an, um zu abonnieren"
+pricing.buy: "Kaufen"
+pricing.login_to_buy: "Melden Sie sich an, um zu kaufen"
+
+# PARTNER
+partner.title: "Partner werden"
+partner.subtitle: "Treten Sie unserem DTF-Ökosystem bei"
+partner.text: "Sind Sie DTF-Drucker? Bieten Sie Ihre Dienstleistungen direkt auf unserer Website an."
+partner.cta: "Kontaktieren Sie uns"
+
+# CONTACT
+contact.title: "Kontakt"
+contact.subtitle: "In Kontakt treten"
+contact.submit: "Senden"
+contact.name: "Name"
+contact.email: "Email"
+contact.phone: "Telefon"
+contact.subject: "Betreff"
+contact.message: "Nachricht"
+contact.right.title: "Kontaktieren Sie uns"
+
+# FAQ
+faq:
+  title: "FAQ - PDF-Bilder-Generator"
+  question1: "Was macht diese Anwendung?"
+  answer1: "Diese Anwendung wandelt Ihre Bilder in druckoptimierte PDFs um. Sie können Größe und Anzahl der Kopien jeder Datei festlegen, und die Anwendung organisiert die Dateien automatisch für ein druckfertiges Ergebnis."
+  question2: "Welche Bildformate kann ich verwenden?"
+  answer2: "Sie können PNG- und PDF-Formate verwenden."
+  question3: "Kann ich Größe und Anzahl der Kopien anpassen?"
+  answer3: "Ja, Sie können Höhe und Breite jeder Datei sowie die gewünschte Anzahl der Kopien festlegen. Die App optimiert das PDF für die korrekte Positionierung."
+  question4: "Kann ich das PDF direkt herunterladen?"
+  answer4: "Ja! Nach der Erstellung können Sie das PDF direkt auf Ihr Gerät herunterladen und drucken."
+  question5: "Wie lade ich das generierte PDF herunter?"
+  answer5: "Nachdem Sie die Bilder hochgeladen haben, wählt die App das beste Format aus und ermöglicht den direkten Download auf Ihr Gerät."
+  question6: "Ist die Anwendung sicher für meine Dateien?"
+  answer6: "Ja, Ihre Bilder und PDFs werden sicher verarbeitet. Keine Dateien werden öffentlich geteilt, und die Daten sind geschützt, um Ihre Privatsphäre zu gewährleisten."
+
+contact_success: "Ihre Nachricht wurde erfolgreich gesendet. Wir werden uns so schnell wie möglich bei Ihnen melden."

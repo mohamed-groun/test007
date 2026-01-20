@@ -1,0 +1,41 @@
+generator:
+  page:
+    pdf_preview: "PDF Preview"
+
+  upload:
+    drag_drop: "Drag and drop your visuals, the AI will handle the rest..."
+    or: "or"
+    choose_files: "Choose your visuals (PNG or PDF)"
+    no_files: "No files yet?"
+    simulation: "I want to run a simulation without logos"
+
+  config:
+    title: "Configuration"
+    format:
+      label: "Format"
+      placeholder: "Select supports"
+    spacing:
+      label: "Spacing between logos"
+    margin:
+      label: "Inner margin"
+    banner:
+      label: "Show blue banner at the bottom of the PDF"
+    buttons:
+      preview: "Preview"
+      download: "Download PDF"
+
+  canvas:
+    footer_text: "Made with love – DTF Optimizer"
+
+message_succes1: "PDF downloaded successfully! Create an account now to easily find all your PDFs in your Dashboard."
+message_error1: "Please add at least one image or PDF!"
+
+messages:
+  success_download: "PDF downloaded successfully! Create an account now to easily find all your PDFs in your Dashboard."
+  error_no_file: "Please add at least one image or PDF!"
+  premium_banner_error: "Upgrade to the Premium plan to remove the banner at the bottom of the format."
+  premium_spacing_error: "Upgrade to the Premium plan to modify the spacing between images."
+  premium_margin_error: "Upgrade to the Premium plan to modify the margin."
+  upgrade_premium: "Go Premium"
+
+

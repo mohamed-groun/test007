@@ -1,0 +1,16 @@
+# login.en.yaml
+
+login.title: "Login"
+login.subtitle: "Enter your details to continue"
+login.email: "Email"
+login.password: "Password"
+login.remember_me: "Remember me"
+login.submit: "Log In"
+login.register_text: "Don't have an account?"
+login.register_link: "Sign up here"
+login.logged_in_as: "You are logged in as %user%,"
+login.logout: "Logout"
+
+# Security errors (commonly used by Symfony)
+security.invalid_credentials: "Invalid credentials."
+security.csrf_invalid: "Invalid CSRF token."

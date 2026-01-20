@@ -1,0 +1,40 @@
+generator:
+  page:
+    pdf_preview: "Vista previa del PDF"
+
+  upload:
+    drag_drop: "Arrastra tus imágenes, la IA se encargará del resto..."
+    or: "o"
+    choose_files: "Elige tus imágenes (PNG o PDF)"
+    no_files: "¿Aún no tienes archivos?"
+    simulation: "Quiero hacer una simulación sin logos"
+
+  config:
+    title: "Configuración"
+    format:
+      label: "Formato"
+      placeholder: "Selecciona soportes"
+    spacing:
+      label: "Espaciado entre logos"
+    margin:
+      label: "Margen interno"
+    banner:
+      label: "Mostrar la franja azul en la parte inferior del PDF"
+    buttons:
+      preview: "Vista previa"
+      download: "Descargar PDF"
+
+  canvas:
+    footer_text: "Hecho con amor – DTF Optimizer"
+
+message_succes1: "¡PDF descargado con éxito! Crea una cuenta ahora para encontrar fácilmente todos tus PDFs en tu Panel."
+message_error1: "¡Por favor, agrega al menos una imagen o PDF!"
+
+messages:
+  success_download: "¡PDF descargado con éxito! Crea una cuenta ahora para encontrar fácilmente todos tus PDFs en tu Panel."
+  error_no_file: "¡Por favor, agrega al menos una imagen o PDF!"
+  premium_banner_error: "Pasa al plan Premium para eliminar la franja en la parte inferior del formato."
+  premium_spacing_error: "Pasa al plan Premium para modificar el espacio entre las imágenes."
+  premium_margin_error: "Pasa al plan Premium para modificar el margen."
+  upgrade_premium: "Pasa a Premium"
+

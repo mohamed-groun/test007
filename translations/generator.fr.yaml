@@ -11,20 +11,15 @@ generator:
 
   config:
     title: "Configuration"
-
     format:
       label: "Format"
       placeholder: "Sélectionnez des supports"
-
     spacing:
       label: "Espacement entre logos"
-
     margin:
       label: "Marge intérieure"
-
     banner:
       label: "Afficher la bande bleue en bas du PDF"
-
     buttons:
       preview: "Aperçu"
       download: "Télécharger le PDF"
@@ -33,3 +28,12 @@ generator:
     footer_text: "Made with love – DTF Optimizer"
 
 message_succes1: "PDF téléchargé avec succès ! Créez un compte dès maintenant pour retrouver facilement tous vos PDFs dans votre Dashborad."
+message_error1: "Veuillez ajouter au moins une image ou PDF !"
+
+messages:
+  success_download: "PDF téléchargé avec succès ! Créez un compte dès maintenant pour retrouver facilement tous vos PDFs dans votre Dashboard."
+  error_no_file: "Veuillez ajouter au moins une image ou PDF !"
+  premium_banner_error: "Passez à l’abonnement Premium pour supprimer la bande en bas du format."
+  premium_spacing_error: "Passez à l’abonnement Premium pour modifier l’espace entre les images."
+  premium_margin_error: "Passez à l’abonnement Premium pour modifier la marge."
+  upgrade_premium: "Passez Premium"

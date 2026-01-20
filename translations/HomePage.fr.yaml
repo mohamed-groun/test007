@@ -14,14 +14,25 @@ FAQ: "FAQ"
 TermsConditions: "Conditions générales"
 logout: "Se déconnecter"
 Login: "Connexion"
+features : "Fonctionnalités"
 
-page.home.title: "DTF Optimazer"
-
-# HERO
-hero.subtitle: "Générateur DTF intelligent"
-hero.title: "Créez automatiquement vos planches et bobines DTF optimisées"
-hero.description: "Importez vos images, indiquez les quantités, et laissez notre application organiser automatiquement vos visuels pour un rendu professionnel, optimisé et prêt à l’impression. Gagnez du temps, réduisez les pertes et imprimez plus efficacement."
+page.home.title: "DTF Optimizer – Créez vos planches et bobines DTF automatiquement"
+hero.subtitle: "Générateur DTF intelligent pour impression DTF"
+hero.title: "Créez vos planches et bobines DTF optimisées en quelques clics"
+hero.description: "Optimisez vos planches et bobines DTF avec notre générateur intelligent. Importez vos images, indiquez tailles et quantités, et obtenez un PDF prêt à l’impression. Gagnez du temps, réduisez les pertes et imprimez efficacement."
 hero.cta: "Générer ma planche DTF"
+hero.video_alt: "Démonstration de l’application générateur DTF optimisant planches et bobines pour impression"
+meta.description: "Générez vos planches et bobines DTF automatiquement. Importez vos images, indiquez quantité et taille, et obtenez un PDF prêt à l’impression. Logiciel DTF rapide et efficace."
+meta.og_title: "DTF Optimizer – Générateur intelligent de planches DTF"
+meta.og_description: "Optimisez vos planches et bobines DTF en quelques clics. Créez un PDF prêt à l’impression et imprimez plus efficacement."
+meta.og_image: "https://votre-site.com/assets/images/og-dtf-optimizer.png"
+meta.featureList:
+  - "Génération automatique de planches et bobines DTF optimisées"
+  - "Réduction des pertes de matériaux grâce à l’optimisation des impressions"
+  - "Export PDF prêt à l’impression"
+  - "Gestion intelligente des tailles et quantités d’images"
+  - "Interface simple pour créer vos planches DTF rapidement"
+
 
 # HOW IT WORKS
 how.title: "Comment ça marche ?"
@@ -66,15 +77,17 @@ pricing.title: "Des tarifs simples et flexibles"
 pricing.subtitle: "Choisissez l’offre adaptée à vos besoins"
 
 pricing.free.title: "Découverte"
-pricing.free.subtile: "Pour tester l’outil"
+pricing.free.subtitle: "Pour tester l’outil"
 pricing.free.price: "Gratuit"
 pricing.free.cta: "Commencer gratuitement"
 
 pricing.day.title: "Pass 1 jour"
+pricing.day.subtitle: "Idéal pour une commande urgente"
 pricing.day.price: "1,90 €"
 pricing.day.cta: "Acheter"
 
 pricing.month.title: "Abonnement mensuel"
+pricing.month.subtitle: "Pour les créateurs réguliers"
 pricing.month.price: "9,99 €"
 pricing.month.cta: "S’abonner maintenant"
 pricing.best: "Le meilleur choix"
@@ -98,6 +111,8 @@ pricing.features.support_disabled: "Support personnalisé"
 
 payment.subtitle: "Choisissez votre méthode de paiement :"
 payment.success_year: "Votre paiement annuel a été effectué avec succès ! 🎉"
+payment.success_day: "Votre paiement pour le pass 1 jour a été effectué avec succès ! 🎉 Profitez de toutes les fonctionnalités pendant 24h."
+
 
 payment.title1: "Accès 1 jour → Profitez de tout pour 24h seulement"
 payment.title2: "Abonnement Mensuel → Accès illimité à toutes les fonctionnalités"

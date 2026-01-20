@@ -1,0 +1,40 @@
+generator:
+  page:
+    pdf_preview: "PDF-Vorschau"
+
+  upload:
+    drag_drop: "Ziehen Sie Ihre Bilder hierher, die KI erledigt den Rest..."
+    or: "oder"
+    choose_files: "Wählen Sie Ihre Bilder (PNG oder PDF)"
+    no_files: "Noch keine Dateien?"
+    simulation: "Ich möchte eine Simulation ohne Logos durchführen"
+
+  config:
+    title: "Konfiguration"
+    format:
+      label: "Format"
+      placeholder: "Wählen Sie die Medien aus"
+    spacing:
+      label: "Abstand zwischen Logos"
+    margin:
+      label: "Innenabstand"
+    banner:
+      label: "Blaue Leiste unten im PDF anzeigen"
+    buttons:
+      preview: "Vorschau"
+      download: "PDF herunterladen"
+
+  canvas:
+    footer_text: "Mit Liebe gemacht – DTF Optimizer"
+
+message_succes1: "PDF erfolgreich heruntergeladen! Erstellen Sie jetzt ein Konto, um alle Ihre PDFs bequem in Ihrem Dashboard zu finden."
+message_error1: "Bitte fügen Sie mindestens ein Bild oder PDF hinzu!"
+
+messages:
+  success_download: "PDF erfolgreich heruntergeladen! Erstellen Sie jetzt ein Konto, um alle Ihre PDFs bequem in Ihrem Dashboard zu finden."
+  error_no_file: "Bitte fügen Sie mindestens ein Bild oder PDF hinzu!"
+  premium_banner_error: "Wechseln Sie zum Premium-Abonnement, um das Banner am unteren Rand des Formats zu entfernen."
+  premium_spacing_error: "Wechseln Sie zum Premium-Abonnement, um den Abstand zwischen den Bildern zu ändern."
+  premium_margin_error: "Wechseln Sie zum Premium-Abonnement, um den Rand zu ändern."
+  upgrade_premium: "Wechseln Sie zu Premium"
+

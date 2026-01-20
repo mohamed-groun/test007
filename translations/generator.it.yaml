@@ -1,0 +1,40 @@
+generator:
+  page:
+    pdf_preview: "Anteprima PDF"
+
+  upload:
+    drag_drop: "Trascina le tue immagini, l'IA si occuperà del resto..."
+    or: "o"
+    choose_files: "Seleziona le tue immagini (PNG o PDF)"
+    no_files: "Ancora nessun file?"
+    simulation: "Voglio fare una simulazione senza loghi"
+
+  config:
+    title: "Configurazione"
+    format:
+      label: "Formato"
+      placeholder: "Seleziona supporti"
+    spacing:
+      label: "Spaziatura tra i loghi"
+    margin:
+      label: "Margine interno"
+    banner:
+      label: "Mostra la barra blu in fondo al PDF"
+    buttons:
+      preview: "Anteprima"
+      download: "Scarica PDF"
+
+  canvas:
+    footer_text: "Creato con amore – DTF Optimizer"
+
+message_succes1: "PDF scaricato con successo! Crea subito un account per trovare facilmente tutti i tuoi PDF nel tuo Cruscotto."
+message_error1: "Si prega di aggiungere almeno un'immagine o un PDF!"
+
+messages:
+  success_download: "PDF scaricato con successo! Crea subito un account per trovare facilmente tutti i tuoi PDF nel tuo Cruscotto."
+  error_no_file: "Si prega di aggiungere almeno un'immagine o un PDF!"
+  premium_banner_error: "Passa al piano Premium per rimuovere la barra in fondo al formato."
+  premium_spacing_error: "Passa al piano Premium per modificare lo spazio tra le immagini."
+  premium_margin_error: "Passa al piano Premium per modificare il margine."
+  upgrade_premium: "Passa a Premium"
+

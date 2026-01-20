@@ -1,0 +1,14 @@
+login.title: "Accesso"
+login.subtitle: "Inserisci le tue informazioni per continuare"
+login.email: "Email"
+login.password: "Password"
+login.remember_me: "Ricordami"
+login.submit: "Accedi"
+login.register_text: "Non hai un account?"
+login.register_link: "Registrati qui"
+login.logged_in_as: "Sei connesso come %user%,"
+login.logout: "Disconnetti"
+
+# Errori di sicurezza (Symfony li usa spesso)
+security.invalid_credentials: "Credenziali non valide."
+security.csrf_invalid: "Token CSRF non valido."

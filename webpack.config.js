@@ -18,3 +18,4 @@ Encore
     .enableVersioning(Encore.isProduction());
 
 module.exports = Encore.getWebpackConfig();
+

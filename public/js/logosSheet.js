@@ -535,7 +535,7 @@ const pdfCache = {};
 ========================================================= */
 async function submitForm(action) {
     if (selectedFiles.length === 0) {
-        toastr.error("Veuillez ajouter au moins une image ou PDF !");
+        toastr.error(message_error1);
         return;
     }
     showPreloader();
@@ -586,7 +586,7 @@ async function submitForm(action) {
 
             // 👉 Premium = warning, autres = error
             if (error_id === 'PREMIUM_REQUIRED') {
-                toastr.warning(text, 'Abonnement Premium');
+                toastr.warning(text, message2);
             } else {
                 toastr.error(text, error_id ?? 'Erreur');
             }

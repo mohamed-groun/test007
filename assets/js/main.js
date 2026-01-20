@@ -87,9 +87,7 @@
   /**
    * Initiate glightbox
    */
-  const glightbox = GLightbox({
-    selector: '.glightbox'
-  });
+
 
   /**
    * Init swiper sliders

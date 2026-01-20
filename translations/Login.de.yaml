@@ -1,0 +1,14 @@
+login.title: "Anmelden"
+login.subtitle: "Geben Sie Ihre Daten ein, um fortzufahren"
+login.email: "Email"
+login.password: "Passwort"
+login.remember_me: "Angemeldet bleiben"
+login.submit: "Anmelden"
+login.register_text: "Noch kein Konto?"
+login.register_link: "Hier registrieren"
+login.logged_in_as: "Angemeldet als %user%,"
+login.logout: "Abmelden"
+
+# Sicherheitsfehler (wird häufig von Symfony verwendet)
+security.invalid_credentials: "Ungültige Anmeldedaten."
+security.csrf_invalid: "Ungültiges CSRF-Token."

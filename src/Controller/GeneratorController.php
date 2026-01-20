@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/{_locale}',requirements: ['_locale' => 'fr|en|es|it|de'],defaults: ['_locale' => 'fr'])]
 final class GeneratorController extends AbstractController
@@ -56,7 +57,8 @@ final class GeneratorController extends AbstractController
     public function calculate(
         Request $request,
         MultiPackService $multiPackService,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        TranslatorInterface $translator
     ): JsonResponse
     {
         $user = $this->getUser();
@@ -83,21 +85,15 @@ final class GeneratorController extends AbstractController
         // =============================
         if (!$isPremium) {
             if (!$withBanner) {
-                return $this->premiumError(
-                    'Passez à l’abonnement Premium pour supprimer la bande en bas du format.'
-                );
+                return $this->premiumError('messages.premium_banner_error', $translator);
             }
 
             if ($spaceBetween !== '0.5') {
-                return $this->premiumError(
-                    'Passez à l’abonnement Premium pour modifier l’espace entre les images.'
-                );
+                return $this->premiumError('messages.premium_spacing_error', $translator);
             }
 
             if ($margin !== '0.5') {
-                return $this->premiumError(
-                    'Passez à l’abonnement Premium pour modifier la marge.'
-                );
+                return $this->premiumError('messages.premium_margin_error', $translator);
             }
         }
 
@@ -268,8 +264,11 @@ final class GeneratorController extends AbstractController
         return $this->json(['success' => false, 'message' => 'Action invalide'], 400);
     }
 
-    private function premiumError(string $message): JsonResponse
+    private function premiumError(string $messageKey, TranslatorInterface $translator): JsonResponse
     {
+        // Traduit la clé du fichier YAML
+        $message = $translator->trans($messageKey, [], 'generator'); // 'generator' = domaine de ton YAML
+
         return new JsonResponse([
             'status' => 'failed',
             'error_id' => 'PREMIUM_REQUIRED',

@@ -7,28 +7,91 @@
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     {% block stylesheets %}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        {{ encore_entry_link_tags('app') }}
+        <style>
+            .toast {
+                opacity: 1 !important; /* Règle l'opacité à 100% */
+            }
+            .hero-content-wrapper h1 {
+                font-size: 2rem;         /* taille lisible sur desktop */
+                font-weight: 700;        /* gras mais pas trop énorme */
+                line-height: 1.2;        /* espace entre les lignes */
+                color: #222222;          /* couleur texte principale */
+                margin-bottom: 0.5rem;   /* espace sous le h1 */
+            }
 
-        <link rel="stylesheet"
-              href="https://cdn.jsdelivr.net/npm/flag-icons/css/flag-icons.min.css">
-        <!-- ========================= CSS here ========================= -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-              crossorigin="anonymous">
-        <link rel="stylesheet" href="{{ asset('assets/css/LineIcons.2.0.css') }}">
+            @media (max-width: 768px) {
+                .hero-content-wrapper h1 {
+                    font-size: 1.5rem;   /* plus petit sur tablette / mobile */
+                }
+            }
 
-        <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/lindy-uikit.css') }}">
-        <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
-        <link rel="stylesheet" href="{{ asset('/css/logosSheet.css') }}">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
-<style>
-    .toast {
-        opacity: 1 !important;  /* Règle l'opacité à 100% */
-    }
-</style>
+            @media (max-width: 480px) {
+                .hero-content-wrapper h1 {
+                    font-size: 1.3rem;   /* encore plus petit sur mobile */
+                }
+            }
+
+            .hero-content-wrapper h2 {
+                font-size: 1.5rem;      /* légèrement plus petit que le H1 */
+                font-weight: 600;        /* moins lourd que le H1 */
+                line-height: 1.3;        /* espace agréable entre les lignes */
+                color: #333333;          /* couleur légèrement plus douce que le H1 */
+                margin-bottom: 1rem;     /* espace sous le H2 */
+            }
+
+            @media (max-width: 768px) {
+                .hero-content-wrapper h2 {
+                    font-size: 1.25rem;  /* ajuste sur tablette */
+                }
+            }
+
+            @media (max-width: 480px) {
+                .hero-content-wrapper h2 {
+                    font-size: 1.1rem;   /* ajuste sur mobile */
+                }
+            }
+
+            .flag-menu {
+                padding: 10px 8px !important;
+            }
+
+        </style>
     {% endblock %}
+    {% block structured_data %}
+        <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "DTF Optimizer",
+  "operatingSystem": "Web",
+  "applicationCategory": "GraphicsApplication",
+  "url": "{{ app.request.schemeAndHttpHost }}{{ path('app_generator') }}",
+  "description": "{{ 'meta.description'|trans }}",
+  "image": "{{ 'meta.og_image'|trans }}",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "EUR",
+    "url": "{{ app.request.schemeAndHttpHost }}{{ path('app_generator_2') }}"
+  },
+ "featureList": [
+    "Génération automatique de planches et bobines DTF optimisées",
+    "Réduction des pertes de matériaux grâce à l’optimisation des impressions",
+    "Export PDF prêt à l’impression",
+    "Gestion intelligente des tailles et quantités d’images",
+    "Interface simple pour créer vos planches DTF rapidement"
+ ],
+  "screenshot": "{{ 'meta.og_image'|trans }}",
+  "softwareVersion": "1.0",
+  "author": {
+    "@type": "Organization",
+    "name": "DTF Optimazer"
+}
+
+        </script>
+    {% endblock %}
+
 </head>
 {% trans_default_domain 'HomePage' %}
 <body>
@@ -89,7 +152,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <div class="dropdown ms-auto">
-                                        <button class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center"
+                                        <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center"
                                                 type="button"
                                                 data-bs-toggle="dropdown"
                                                 aria-expanded="false">
@@ -108,62 +171,64 @@
 
                                         <ul class="dropdown-menu dropdown-menu-end shadow">
                                             <li>
-                                                <a class="dropdown-item d-flex align-items-center {{ app.request.locale == 'fr' ? 'active' : '' }}"
-                                                   href="{{ path('app_generator', {'_locale': 'fr'}) }}">
+                                                <a class="dropdown-item d-flex align-items-center flag-menu {{ app.request.locale == 'fr' ? 'active' : '' }}"
+                                                   href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'fr'})) }}">
                                                     <span class="fi fi-fr me-2"></span> Français
                                                 </a>
+
                                             </li>
                                             <li>
-                                                <a class="dropdown-item d-flex align-items-center {{ app.request.locale == 'en' ? 'active' : '' }}"
-                                                   href="{{ path('app_generator', {'_locale': 'en'}) }}">
+                                                <a class="dropdown-item d-flex align-items-center flag-menu  {{ app.request.locale == 'en' ? 'active' : '' }}"
+                                                   href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'en'})) }}">
                                                     <span class="fi fi-gb me-2"></span> English
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item d-flex align-items-center {{ app.request.locale == 'es' ? 'active' : '' }}"
-                                                   href="{{ path('app_generator', {'_locale': 'es'}) }}">
+                                                <a class="dropdown-item d-flex align-items-center flag-menu {{ app.request.locale == 'es' ? 'active' : '' }}"
+                                                   href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'es'})) }}">
                                                     <span class="fi fi-es me-2"></span> Español
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item d-flex align-items-center {{ app.request.locale == 'it' ? 'active' : '' }}"
-                                                   href="{{ path('app_generator', {'_locale': 'it'}) }}">
+                                                <a class="dropdown-item d-flex align-items-center flag-menu {{ app.request.locale == 'it' ? 'active' : '' }}"
+                                                   href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'it'})) }}">
                                                     <span class="fi fi-it me-2"></span> Italiano
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item d-flex align-items-center {{ app.request.locale == 'de' ? 'active' : '' }}"
-                                                   href="{{ path('app_generator', {'_locale': 'de'}) }}">
+                                                <a class="dropdown-item d-flex align-items-center flag-menu {{ app.request.locale == 'de' ? 'active' : '' }}"
+                                                   href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'de'})) }}">
                                                     <span class="fi fi-de me-2"></span> Deutsch
                                                 </a>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
-
-                                    <li class="nav-item">
-                                        <a class="page-scroll"
-                                          href="{{ path('app_generator') ~ '#feature' }}">{{ 'Fonctionnalités'|trans({}, 'HomePage') }}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="page-scroll"  href="{{ path('app_generator') ~ '#pricing' }}">{{ 'Pricing'|trans({}, 'HomePage') }}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="page-scroll"
-                                            href="{{ path('app_generator') ~ '#partner' }}">{{ 'Partenaria'|trans({}, 'HomePage') }}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="page-scroll" href="{{ path('app_generator') ~ '#contact' }}">{{ 'Contact'|trans({}, 'HomePage') }}</a>
-                                    </li>
+                                <li class="nav-item">
+                                    <a class="page-scroll"
+                                       href="{{ path('app_generator') ~ '#feature' }}">{{ 'features'|trans({}, 'HomePage') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="page-scroll"
+                                       href="{{ path('app_generator') ~ '#pricing' }}">{{ 'Pricing'|trans({}, 'HomePage') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="page-scroll"
+                                       href="{{ path('app_generator') ~ '#partner' }}">{{ 'Partenaria'|trans({}, 'HomePage') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="page-scroll"
+                                       href="{{ path('app_generator') ~ '#contact' }}">{{ 'Contact'|trans({}, 'HomePage') }}</a>
+                                </li>
 
                             </ul>
 
                             {% if app.request.attributes.get('_route') != 'app_generator_2' %}
-                            <div class="buttons">
-                                <a href="{{ path('app_generator_2') }}" rel="nofollow" target="blank"
-                                   class="button radius-10 wow fadeInUp"
-                                   data-wow-delay=".7s">{{ 'StartNow'|trans({}, 'HomePage') }}</a>
-                            </div>
+                                <div class="buttons">
+                                    <a href="{{ path('app_generator_2') }}" rel="nofollow" target="blank"
+                                       class="button radius-10 wow fadeInUp"
+                                       data-wow-delay=".7s">{{ 'StartNow'|trans({}, 'HomePage') }}</a>
+                                </div>
                             {% endif %}
 
                             {% if app.user %}
@@ -227,45 +292,10 @@
 <a href="#" class="scroll-top"> <i class="lni lni-chevron-up"></i> </a>
 <!-- ========================= scroll-top end ========================= -->
 {% block javascripts %}
-    <!-- jQuery (uniquement si nécessaire ailleurs) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <!-- Bootstrap 5 JS (OBLIGATOIRE pour modal) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Autres scripts -->
-    <script src="{{ asset('assets/js/main.js') }}"></script>
-    <script src="{{ asset('js/logosSheet.js') }}"></script>
-
-    <!-- Select2 -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-    <!-- PDF.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    {{ encore_entry_script_tags('app') }}
     <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc =
-            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        $("#preloader").hide();
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script>
-        toastr.options = {
-            "closeButton": true,          // Affiche un bouton pour fermer
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,          // Barre de progression
-            "positionClass": "toast-top-right",
-            "preventDuplicates": true,
-            "showDuration": "3000",
-            "hideDuration": "5000",
-            "timeOut": "6000",            // Durée d'affichage
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        }
-    </script>
-
     <script>
         window.routes = {
             generatorCalculate: "{{ path('app_generator_calculate') }}",
@@ -273,9 +303,8 @@
             generatorFavorite: "{{ path('app_generator_favorite') }}"
         };
     </script>
-
-
 {% endblock %}
+
 
 </body>
 </html>

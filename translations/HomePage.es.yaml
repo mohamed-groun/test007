@@ -1,0 +1,156 @@
+Home: "Inicio"
+StartNow: "Comenzar ahora"
+Pricing: "Precios"
+Partenaria: "Socios"
+Contact: "Contacto"
+QuickLink: "Enlaces rápidos"
+About: "Acerca de"
+Service: "Servicios"
+HelpSupport: "Ayuda y soporte"
+SupportCenter: "Centro de soporte"
+LiveChat: "Chat en vivo"
+FAQ: "FAQ"
+TermsConditions: "Términos y condiciones"
+logout: "Cerrar sesión"
+Login: "Iniciar sesión"
+features: "Funcionalidades"
+
+page.home.title: "DTF Optimizer – Crea tus planchas y rollos DTF automáticamente"
+hero.subtitle: "Generador inteligente de DTF"
+hero.title: "Crea planchas y rollos DTF optimizados en pocos clics"
+hero.description: "Optimiza tus planchas y rollos DTF con nuestro generador inteligente. Importa tus imágenes, indica tamaños y cantidades, y obtén un PDF listo para imprimir. Ahorra tiempo, reduce pérdidas e imprime eficientemente."
+hero.cta: "Generar mi plancha DTF"
+hero.video_alt: "Demostración de la aplicación generador DTF optimizando planchas y rollos para impresión"
+meta.description: "Genera tus planchas y rollos DTF automáticamente. Importa imágenes, indica cantidad y tamaño, y obtén un PDF listo para imprimir. Software DTF rápido y eficiente."
+meta.og_title: "DTF Optimizer – Generador inteligente de planchas DTF"
+meta.og_description: "Optimiza tus planchas y rollos DTF en pocos clics. Crea un PDF listo para imprimir y imprime más eficientemente."
+meta.og_image: "https://votre-site.com/assets/images/og-dtf-optimizer.png"
+meta.featureList:
+  - "Generación automática de planchas y rollos DTF optimizados"
+  - "Reducción de desperdicios de material mediante optimización de impresión"
+  - "Exportación de PDF listo para imprimir"
+  - "Gestión inteligente de tamaños y cantidades de imágenes"
+  - "Interfaz simple para crear rápidamente tus planchas DTF"
+
+# HOW IT WORKS
+how.title: "¿Cómo funciona?"
+how.subtitle: "Convierte tus imágenes en pocos clics con nuestra IA"
+
+how.step1.title: "1. Subir archivos"
+how.step1.text: "Sube tus imágenes PNG o PDF de alta calidad. ¡Rápido y sencillo!"
+how.step1.strong: "¡Rápido y sencillo!"
+
+how.step2.title: "2. Elegir formato"
+how.step2.text: "Selecciona el formato deseado o deja que la IA lo elija automáticamente."
+how.step2.strong: "¡Siempre obtén el mejor resultado!"
+
+how.step3.title: "3. Vista previa y descarga"
+how.step3.text: "Previsualiza tu resultado y descárgalo con un clic."
+how.step3.strong: "¡Todas tus imágenes en el mejor formato y listas para imprimir!"
+
+# FEATURES
+features.title: "Funciones inteligentes para DTF"
+features.subtitle: "Una plataforma completa impulsada por inteligencia artificial para automatizar, optimizar y acelerar la creación de tus planchas DTF."
+
+features.ai.title: "Sistema impulsado por IA"
+features.ai.text: "Organización automática y optimización perfecta."
+
+features.favorites.title: "Logos favoritos"
+features.favorites.text: "Accede rápidamente a tus logos más utilizados."
+
+features.format.title: "Selección inteligente de formatos"
+features.format.text: "Distribución óptima seleccionada automáticamente."
+
+features.storage.title: "Almacenamiento e historial"
+features.storage.text: "Acceso permanente a tus planchas generadas."
+
+features.margins.title: "Márgenes y espaciados ajustables"
+features.margins.text: "Adaptación perfecta a las restricciones de impresión."
+
+features.speed.title: "Ahorro de tiempo y productividad"
+features.speed.text: "Crea planchas DTF en pocos segundos."
+
+# PRICING
+pricing.title: "Precios simples y flexibles"
+pricing.subtitle: "Elige la oferta que se adapte a tus necesidades"
+
+pricing.free.title: "Descubrimiento"
+pricing.free.subtitle: "Para probar la herramienta"
+pricing.free.price: "Gratis"
+pricing.free.cta: "Comenzar gratis"
+
+pricing.day.title: "Pase 1 día"
+pricing.day.subtitle: "Ideal para un pedido urgente"
+pricing.day.price: "1,90 €"
+pricing.day.cta: "Comprar"
+
+pricing.month.title: "Suscripción mensual"
+pricing.month.subtitle: "Para creadores habituales"
+pricing.month.price: "9,99 €"
+pricing.month.cta: "Suscribirse ahora"
+pricing.best: "Mejor elección"
+
+pricing.features.generate: "Generación de planchas DTF"
+pricing.features.ai: "Organización automática por IA"
+pricing.features.download: "Descarga de archivos"
+pricing.features.download_unlimited: "Descarga ilimitada"
+pricing.features.no_branding: "Sin marca 'DTF Optimizer'"
+pricing.features.support: "Soporte personalizado"
+pricing.features.margins: "Márgenes y espaciados ajustables"
+
+pricing.features.history_disabled: "Historial de PDFs"
+pricing.features.favorites_disabled: "Favoritos de imágenes"
+
+pricing.features.history: "Historial completo de PDFs"
+pricing.features.favorites: "Favoritos de imágenes (acceso rápido)"
+pricing.features.margins_disabled: "Márgenes y espaciados ajustables"
+pricing.features.branding_disabled: "Sin marca 'DTF Optimizer'"
+pricing.features.support_disabled: "Soporte personalizado"
+
+payment.subtitle: "Elige tu método de pago:"
+payment.success_year: "¡Tu pago anual se ha realizado con éxito! 🎉"
+payment.success_day: "¡Tu pago del pase de 1 día se ha realizado con éxito! 🎉 Disfruta de acceso completo durante 24 horas."
+
+
+payment.title1: "Acceso 1 día → Disfruta de todo por 24h"
+payment.title2: "Suscripción mensual → Acceso ilimitado a todas las funciones"
+
+pricing.subscribe: "Suscribirse ahora"
+pricing.login_to_subscribe: "Inicia sesión para suscribirte"
+pricing.buy: "Comprar"
+pricing.login_to_buy: "Inicia sesión para comprar"
+
+# PARTNER
+partner.title: "Conviértete en socio"
+partner.subtitle: "Únete a nuestro ecosistema DTF"
+partner.text: "¿Eres impresor DTF? Ofrece tus servicios directamente en nuestro sitio."
+partner.cta: "Contáctanos"
+
+# CONTACT
+contact.title: "Contacto"
+contact.subtitle: "Ponerse en contacto"
+contact.submit: "Enviar"
+contact.name: "Nombre"
+contact.email: "Email"
+contact.phone: "Teléfono"
+contact.subject: "Asunto"
+contact.message: "Mensaje"
+contact.right.title: "Contáctanos"
+
+# FAQ
+faq:
+  title: "FAQ - Generador de PDFs de imágenes"
+  question1: "¿Qué hace esta aplicación?"
+  answer1: "Esta aplicación convierte tus imágenes en PDFs optimizados para impresión. Puedes definir el tamaño y la cantidad de copias de cada imagen, y organiza automáticamente los archivos para un resultado listo para imprimir."
+  question2: "¿Qué formatos de imagen puedo usar?"
+  answer2: "Puedes usar formatos PNG y PDF."
+  question3: "¿Puedo personalizar el tamaño y la cantidad de copias de mis imágenes?"
+  answer3: "Sí, puedes definir el ancho y la altura de cada imagen, así como el número de copias. La aplicación optimiza el PDF para que todo esté correctamente posicionado."
+  question4: "¿Puedo descargar el PDF directamente?"
+  answer4: "¡Sí! Una vez generado el PDF, puedes descargarlo directamente a tu dispositivo e imprimirlo."
+  question5: "¿Cómo descargo el PDF generado?"
+  answer5: "Una vez cargadas las imágenes, la aplicación selecciona el mejor formato y te permite descargar el PDF directamente a tu dispositivo."
+  question6: "¿Es segura la aplicación para mis archivos?"
+  answer6: "Sí, tus imágenes y PDFs se procesan de manera segura. Ningún archivo se comparte públicamente y los datos están protegidos para garantizar tu privacidad."
+
+contact_success: "Tu mensaje ha sido enviado correctamente. Nos pondremos en contacto contigo lo antes posible."

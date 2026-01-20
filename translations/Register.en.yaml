@@ -1,0 +1,13 @@
+# register.en.yaml
+
+title: "Register"
+create_account: "Create an Account"
+fill_form: "Fill out the form to get started"
+email: "Email"
+firstname: "First Name"
+lastname: "Last Name"
+password: "Password"
+agree_terms: "I agree to the terms of use"
+submit: "Sign Up"
+already_account: "Already have an account?"
+login_here: "Log in here"

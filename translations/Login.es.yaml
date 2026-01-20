@@ -1,0 +1,14 @@
+login.title: "Iniciar sesión"
+login.subtitle: "Ingrese sus datos para continuar"
+login.email: "Email"
+login.password: "Contraseña"
+login.remember_me: "Recordarme"
+login.submit: "Iniciar sesión"
+login.register_text: "¿No tienes una cuenta?"
+login.register_link: "Regístrate aquí"
+login.logged_in_as: "Has iniciado sesión como %user%,"
+login.logout: "Cerrar sesión"
+
+# Errores de seguridad (Symfony los utiliza a menudo)
+security.invalid_credentials: "Credenciales inválidas."
+security.csrf_invalid: "Token CSRF inválido."

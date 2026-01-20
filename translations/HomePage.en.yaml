@@ -1,5 +1,159 @@
-welcome: "Welcome"
-login: "Login"
+# translations/HomePage.en.yaml
+Home: "Home"
+StartNow: "Start Now"
+Pricing: "Pricing"
+Partenaria: "Partners"
+Contact: "Contact"
+QuickLink: "Quick Links"
+About: "About"
+Service: "Services"
+HelpSupport: "Help & Support"
+SupportCenter: "Support Center"
+LiveChat: "Live Chat"
+FAQ: "FAQ"
+TermsConditions: "Terms & Conditions"
 logout: "Logout"
-logout2: "Déconnexion00EN"
-aaa: "EN"
+Login: "Login"
+features: "Features"
+
+page.home.title: "DTF Optimizer – Create your DTF sheets and rolls automatically"
+hero.subtitle: "Intelligent DTF generator"
+hero.title: "Create optimized DTF sheets and rolls in just a few clicks"
+hero.description: "Optimize your DTF sheets and rolls with our intelligent generator. Import your images, set sizes and quantities, and get a PDF ready to print. Save time, reduce waste, and print efficiently."
+hero.cta: "Generate my DTF sheet"
+hero.video_alt: "Demo of the DTF generator application optimizing sheets and rolls for printing"
+meta.description: "Automatically generate your DTF sheets and rolls. Import images, set quantities and sizes, and get a PDF ready to print. Fast and efficient DTF software."
+meta.og_title: "DTF Optimizer – Intelligent DTF sheet generator"
+meta.og_description: "Optimize your DTF sheets and rolls in just a few clicks. Create a PDF ready to print and print more efficiently."
+meta.og_image: "https://votre-site.com/assets/images/og-dtf-optimizer.png"
+meta.featureList:
+  - "Automatically generate optimized DTF sheets and rolls"
+  - "Reduce material waste with print optimization"
+  - "Export PDF ready to print"
+  - "Smart management of image sizes and quantities"
+  - "Simple interface to quickly create your DTF sheets"
+
+# HOW IT WORKS
+how.title: "How It Works"
+how.subtitle: "Turn your images into print-ready layouts in just a few clicks with our AI"
+
+how.step1.title: "1. Upload Your Files"
+how.step1.text: "Upload high-quality PNG or PDF images. Quick and easy!"
+how.step1.strong: "Quick and easy!"
+
+how.step2.title: "2. Choose the Format"
+how.step2.text: "Select your desired format or let AI choose automatically."
+how.step2.strong: "Always get the best result!"
+
+how.step3.title: "3. Preview & Download"
+how.step3.text: "Preview your layout and download it with one click."
+how.step3.strong: "All your images in the best format, ready to print!"
+
+# FEATURES
+features.title: "Smart Features for DTF"
+features.subtitle: "A complete AI-powered platform to automate, optimize, and speed up your DTF sheet creation."
+
+features.ai.title: "AI-Powered System"
+features.ai.text: "Automatic organization and perfect optimization."
+
+features.favorites.title: "Favorite Logos"
+features.favorites.text: "Quick access to your most-used logos."
+
+features.format.title: "Smart Format Selection"
+features.format.text: "Optimal layout chosen automatically."
+
+features.storage.title: "Storage & History"
+features.storage.text: "Permanent access to your generated sheets."
+
+features.margins.title: "Adjustable Margins & Spacing"
+features.margins.text: "Perfectly adapts to printing constraints."
+
+features.speed.title: "Time-Saving & Productivity"
+features.speed.text: "Create DTF sheets in seconds."
+
+# PRICING
+pricing.title: "Simple and Flexible Pricing"
+pricing.subtitle: "Choose the plan that fits your needs"
+
+pricing.free.title: "Trial"
+pricing.free.subtitle: "Try the tool"
+pricing.free.price: "Free"
+pricing.free.cta: "Start for Free"
+
+pricing.day.title: "1-Day Pass"
+pricing.day.subtitle: "Ideal for an urgent order"
+pricing.day.price: "€1.90"
+pricing.day.cta: "Buy"
+
+pricing.month.title: "Monthly Subscription"
+pricing.month.subtitle: "For regular creators"
+pricing.month.price: "€9.99"
+pricing.month.cta: "Subscribe Now"
+pricing.best: "Best Choice"
+
+pricing.features.generate: "DTF Sheet Generation"
+pricing.features.ai: "Automatic AI Organization"
+pricing.features.download: "File Download"
+pricing.features.download_unlimited: "Unlimited Downloads"
+pricing.features.no_branding: "No 'DTF Optimizer' Branding"
+pricing.features.support: "Personalized Support"
+pricing.features.margins: "Adjustable Margins & Spacing"
+
+pricing.features.history_disabled: "PDF History"
+pricing.features.favorites_disabled: "Image Favorites"
+
+pricing.features.history: "Full PDF History"
+pricing.features.favorites: "Image Favorites (Quick Access)"
+pricing.features.margins_disabled: "Adjustable Margins & Spacing"
+pricing.features.branding_disabled: "No 'DTF Optimizer' Branding"
+pricing.features.support_disabled: "Personalized Support"
+
+payment.subtitle: "Choose your payment method:"
+payment.success_year: "Your annual payment was successful! 🎉"
+payment.success_day: "Your 1-day pass payment was successfully completed! 🎉 Enjoy full access for 24 hours."
+
+
+payment.title1: "1-Day Access → Enjoy everything for 24 hours only"
+payment.title2: "Monthly Subscription → Unlimited access to all features"
+
+# Subscription / Purchase Buttons
+pricing.subscribe: "Subscribe Now"
+pricing.login_to_subscribe: "Log in to Subscribe"
+pricing.buy: "Buy"
+pricing.login_to_buy: "Log in to Buy"
+
+# PARTNER
+partner.title: "Become a Partner"
+partner.subtitle: "Join our DTF ecosystem"
+partner.text: "Are you a DTF printer? Offer your services directly on our website."
+partner.cta: "Contact Us"
+
+# CONTACT
+contact.title: "Contact"
+contact.subtitle: "Get in touch"
+contact.submit: "Send"
+# Contact form
+contact.name: "Name"
+contact.email: "Email"
+contact.phone: "Phone"
+contact.subject: "Subject"
+contact.message: "Message"
+contact.right.title: "Contact Us"
+
+# FAQ
+faq:
+  title: "FAQ - Image PDF Generator"
+  question1: "What does this application do?"
+  answer1: "This app converts your images into print-optimized PDFs. You can set the size and number of copies for each image, and it automatically arranges the files for a print-ready result."
+  question2: "Which image formats can I use?"
+  answer2: "You can use PNG and PDF formats."
+  question3: "Can I customize the size and number of copies for my images?"
+  answer3: "Yes, you can define the width and height of each image and the number of copies. The app then optimizes the PDF so everything is correctly positioned."
+  question4: "Can I download the PDF directly?"
+  answer4: "Yes! Once the PDF is generated, you can download it directly to your device and print it."
+  question5: "How do I download the generated PDF?"
+  answer5: "Once your images are uploaded, the app selects the best format and lets you download the PDF directly to your device."
+  question6: "Is the app secure for my files?"
+  answer6: "Yes, your images and PDFs are handled securely. No files are shared publicly, and your data is protected to ensure your privacy."
+
+contact_success: "Your message has been sent successfully. We will contact you as soon as possible."
