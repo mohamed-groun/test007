@@ -53,22 +53,22 @@ features.title: "Funciones inteligentes para DTF"
 features.subtitle: "Una plataforma completa impulsada por inteligencia artificial para automatizar, optimizar y acelerar la creación de tus planchas DTF."
 
 features.ai.title: "Sistema impulsado por IA"
-features.ai.text: "Organización automática y optimización perfecta."
+features.ai.text: "Nuestra inteligencia artificial organiza automáticamente tus imágenes y cantidades para crear planchas DTF perfectamente optimizadas."
 
 features.favorites.title: "Logos favoritos"
-features.favorites.text: "Accede rápidamente a tus logos más utilizados."
+features.favorites.text: "Guarda tus logos más usados para encontrarlos al instante y acelerar la creación de tus planchas DTF."
 
 features.format.title: "Selección inteligente de formatos"
-features.format.text: "Distribución óptima seleccionada automáticamente."
+features.format.text: "Elige uno o varios formatos de plancha, o deja que la IA seleccione automáticamente la mejor disposición para ti."
 
 features.storage.title: "Almacenamiento e historial"
-features.storage.text: "Acceso permanente a tus planchas generadas."
+features.storage.text: "Todas tus imágenes y planchas DTF generadas se almacenan de manera segura y se pueden descargar en cualquier momento."
 
-features.margins.title: "Márgenes y espaciados ajustables"
-features.margins.text: "Adaptación perfecta a las restricciones de impresión."
+features.margins.title: "Márgenes y espacios ajustables"
+features.margins.text: "Ajusta libremente los márgenes y el espacio entre las imágenes para adaptar perfectamente tus planchas a las restricciones de impresión DTF."
 
 features.speed.title: "Ahorro de tiempo y productividad"
-features.speed.text: "Crea planchas DTF en pocos segundos."
+features.speed.text: "Genera tus planchas DTF en segundos y concéntrate en la impresión mientras la IA se encarga de la optimización."
 
 # PRICING
 pricing.title: "Precios simples y flexibles"

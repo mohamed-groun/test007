@@ -51,25 +51,25 @@ how.step3.strong: "All your images in the best format, ready to print!"
 
 # FEATURES
 features.title: "Smart Features for DTF"
-features.subtitle: "A complete AI-powered platform to automate, optimize, and speed up your DTF sheet creation."
+features.subtitle: "A comprehensive AI-powered platform to automate, optimize, and speed up the creation of your DTF sheets."
 
 features.ai.title: "AI-Powered System"
-features.ai.text: "Automatic organization and perfect optimization."
+features.ai.text: "Our artificial intelligence automatically organizes your images and quantities to create perfectly optimized DTF sheets."
 
 features.favorites.title: "Favorite Logos"
-features.favorites.text: "Quick access to your most-used logos."
+features.favorites.text: "Save your most used logos to find them instantly and speed up the creation of your DTF sheets."
 
 features.format.title: "Smart Format Selection"
-features.format.text: "Optimal layout chosen automatically."
+features.format.text: "Choose one or multiple sheet formats, or let the AI automatically select the best layout for you."
 
 features.storage.title: "Storage & History"
-features.storage.text: "Permanent access to your generated sheets."
+features.storage.text: "All your images and generated DTF sheets are securely stored and remain downloadable at any time."
 
 features.margins.title: "Adjustable Margins & Spacing"
-features.margins.text: "Perfectly adapts to printing constraints."
+features.margins.text: "Freely adjust margins and spacing between images to perfectly fit your sheets to DTF printing requirements."
 
 features.speed.title: "Time-Saving & Productivity"
-features.speed.text: "Create DTF sheets in seconds."
+features.speed.text: "Generate your DTF sheets in seconds and focus on printing while the AI handles optimization."
 
 # PRICING
 pricing.title: "Simple and Flexible Pricing"

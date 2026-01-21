@@ -50,25 +50,25 @@ how.step3.strong: "Tutte le tue immagini nel miglior formato e pronte per la sta
 
 # FEATURES
 features.title: "Funzionalità intelligenti per DTF"
-features.subtitle: "Una piattaforma completa basata su intelligenza artificiale per automatizzare, ottimizzare e velocizzare la creazione delle tue tavole DTF."
+features.subtitle: "Una piattaforma completa alimentata dall’intelligenza artificiale per automatizzare, ottimizzare e velocizzare la creazione delle tue tavole DTF."
 
-features.ai.title: "Sistema basato su IA"
-features.ai.text: "Organizzazione automatica e ottimizzazione perfetta."
+features.ai.title: "Sistema alimentato dall’IA"
+features.ai.text: "La nostra intelligenza artificiale organizza automaticamente le tue immagini e quantità per creare tavole DTF perfettamente ottimizzate."
 
 features.favorites.title: "Loghi preferiti"
-features.favorites.text: "Accesso rapido ai loghi più usati."
+features.favorites.text: "Salva i loghi che usi di più per ritrovarli subito e accelerare la creazione delle tue tavole DTF."
 
-features.format.title: "Scelta intelligente del formato"
-features.format.text: "Layout ottimale selezionato automaticamente."
+features.format.title: "Scelta intelligente dei formati"
+features.format.text: "Scegli uno o più formati di tavola, oppure lascia che l’IA selezioni automaticamente la disposizione migliore per te."
 
-features.storage.title: "Archiviazione e storico"
-features.storage.text: "Accesso permanente alle tavole generate."
+features.storage.title: "Archiviazione e cronologia"
+features.storage.text: "Tutte le tue immagini e tavole DTF generate sono archiviate in sicurezza e possono essere scaricate in qualsiasi momento."
 
 features.margins.title: "Margini e spazi regolabili"
-features.margins.text: "Adattamento perfetto ai vincoli di stampa."
+features.margins.text: "Regola liberamente i margini e lo spazio tra le immagini per adattare perfettamente le tavole ai vincoli di stampa DTF."
 
 features.speed.title: "Risparmio di tempo e produttività"
-features.speed.text: "Creazione di tavole DTF in pochi secondi."
+features.speed.text: "Genera le tue tavole DTF in pochi secondi e concentrati sulla stampa mentre l’IA si occupa dell’ottimizzazione."
 
 # PRICING
 pricing.title: "Prezzi semplici e flessibili"
