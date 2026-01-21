@@ -5,6 +5,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('assets/css/generator.css') }}" rel="stylesheet">
+<main>
     <div class="container-fluid py-4">
         <div class="row g-4">
             {# Colonne gauche : import d'images #}
@@ -142,7 +143,7 @@
             </div>
         </div>
     </div>
-
+</main>
     <script>
         const favoriteImages = {{ favorites|json_encode|raw }};
     </script>

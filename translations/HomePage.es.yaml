@@ -140,17 +140,23 @@ contact.right.title: "Contáctanos"
 # FAQ
 faq:
   title: "FAQ - Generador de PDFs de imágenes"
-  question1: "¿Qué hace esta aplicación?"
-  answer1: "Esta aplicación convierte tus imágenes en PDFs optimizados para impresión. Puedes definir el tamaño y la cantidad de copias de cada imagen, y organiza automáticamente los archivos para un resultado listo para imprimir."
-  question2: "¿Qué formatos de imagen puedo usar?"
-  answer2: "Puedes usar formatos PNG y PDF."
-  question3: "¿Puedo personalizar el tamaño y la cantidad de copias de mis imágenes?"
-  answer3: "Sí, puedes definir el ancho y la altura de cada imagen, así como el número de copias. La aplicación optimiza el PDF para que todo esté correctamente posicionado."
-  question4: "¿Puedo descargar el PDF directamente?"
-  answer4: "¡Sí! Una vez generado el PDF, puedes descargarlo directamente a tu dispositivo e imprimirlo."
-  question5: "¿Cómo descargo el PDF generado?"
-  answer5: "Una vez cargadas las imágenes, la aplicación selecciona el mejor formato y te permite descargar el PDF directamente a tu dispositivo."
-  question6: "¿Es segura la aplicación para mis archivos?"
-  answer6: "Sí, tus imágenes y PDFs se procesan de manera segura. Ningún archivo se comparte públicamente y los datos están protegidos para garantizar tu privacidad."
+  question1.: "¿Qué es un generador DTF?"
+  answer1: "Un generador DTF es una herramienta que crea automáticamente planchas o bobinas DTF a partir de tus imágenes. Optimiza la disposición de los diseños en el film de transferencia DTF para reducir desperdicios y obtener un resultado listo para imprimir."
+
+  question2: "¿Cómo funciona el generador de planchas DTF?"
+  answer2: "Subes tus imágenes (PDF, PNG), indicas sus dimensiones y cantidades, y el generador DTF organiza automáticamente los diseños en una plancha o bobina DTF optimizada. Luego se genera un PDF listo para imprimir."
+
+  question3: "¿Puedo optimizar mis impresiones DTF para reducir el desperdicio?"
+  answer3: "Sí, la optimización es una de las principales ventajas del generador DTF. Reduce los espacios inutilizados en las planchas y bobinas DTF, disminuyendo el consumo de film de transferencia."
+
+  question4: "¿Para qué sirve el film de transferencia DTF?"
+  answer4: "El film de transferencia DTF se utiliza en la impresión Direct-To-Film. Permite transferir los diseños impresos a textiles después de aplicar el polvo y usar una prensa térmica."
+
+  question5: "¿Cómo puedo descargar el PDF generado?"
+  answer5: "Una vez cargadas las imágenes, la aplicación selecciona el mejor formato y te permite descargar el PDF directamente en tu dispositivo."
+
+  question6: "¿La aplicación es segura para mis archivos?"
+  answer6: "Sí, tus imágenes y PDFs se procesan de forma segura. Ningún archivo se comparte públicamente y los datos están protegidos para garantizar tu privacidad."
+
 
 contact_success: "Tu mensaje ha sido enviado correctamente. Nos pondremos en contacto contigo lo antes posible."
