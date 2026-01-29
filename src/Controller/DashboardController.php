@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[Route('/{_locale}',requirements: ['_locale' => 'fr|en|es|it|de'],defaults: ['_locale' => 'fr'])]
 final class DashboardController extends AbstractController
 {
 #[Route('/dashboard', name: 'app_dashboard')]

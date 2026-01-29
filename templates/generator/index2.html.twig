@@ -68,21 +68,33 @@
                     </h5>
 
                     <div class="form-group mb-4">
-                        <label class="form-label">
-                            {{ 'generator.config.format.label'|trans }}
-                        </label>
+                        <div class="row">
+                            <div class="col-sm-11 col-lg-11">
+                                <label class="form-label">
+                                    {{ 'generator.config.format.label'|trans }}
+                                </label>
+                                <select class="select2 form-control"
+                                        id="support"
+                                        name="support[]"
+                                        multiple="multiple"
+                                        onchange="toggleButtons(false);">
+                                    {% for support in supports %}
+                                        <option value="{{ support.id }}">
+                                            {{ support.name }} — {{ support.description }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-sm-1 col-lg-1 text-center">
+                                <!-- Icône avec animation hover et ouverture modal -->
+                                <i class="bi bi-question-circle fs-4 animated-icon"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#infoModal"
+                                   id="helpIcon"
+                                   title="Cliquez pour plus d'infos"></i>
 
-                        <select class="select2 form-control"
-                                id="support"
-                                name="support[]"
-                                multiple="multiple"
-                                onchange="toggleButtons(false);">
-                            {% for support in supports %}
-                                <option value="{{ support.id }}">
-                                    {{ support.name }} — {{ support.description }}
-                                </option>
-                            {% endfor %}
-                        </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group d-flex align-items-center justify-content-between mb-3">
@@ -143,6 +155,34 @@
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    <!-- Modal explicatif -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered"> <!-- modal-lg pour plus d'espace -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">Information sur les formats</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>DTF Generator choisira le format le plus adapté pour vos visuels parmi cette liste :</strong></p>
+                    <ul>
+                        <li>Planche A6 : 10,5 × 14,8 cm</li>
+                        <li>Planche A5 : 14,8 × 21 cm</li>
+                        <li>Planche A4 : 21 × 29,7 cm</li>
+                        <li>Planche A3 : 29,7 × 42 cm</li>
+                        <li>Bobine : largeur 54 cm, longueur entre 100 et 900 cm</li>
+                    </ul><br>
+                    <p><strong>Vous souhaitez d’autres formats ?</strong></p>
+                    <p>Connectez-vous et ajoutez les formats disponibles via ce lien : <a href="http://127.0.0.1:8000/supports" target="_blank">Formats supplémentaires</a></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
     <script>
         const favoriteImages = {{ favorites|json_encode|raw }};

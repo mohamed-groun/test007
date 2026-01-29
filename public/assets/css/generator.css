@@ -99,3 +99,17 @@ main {
     transform: translateY(-1px);
     box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
 }
+
+.select2-search__field {
+    padding-left: 1rem !important;
+    font-weight: 900;
+}
+.animated-icon {
+    transition: transform 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+}
+
+.animated-icon:hover {
+    transform: scale(1.3) rotate(10deg); /* grandit et tourne un peu */
+    color: #0d6efd; /* change de couleur au hover */
+}
