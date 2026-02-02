@@ -69,7 +69,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "DTF Optimizer",
+  "name": "DTF Generator",
   "operatingSystem": "Web",
   "applicationCategory": "GraphicsApplication",
   "url": "{{ app.request.schemeAndHttpHost }}{{ path('app_generator') }}",
@@ -79,23 +79,24 @@
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "EUR",
-    "url": "{{ app.request.schemeAndHttpHost }}{{ path('app_generator_2') }}"
+    "url": "{{ app.request.schemeAndHttpHost }}{{ path('app_generator_2') }}",
+    "availability": "https://schema.org/InStock"
   },
- "featureList": [
+  "featureList": [
     "Génération automatique de planches et bobines DTF optimisées",
     "Réduction des pertes de matériaux grâce à l’optimisation des impressions",
     "Export PDF prêt à l’impression",
     "Gestion intelligente des tailles et quantités d’images",
     "Interface simple pour créer vos planches DTF rapidement"
- ],
+  ],
   "screenshot": "{{ 'meta.og_image'|trans }}",
   "softwareVersion": "1.0",
   "author": {
     "@type": "Organization",
-    "name": "DTF Optimazer"
+    "name": "DTF Generator"
+  }
 }
-
-        </script>
+</script>
     {% endblock %}
 
 </head>

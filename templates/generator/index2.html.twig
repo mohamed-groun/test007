@@ -125,7 +125,7 @@
                                onchange="toggleButtons(false);">
                     </div>
 
-                    <div class="form-check form-switch mb-4">
+                    <div class="form-check form-switch mb-4" style="padding-left: 2.5em">
                         <input class="form-check-input"
                                type="checkbox"
                                id="with_banner"
@@ -214,24 +214,29 @@
             const card = document.createElement('div');
             card.className = 'sheet-card';
             card.innerHTML = `
-            <div class="canvas-wrapper">
-                <canvas></canvas>
-            </div>
-        `;
+        <div class="canvas-wrapper" style="width: 100%; max-width: 600px; margin: auto;">
+            <canvas></canvas>
+        </div>
+    `;
             container.appendChild(card);
 
             const canvas = card.querySelector('canvas');
             const ctx = canvas.getContext('2d');
 
+            // Dimensions "logiques" du support
             const supportWidth = 210;
             const supportHeight = 297;
             const scale = 2;
 
+            // Taille interne du canvas pour le rendu haute résolution
             canvas.width = supportWidth * scale;
             canvas.height = supportHeight * scale;
-            canvas.style.width = canvas.width + 'px';
-            canvas.style.height = canvas.height + 'px';
 
+            // Taille CSS pour le rendu responsive, limité pour desktop
+            canvas.style.width = '100%';
+            canvas.style.height = 'auto'; // conserve le ratio
+
+            // Bordure et fond
             ctx.strokeStyle = '#111827';
             ctx.lineWidth = 1.5;
             ctx.strokeRect(0, 0, canvas.width, canvas.height);
@@ -258,6 +263,8 @@
                 canvas.height - bannerHeightPx / 2
             );
         }
+
+
 
         createDefaultRenderPreviewCanvas();
     </script>

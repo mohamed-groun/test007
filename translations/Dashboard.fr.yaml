@@ -26,3 +26,19 @@ support:
 roll:
   success_updated: "Bobine mise à jour avec succès !"
 
+
+supports_customization_message: "🎨 Personnalisez vos supports, et laissez l’IA choisir ensuite le meilleur pour vos images !"
+standard_supports_title: "📄 Supports standards"
+no_standard_supports: "Aucun support standard"
+custom_supports_title: "🛠️ Mes supports personnalisés"
+add_support_button: "Ajouter un support"
+custom_roll_title: "🧵 Ma bobine personnalisée"
+edit_roll_button: "Modifier ma bobine"
+cancel_button: "Annuler"
+logout_button: "Déconnexion"
+new_support_modal_title: "Nouveau support"
+support_name_placeholder: "Nom du support"
+support_width_placeholder: "Largeur (cm)"
+support_height_placeholder: "Hauteur (cm)"
+support_description_placeholder: "Description (facultatif)"
+save_button: "Enregistrer"

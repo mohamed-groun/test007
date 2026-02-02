@@ -10585,3 +10585,9 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+.generator-wrapper {
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 2rem
+}

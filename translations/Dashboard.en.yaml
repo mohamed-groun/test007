@@ -25,3 +25,21 @@ support:
   success_added: "Support added successfully!"
 roll:
   success_updated: "Roll updated successfully!"
+
+# translations/Dashboard.en.yaml
+
+supports_customization_message: "🎨 Customize your materials, and let the AI choose the best for your images!"
+standard_supports_title: "📄 Standard Supports"
+no_standard_supports: "No standard support"
+custom_supports_title: "🛠️ My Custom Supports"
+add_support_button: "Add a support"
+custom_roll_title: "🧵 My Custom Roll"
+edit_roll_button: "Edit my roll"
+cancel_button: "Cancel"
+logout_button: "Logout"
+new_support_modal_title: "New Support"
+support_name_placeholder: "Support name"
+support_width_placeholder: "Width (cm)"
+support_height_placeholder: "Height (cm)"
+support_description_placeholder: "Description (optional)"
+save_button: "Save"

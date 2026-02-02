@@ -130,12 +130,12 @@ async function handleFiles(files) {
         const toggleBtn = document.createElement("button");
         toggleBtn.type = "button";
         toggleBtn.classList.add("btn", "btn-sm", "btn-secondary");
-        toggleBtn.innerHTML = `<i class="fa-solid fa-minus"></i>`;
+        toggleBtn.innerHTML = `<i class="bi bi-dash"></i>`;
 
         const deleteBtn = document.createElement("button");
         deleteBtn.type = "button";
         deleteBtn.classList.add("btn", "btn-sm", "btn-danger");
-        deleteBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+        deleteBtn.innerHTML = `<i class="bi bi-trash"></i>`;
         deleteBtn.addEventListener("click", () => removeFileById(fileId));
 
         btnGroup.appendChild(toggleBtn);
@@ -260,8 +260,8 @@ async function handleFiles(files) {
             compactRow.classList.toggle("d-none", !collapsed);
 
             toggleBtn.innerHTML = collapsed
-                ? `<i class="fa-solid fa-plus"></i>`
-                : `<i class="fa-solid fa-minus"></i>`;
+                ? `<i class="bi bi-plus"></i>`
+                : `<i class="bi bi-dash"></i>`;
         });
 
         previewDiv.appendChild(card);
@@ -374,12 +374,12 @@ async function displayFavoriteImages(favoriteImages) {
         const toggleBtn = document.createElement("button");
         toggleBtn.type = "button";
         toggleBtn.classList.add("btn", "btn-sm", "btn-secondary");
-        toggleBtn.innerHTML = `<i class="fa-solid fa-minus"></i>`;
+        toggleBtn.innerHTML = `<i class="bi bi-dash"></i>`;
 
         const deleteBtn = document.createElement("button");
         deleteBtn.type = "button";
         deleteBtn.classList.add("btn", "btn-sm", "btn-danger");
-        deleteBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+        deleteBtn.innerHTML = `<i class="bi bi-trash"></i>`;
         deleteBtn.addEventListener("click", () => removeFileById(fileId));
 
         btnGroup.appendChild(toggleBtn);
@@ -494,8 +494,8 @@ async function displayFavoriteImages(favoriteImages) {
             compactRow.classList.toggle("d-none", !collapsed);
 
             toggleBtn.innerHTML = collapsed
-                ? `<i class="fa-solid fa-plus"></i>`
-                : `<i class="fa-solid fa-minus"></i>`;
+                ? `<i class="bi bi-plus"></i>`
+                : `<i class="bi bi-dash"></i>`;
         });
 
         previewDiv.appendChild(card);
@@ -822,24 +822,34 @@ async function renderPreview(data) {
             const canvas = card.querySelector('canvas');
             const ctx = canvas.getContext('2d');
 
-            // Dimensions réelles
+// Dimensions réelles
             const supportWidth = Number(support.width);
             const supportHeight = Number(support.height);
 
-            // Facteur d'agrandissement
+// Facteur d'agrandissement pour rendu net
             let scale = 1;
             if (supportWidth < 300) scale = 2;
             if (supportWidth < 220) scale = 3;
             if (supportWidth < 150) scale = 4;
             if (supportWidth < 110) scale = 5;
 
+// Taille interne pour rendu haute résolution
             canvas.width = supportWidth * scale;
             canvas.height = supportHeight * scale;
-            canvas.style.width = `${supportWidth * scale}px`;
-            canvas.style.height = `${supportHeight * scale}px`;
 
+// Taille CSS responsive pour affichage
+            canvas.style.width = '100%';
+            canvas.style.height = 'auto';
+
+// Limiter la largeur sur desktop
+            const wrapper = card.querySelector('.canvas-wrapper');
+            wrapper.style.maxWidth = '600px';
+            wrapper.style.margin = 'auto';
+
+// Ajuster la présentation
             const supportPresentation = card.querySelector('.support-presentation');
-            supportPresentation.style.width = `${canvas.width}px`;
+            supportPresentation.style.width = '100%';
+
 
             // Bordure
             ctx.strokeStyle = '#111827';
@@ -897,7 +907,9 @@ async function renderPreview(data) {
 /* =========================================================
    PDF render helper (IMPORTANT: return promise)
 ========================================================= */
+/*
 async function drawPdfOnCanvas(pdfUrl, canvas, scale = 1) {
+
     const ctx = canvas.getContext('2d');
 
     const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
@@ -912,4 +924,4 @@ async function drawPdfOnCanvas(pdfUrl, canvas, scale = 1) {
         canvasContext: ctx,
         viewport
     }).promise;
-}
+}  */

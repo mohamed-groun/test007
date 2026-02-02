@@ -170,11 +170,20 @@ final class GeneratorController extends AbstractController
         Request $request,
         PdfsGeneratorService $pdfsGenerator,
         MultiPackService $multiPackService,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        TranslatorInterface $translator
     ): Response
     {
         ini_set('memory_limit', '2G');
 
+        $user = $this->getUser();
+        $isPremium = $user
+            ? $em->getRepository(UserSubscription::class)->isActiveForUser($user->getId())
+            : false;
+
+        if (!$isPremium) {
+            return $this->premiumError('messages.premium_margin_error', $translator);
+        }
         $id_file = $request->request->get('id_file');
 
         $with_banner = (bool)$request->request->get('with_banner', false);

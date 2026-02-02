@@ -1,53 +1,43 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'Dashboard' %}
-    {% block stylesheets %}
-        <!-- Custom fonts for this template-->
-        {{ parent() }}
-        <link  href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
-<style>
-    .btn-trash {
-        color: #6c757d;
-        border: none;
-        border-radius: 4px;
-        padding: 0.25rem 0.5rem;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
 
-    .btn-trash:hover {
-        color: #dc3545; /* fond rouge au hover */
-    }
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .btn-trash {
+            color: #6c757d;
+            border: none;
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
+        .btn-trash:hover {
+            color: #dc3545;
+        }
+    </style>
+{% endblock %}
 
-</style>
-    {% endblock %}
 {% block body %}
-
-    <!-- Page Wrapper -->
     <div id="wrapper">
-
         <!-- Sidebar -->
         {% include 'includes/sidebar.html.twig' %}
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
+        <div id="content-wrapper" class="d-flex flex-column  generator-wrapper" >
             <!-- Main Content -->
             <div id="content" class="pt-4">
-
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
-                    <!-- Page Heading -->
-
-                    <div class="container">
+                    <div class="">
                         <!-- Message d'information -->
                         <div class="alert alert-primary" role="alert">
-                            🎨 Personnalisez vos supports, et laissez l’IA choisir ensuite le meilleur pour vos images !
+                            {{ 'supports_customization_message'|trans }}
                         </div>
 
-                        <h2 class="mb-3">📄 Supports standards</h2>
+                        <h3 class="mb-3">{{ 'standard_supports_title'|trans }}</h3>
                         <div class="row">
                             {% for support in globalSupports %}
                                 <div class="col-md-4 mb-3">
@@ -62,16 +52,14 @@
                                     </div>
                                 </div>
                             {% else %}
-                                <p>Aucun support standard</p>
+                                <p>{{ 'no_standard_supports'|trans }}</p>
                             {% endfor %}
                         </div>
-
                         <hr>
-
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h2 class="mb-3">🛠️ Mes supports personnalisés</h2>
+                            <h3 class="mb-3">{{ 'custom_supports_title'|trans }}</h3>
                             <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addSupport">
-                                <i class="bi bi-plus"></i>  Ajouter un support
+                                <i class="bi bi-plus"></i> {{ 'add_support_button'|trans }}
                             </button>
                         </div>
 
@@ -85,36 +73,31 @@
                                                 {{ support.width }} × {{ support.height }} cm<br>
                                                 {{ support.description }}
                                             </p>
-
-                                            {# Bouton supprimer #}
                                             <button class="btn btn-sm btn-trash position-absolute top-0 end-0 m-2 delete-support-btn"
                                                     data-id="{{ support.id }}"
                                                     data-token="{{ csrf_token('delete_support' ~ support.id) }}">
                                                 <i class="bi bi-trash"></i>
                                             </button>
-
-
                                         </div>
                                     </div>
                                 </div>
-
                             {% else %}
-                                <p class="text-muted">Vous n'avez pas encore de supports personnalisés</p>
+                                <p class="text-muted">{{ 'no_standard_supports'|trans }}</p>
                             {% endfor %}
                         </div>
+
+                        <!-- Modal Ajouter Support -->
                         <div class="modal fade" id="addSupport" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
-                                <form  id="supportForm" action="{{ path('support_add') }}" class="modal-content">
-
+                                <form id="supportForm" action="{{ path('support_add') }}" class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Nouveau support</h5>
+                                        <h5 class="modal-title">{{ 'new_support_modal_title'|trans }}</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
-
                                     <div class="modal-body">
                                         <input class="form-control mb-2"
                                                name="name"
-                                               placeholder="Nom du support"
+                                               placeholder="{{ 'support_name_placeholder'|trans }}"
                                                required>
 
                                         <input class="form-control mb-2"
@@ -122,7 +105,7 @@
                                                type="number"
                                                step="0.1"
                                                min="0"
-                                               placeholder="Largeur (cm)"
+                                               placeholder="{{ 'support_width_placeholder'|trans }}"
                                                required>
 
                                         <input class="form-control mb-2"
@@ -130,29 +113,26 @@
                                                type="number"
                                                step="0.1"
                                                min="0"
-                                               placeholder="Hauteur (cm)"
+                                               placeholder="{{ 'support_height_placeholder'|trans }}"
                                                required>
 
                                         <textarea class="form-control"
                                                   name="description"
-                                                  placeholder="Description (facultatif)"></textarea>
+                                                  placeholder="{{ 'support_description_placeholder'|trans }}"></textarea>
                                     </div>
-
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">
-                                            Enregistrer
-                                        </button>
+                                        <button type="submit" class="btn btn-primary">{{ 'save_button'|trans }}</button>
                                     </div>
-
                                 </form>
                             </div>
                         </div>
 
                         <hr>
+
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h2 class="mb-3">🧵 Ma bobine personnalisée</h2>
+                            <h3 class="mb-3">{{ 'custom_roll_title'|trans }}</h3>
                             <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#editRoll">
-                                <i class="bi bi-pencil-square"></i> Modifier ma bobine
+                                <i class="bi bi-pencil-square"></i> {{ 'edit_roll_button'|trans }}
                             </button>
                         </div>
 
@@ -176,7 +156,7 @@
                                             <p class="card-text">
                                                 Largeur : 54 cm<br>
                                                 Hauteur : 100 - 900 cm<br>
-                                                <b>Roll-up de 54 cm de largeur,  de 100 à 900 cm de hauteur</b>
+                                                <b>Roll-up de 54 cm de largeur, de 100 à 900 cm de hauteur</b>
                                             </p>
                                         </div>
                                     </div>
@@ -189,58 +169,49 @@
                             <div class="modal-dialog modal-dialog-centered">
                                 <form id="rollForm" action="{{ path('roll_save') }}" class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Modifier ma bobine</h5>
+                                        <h5 class="modal-title">{{ 'edit_roll_button'|trans }}</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
                                     <div class="modal-body">
                                         <div class="mb-2">
                                             <input class="form-control" name="width" type="number" step="0.1" min="0"
-                                                   placeholder="Largeur (cm)" required value="{{ roll.width|default('') }}">
+                                                   placeholder="{{ 'support_width_placeholder'|trans }}"
+                                                   required value="{{ roll.width|default('') }}">
                                         </div>
 
                                         <div class="row mb-2">
                                             <div class="col">
                                                 <input class="form-control" name="min_height" type="number" step="0.1" min="0"
-                                                       placeholder="Hauteur min (cm)" required value="{{ roll.minHeight|default('') }}">
+                                                       placeholder="{{ 'support_height_placeholder'|trans }}"
+                                                       required value="{{ roll.minHeight|default('') }}">
                                             </div>
                                             <div class="col">
                                                 <input class="form-control" name="max_height" type="number" step="0.1" min="0"
-                                                       placeholder="Hauteur max (cm)" required value="{{ roll.maxHeight|default('') }}">
+                                                       placeholder="{{ 'support_height_placeholder'|trans }}"
+                                                       required value="{{ roll.maxHeight|default('') }}">
                                             </div>
                                         </div>
 
                                         <div class="mb-2">
-                    <textarea class="form-control" name="description"
-                              placeholder="Description (facultatif)">{{ roll.description|default('') }}</textarea>
+                                        <textarea class="form-control" name="description"
+                                                  placeholder="{{ 'support_description_placeholder'|trans }}">{{ roll.description|default('') }}</textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                        <button type="submit" class="btn btn-primary">{{ 'save_button'|trans }}</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
 
-
                     </div>
 
-
-                    {# CSRF token hidden pour JS #}
                     <input type="hidden" id="csrf_favorite" value="{{ csrf_token('favorite_image') }}">
 
-
-                    <!-- Content Row -->
-
                 </div>
-                <!-- /.container-fluid -->
-
             </div>
-            <!-- End of Main Content -->
         </div>
-        <!-- End of Content Wrapper -->
-
     </div>
-    <!-- End of Page Wrapper -->
 
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -248,29 +219,27 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <h5 class="modal-title">{{ 'logout_modal_title'|trans }}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">{{ 'logout_modal_body'|trans }}</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">{{ 'cancel_button'|trans }}</button>
+                    <a class="btn btn-primary" href="login.html">{{ 'logout_button'|trans }}</a>
                 </div>
             </div>
         </div>
     </div>
-
 {% endblock %}
+
 {% block javascripts %}
-    <!-- Bootstrap core JavaScript-->
     {{ parent() }}
-    <script src="assets-admin/js/sb-admin-2.min.js"></script>
+
     <script>
         $('#supportForm').on('submit', function (e) {
             e.preventDefault();
-
             let form = $(this);
             let url = form.attr('action');
 
@@ -280,34 +249,28 @@
                 data: form.serialize(),
                 success: function (response) {
                     toastr.success(response.message);
-
-                    // Fermer la modal
                     let modal = bootstrap.Modal.getInstance(document.getElementById('addSupport'));
                     modal.hide();
-
-                    // Reset form
                     form[0].reset();
-
-                    // Ajouter le support à la liste (exemple simple)
                     $('#supportsList').append(`
-                <div class="col-md-4 mb-3">
-                    <div class="card border-primary">
-                        <div class="card-body">
-                            <h5>${response.support.name}</h5>
-                            <p>${response.support.width} × ${response.support.height} cm</p>
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-primary">
+                            <div class="card-body">
+                                <h5>${response.support.name}</h5>
+                                <p>${response.support.width} × ${response.support.height} cm</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `);
+                `);
                 },
                 error: function (xhr) {
                     toastr.error(xhr.responseJSON?.message || 'Erreur serveur');
                 }
             });
         });
+
         $('#rollForm').on('submit', function (e) {
             e.preventDefault();
-
             let form = $(this);
             let url = form.attr('action');
 
@@ -317,33 +280,28 @@
                 data: form.serialize(),
                 success: function (response) {
                     toastr.success(response.message);
-
-                    // Fermer la modal
                     let modal = bootstrap.Modal.getInstance(document.getElementById('editRoll'));
                     modal.hide();
-
-                    // Mettre à jour la carte affichée
                     $('#rollsList').html(`
-                <div class="col-md-4 mb-3">
-                    <div class="card border-success">
-                        <div class="card-body">
-                            <p class="card-text">
-                                Largeur : ${response.roll.width} cm<br>
-                                Hauteur : ${response.roll.min_height} - ${response.roll.max_height} cm<br>
-                                ${response.roll.description || ''}
-                            </p>
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-success">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    Largeur : ${response.roll.width} cm<br>
+                                    Hauteur : ${response.roll.min_height} - ${response.roll.max_height} cm<br>
+                                    ${response.roll.description || ''}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `);
+                `);
                 },
                 error: function (xhr) {
                     toastr.error(xhr.responseJSON?.message || 'Erreur serveur');
                 }
             });
         });
-    </script>
-    <script>
+
         document.addEventListener('DOMContentLoaded', () => {
             const toggleButton = document.getElementById('sidebarToggle');
             const sidebar = document.getElementById('sidebar');
@@ -354,12 +312,8 @@
             }
         });
 
-    </script>
-    <script>
-        // Supprimer un support en AJAX
         $(document).on('click', '.delete-support-btn', function(e) {
             e.preventDefault();
-
             const button = $(this);
             const supportId = button.data('id');
             const csrfToken = button.data('token');
@@ -370,19 +324,64 @@
                 data: { _token: csrfToken },
                 success: function(response) {
                     toastr.success('Support supprimé !');
-
-                    // Supprime la carte
-                    button.closest('.col-md-4').fadeOut(300, function() {
-                        $(this).remove();
-                    });
+                    button.closest('.col-md-4').fadeOut(300, function() { $(this).remove(); });
                 },
                 error: function(xhr) {
                     toastr.error(xhr.responseJSON?.message || 'Erreur lors de la suppression.');
                 }
             });
         });
-
     </script>
+    <script>
+        $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
+            $("body").toggleClass("sidebar-toggled");
+            $(".sidebar").toggleClass("toggled");
+            if ($(".sidebar").hasClass("toggled")) {
+                $('.sidebar .collapse').collapse('hide');
+            };
+        });
 
+        // Close any open menu accordions when window is resized below 768px
+        $(window).resize(function() {
+            if ($(window).width() < 768) {
+                $('.sidebar .collapse').collapse('hide');
+            };
 
+            // Toggle the side navigation when window is resized below 480px
+            if ($(window).width() < 480 && !$(".sidebar").hasClass("toggled")) {
+                $("body").addClass("sidebar-toggled");
+                $(".sidebar").addClass("toggled");
+                $('.sidebar .collapse').collapse('hide');
+            };
+        });
+
+        // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
+        $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function(e) {
+            if ($(window).width() > 768) {
+                var e0 = e.originalEvent,
+                    delta = e0.wheelDelta || -e0.detail;
+                this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+                e.preventDefault();
+            }
+        });
+
+        // Scroll to top button appear
+        $(document).on('scroll', function() {
+            var scrollDistance = $(this).scrollTop();
+            if (scrollDistance > 100) {
+                $('.scroll-to-top').fadeIn();
+            } else {
+                $('.scroll-to-top').fadeOut();
+            }
+        });
+
+        // Smooth scrolling using jQuery easing
+        $(document).on('click', 'a.scroll-to-top', function(e) {
+            var $anchor = $(this);
+            $('html, body').stop().animate({
+                scrollTop: ($($anchor.attr('href')).offset().top)
+            }, 1000, 'easeInOutExpo');
+            e.preventDefault();
+        });
+    </script>
 {% endblock %}
