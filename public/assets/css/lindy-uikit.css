@@ -531,6 +531,10 @@ p {
   color: #2F80ED;
 }
 
+.header.header-2 a.flag-menu.active {
+  color: white !important;
+}
+
 .header.header-2 .navbar-nav .nav-item a:hover::after, .header.header-2 .navbar-nav .nav-item a.active::after {
   width: 100%;
 }
@@ -702,7 +706,7 @@ p {
 }
 
 .hero-section-wrapper-2 .hero-style-2 .hero-content-wrapper {
-  padding: 4rem 0;
+  padding: 4rem 1rem 10rem 1rem;
 }
 .hero-section-wrapper-2 .hero-style-2 .hero-content-wrapper-2 {
   padding: 2rem 0;
@@ -1355,8 +1359,8 @@ p {
     CONTACT-6 CSS
 ================================ */
 .contact-style-6 {
-  background: #F3F3F3;
-  padding: 100px 0 70px;
+  background: white;
+  padding: 3rem 0 3rem;
   position: relative;
   z-index: 1;
   overflow: hidden;
@@ -2700,8 +2704,15 @@ input:focus, textarea:focus, button:focus {
 }
 
 .feature-style-5 {
-  background: #ffffff;
-  padding: 100px 0 50px;
+  background: #f8f9fa;
+  padding: 3rem 0 3rem;
+}
+#partner {
+  background: #f8f9fa;
+}
+
+#faq {
+  background: #f8f9fa;
 }
 
 .feature-style-5 .single-feature {

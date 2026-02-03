@@ -25,7 +25,7 @@ generator:
       download: "Descargar PDF"
 
   canvas:
-    footer_text: "Hecho con amor – DTF Optimizer"
+    footer_text: "Hecho con amor – DTF Generator"
 
 message_succes1: "¡PDF descargado con éxito! Crea una cuenta ahora para encontrar fácilmente todos tus PDFs en tu Panel."
 message_error1: "¡Por favor, agrega al menos una imagen o PDF!"

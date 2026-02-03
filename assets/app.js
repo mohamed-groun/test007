@@ -8,8 +8,6 @@ import 'select2/dist/css/select2.min.css';
 import './css/style.css';
 import './css/logosSheet.css';
 import './css/animate.css';
-import './css/sb-admin-2.css';
-import './css/sb-admin-2.min.css';
 
 // ==================== JS ====================
 import $ from 'jquery';

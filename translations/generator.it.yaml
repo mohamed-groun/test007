@@ -25,7 +25,7 @@ generator:
       download: "Scarica PDF"
 
   canvas:
-    footer_text: "Creato con amore – DTF Optimizer"
+    footer_text: "Creato con amore – DTF Generator"
 
 message_succes1: "PDF scaricato con successo! Crea subito un account per trovare facilmente tutti i tuoi PDF nel tuo Cruscotto."
 message_error1: "Si prega di aggiungere almeno un'immagine o un PDF!"
