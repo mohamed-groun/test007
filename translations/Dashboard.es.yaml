@@ -22,6 +22,8 @@ copyright: "Copyright © Su sitio 2021"
 formats_generated: "Formatos generados"
 support:
   error_required_fields: "Por favor, complete todos los campos obligatorios."
+  error_required_fields2: "Pase a Premium para agregar más soportes"
+  error_required_fields3: "Pase a Premium para personalizar su rollo"
   success_added: "¡Soporte agregado con éxito!"
 roll:
   success_updated: "¡Bobina actualizada con éxito!"

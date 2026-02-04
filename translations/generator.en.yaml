@@ -38,4 +38,23 @@ messages:
   premium_margin_error: "Upgrade to the Premium plan to modify the margin."
   upgrade_premium: "Go Premium"
 
+js:
+  text1: "Duplicated"
+  text2: "times"
+  text3: "Format"
+  text4: "Number of images inside"
+
+modal:
+  info:
+    title: "Information about formats"
+    description_intro: "DTF Generator will choose the most suitable format for your visuals from this list:"
+    format1: "Sheet A6: 10.5 × 14.8 cm"
+    format2: "Sheet A5: 14.8 × 21 cm"
+    format3: "Sheet A4: 21 × 29.7 cm"
+    format4: "Sheet A3: 29.7 × 42 cm"
+    format5: "Roll: width 54 cm, length between 100 and 900 cm"
+    description_outro: "Want other formats? Log in and add the available formats via this link:"
+    description_outro2: "Additional formats:"
+    close_button: "Close"
+
 

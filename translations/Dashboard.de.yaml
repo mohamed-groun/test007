@@ -22,6 +22,8 @@ copyright: "Copyright © Ihre Website 2021"
 formats_generated: "Erstellte Formate"
 support:
   error_required_fields: "Bitte füllen Sie alle Pflichtfelder aus."
+  error_required_fields2: "Wechseln Sie zu Premium, um weitere Träger hinzuzufügen"
+  error_required_fields3: "Wechseln Sie zu Premium, um Ihre Rolle anzupassen"
   success_added: "Support erfolgreich hinzugefügt!"
 roll:
   success_updated: "Rolle erfolgreich aktualisiert!"

@@ -921,8 +921,10 @@
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({orderID: data.orderID})
                 }).then(() => {
-                    alert("{{ 'payment.success_day'|trans }}");
-                    window.location.reload();
+                    toastr.success("{{ 'payment.success_day'|trans }}");
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 5000);
                 });
             }
         }).render('#paypal-day-button');
@@ -951,7 +953,9 @@
                         modalInstance.hide();
                     }
                     toastr.success("{{ 'payment.success_year'|trans }}", "Succès !");
-                    //    window.location.reload();
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 5000);
                 });
             }
         }).render('#paypal-year-button');

@@ -28,8 +28,8 @@ final class GeneratorController extends AbstractController
         return $this->render('generator/index.html.twig');
     }
 
-    #[Route('/index2', name: 'app_generator_2')]
-    public function index2(EntityManagerInterface $em): Response
+    #[Route('/generator', name: 'app_generator_2')]
+    public function generator(EntityManagerInterface $em): Response
     {
         $supports = $em->getRepository(Supports::class)->findAll();
 
@@ -79,6 +79,12 @@ final class GeneratorController extends AbstractController
         $margin = $request->request->get('margin', '0.5');
         $spaceBetween = $request->request->get('space_between_logos', '0.5');
         $withBanner = (bool)$request->request->get('with_banner', false);
+        $traductions = [
+            'text1' => $message = $translator->trans('js.text1', [], 'generator'),
+            'text2' => $message = $translator->trans('js.text2', [], 'generator'),
+            'text3' => $message = $translator->trans('js.text3', [], 'generator'),
+            'text4' => $message = $translator->trans('js.text4', [], 'generator'),
+        ];
 
         // =============================
         // Premium checks
@@ -140,9 +146,9 @@ final class GeneratorController extends AbstractController
         // =============================
         $pdfParam = new PdfParametres();
         $pdfParam
-            ->setName('pack-result-' . $now->format('Ymd-His'))
-            ->setIdUser($user ?->getId())
-            ->setWidth($supportDetails[0]['width'])
+         ->setName('pack-result-' . $now->format('Ymd-His'))
+         ->setIdUser($user->getId())
+        ->setWidth($supportDetails[0]['width'])
         ->setHeight($supportDetails[0]['height'])
         ->setImagesSheets(json_encode($result))
         ->setDownloadCount(0)
@@ -161,6 +167,7 @@ final class GeneratorController extends AbstractController
         'margin' => $margin,
         'space_between_logos' => $spaceBetween,
         'packingResult' => $result,
+        'traductions' => $traductions,
     ]);
 }
 

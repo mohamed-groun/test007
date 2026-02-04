@@ -22,6 +22,8 @@ copyright: "Copyright © Your Site 2021"
 formats_generated: "Generated Formats"
 support:
   error_required_fields: "Please fill in all required fields."
+  error_required_fields2: "Upgrade to Premium to add more supports"
+  error_required_fields3: "Upgrade to Premium to customize your roll"
   success_added: "Support added successfully!"
 roll:
   success_updated: "Roll updated successfully!"

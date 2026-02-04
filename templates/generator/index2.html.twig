@@ -156,32 +156,35 @@
         </div>
     </div>
     <!-- Modal -->
-    <!-- Modal explicatif -->
     <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered"> <!-- modal-lg pour plus d'espace -->
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="infoModalLabel">Information sur les formats</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                    <h5 class="modal-title" id="infoModalLabel">{{ 'modal.info.title'|trans }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'modal.info.close_button'|trans }}"></button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>DTF Generator choisira le format le plus adapté pour vos visuels parmi cette liste :</strong></p>
+                    <p><strong>{{ 'modal.info.description_intro'|trans }}</strong></p><br>
                     <ul>
-                        <li>Planche A6 : 10,5 × 14,8 cm</li>
-                        <li>Planche A5 : 14,8 × 21 cm</li>
-                        <li>Planche A4 : 21 × 29,7 cm</li>
-                        <li>Planche A3 : 29,7 × 42 cm</li>
-                        <li>Bobine : largeur 54 cm, longueur entre 100 et 900 cm</li>
+                        <li>{{ 'modal.info.format1'|trans }}</li>
+                        <li>{{ 'modal.info.format2'|trans }}</li>
+                        <li>{{ 'modal.info.format3'|trans }}</li>
+                        <li>{{ 'modal.info.format4'|trans }}</li>
+                        <li>{{ 'modal.info.format5'|trans }}</li>
                     </ul><br>
-                    <p><strong>Vous souhaitez d’autres formats ?</strong></p>
-                    <p>Connectez-vous et ajoutez les formats disponibles via ce lien : <a href="http://127.0.0.1:8000/supports" target="_blank">Formats supplémentaires</a></p>
+                    <p>
+                        <strong>{{ 'modal.info.description_outro'|trans }}</strong>
+                        <a href="{{ path('dashboard_supports') }}" target="_blank">{{ 'modal.info.description_outro2'|trans }}</a>
+                    </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'modal.info.close_button'|trans }}</button>
                 </div>
             </div>
         </div>
     </div>
+
+
 
 </main>
     <script>

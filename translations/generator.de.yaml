@@ -38,3 +38,22 @@ messages:
   premium_margin_error: "Wechseln Sie zum Premium-Abonnement, um den Rand zu ändern."
   upgrade_premium: "Wechseln Sie zu Premium"
 
+js:
+  text1: "Repliziert"
+  text2: "Mal"
+  text3: "Format"
+  text4: "Anzahl der Bilder darin"
+
+modal:
+  info:
+    title: "Informationen zu den Formaten"
+    description_intro: "DTF Generator wählt das am besten geeignete Format für Ihre Grafiken aus dieser Liste:"
+    format1: "Blatt A6: 10,5 × 14,8 cm"
+    format2: "Blatt A5: 14,8 × 21 cm"
+    format3: "Blatt A4: 21 × 29,7 cm"
+    format4: "Blatt A3: 29,7 × 42 cm"
+    format5: "Rolle: Breite 54 cm, Länge zwischen 100 und 900 cm"
+    description_outro: "Möchten Sie weitere Formate? Melden Sie sich an und fügen Sie die verfügbaren Formate über diesen Link hinzu:"
+    description_outro2: "Zusätzliche Formate:"
+    close_button: "Schließen"
+

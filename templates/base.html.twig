@@ -247,9 +247,11 @@
                                        role="button"
                                        data-bs-toggle="dropdown"
                                        aria-expanded="false">
-                                         <span class="ms-2 throne-icon">
+                                         <span class="ms-2">
                                                   {% if is_premium %}
-                                                      <i class="fa-solid fa-crown"></i>
+                                                      <svg style="padding-bottom: 0.5rem;" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="gold" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                          <path d="M2 20h20l-2-12-4 6-4-8-4 8-4-6-2 12z"/>
+                                                      </svg>
                                                   {% endif %}
             </span> {{ app.user.firstName }} {{ app.user.lastName }}
                                     </a>

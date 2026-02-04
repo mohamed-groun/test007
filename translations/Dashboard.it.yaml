@@ -21,7 +21,10 @@ toastr_error: "Si è verificato un errore."
 copyright: "Copyright © Il tuo sito 2021"
 formats_generated: "Formati generati"
 support:
-  error_required_fields: "Si prega di compilare tutti i campi obbligatori."
+  error_required_fields: "Per favore, compila tutti i campi obbligatori."
+  error_required_fields2: "Passa a Premium per aggiungere più supporti"
+  error_required_fields3: "Passa a Premium per personalizzare il tuo rotolo"
+
   success_added: "Supporto aggiunto con successo!"
 roll:
   success_updated: "Rullo aggiornato con successo!"

@@ -6,6 +6,7 @@ use App\Entity\ImagesFavorites;
 use App\Entity\PdfParametres;
 use App\Entity\Supports;
 use App\Entity\Roll;
+use App\Entity\UserSubscription;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -102,7 +103,16 @@ final class DashboardController extends AbstractController
     public function addSupport(Request $request, EntityManagerInterface $em, TranslatorInterface $translator): JsonResponse
     {
         $user = $this->getUser();
+        $isPremium = $user
+            ? $em->getRepository(UserSubscription::class)->isActiveForUser($user->getId())
+            : false;
 
+        if (!$isPremium) {
+            return new JsonResponse([
+                'status' => 'error',
+                'message' => $translator->trans('support.error_required_fields2', [], 'Dashboard')
+            ], 400);
+        }
         if (
             !$request->request->get('name') ||
             !$request->request->get('width') ||
@@ -141,6 +151,16 @@ final class DashboardController extends AbstractController
     public function saveRoll(Request $request, EntityManagerInterface $em,  TranslatorInterface $translator): JsonResponse
     {
         $user = $this->getUser();
+        $isPremium = $user
+            ? $em->getRepository(UserSubscription::class)->isActiveForUser($user->getId())
+            : false;
+
+        if (!$isPremium) {
+            return new JsonResponse([
+                'status' => 'error',
+                'message' => $translator->trans('support.error_required_fields3', [], 'Dashboard')
+            ], 400);
+        }
 
         $roll = $em->getRepository(Roll::class)->findOneBy([
             'id_user' => $user->getId()

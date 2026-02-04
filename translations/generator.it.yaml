@@ -38,3 +38,21 @@ messages:
   premium_margin_error: "Passa al piano Premium per modificare il margine."
   upgrade_premium: "Passa a Premium"
 
+js:
+  text1: "Replicato"
+  text2: "volte"
+  text3: "Formato"
+  text4: "Numero di immagini all’interno"
+
+modal:
+  info:
+    title: "Informazioni sui formati"
+    description_intro: "DTF Generator sceglierà il formato più adatto per i tuoi visual tra questa lista:"
+    format1: "Foglio A6: 10,5 × 14,8 cm"
+    format2: "Foglio A5: 14,8 × 21 cm"
+    format3: "Foglio A4: 21 × 29,7 cm"
+    format4: "Foglio A3: 29,7 × 42 cm"
+    format5: "Rotolo: larghezza 54 cm, lunghezza tra 100 e 900 cm"
+    description_outro: "Vuoi altri formati? Accedi e aggiungi i formati disponibili tramite questo link:"
+    description_outro2: "Formati aggiuntivi:"
+    close_button: "Chiudi"

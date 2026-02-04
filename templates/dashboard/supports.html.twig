@@ -3,6 +3,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets-admin/css/sb-admin-2.css') }}">
     <style>
         .btn-trash {
             color: #6c757d;
@@ -75,7 +76,8 @@
                                             </p>
                                             <button class="btn btn-sm btn-trash position-absolute top-0 end-0 m-2 delete-support-btn"
                                                     data-id="{{ support.id }}"
-                                                    data-token="{{ csrf_token('delete_support' ~ support.id) }}">
+                                                    data-token="{{ csrf_token('delete_support' ~ support.id) }}"
+                                                    data-url="{{ path('support_delete', {'id': support.id, '_locale': app.request.locale}) }}">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
@@ -236,7 +238,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-
     <script>
         $('#supportForm').on('submit', function (e) {
             e.preventDefault();
@@ -315,11 +316,11 @@
         $(document).on('click', '.delete-support-btn', function(e) {
             e.preventDefault();
             const button = $(this);
-            const supportId = button.data('id');
+            const url = button.data('url');
             const csrfToken = button.data('token');
 
             $.ajax({
-                url: '/support/' + supportId + '/delete',
+                url: url,
                 method: 'POST',
                 data: { _token: csrfToken },
                 success: function(response) {
@@ -331,6 +332,7 @@
                 }
             });
         });
+
     </script>
     <script>
         $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {

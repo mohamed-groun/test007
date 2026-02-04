@@ -136,7 +136,11 @@ async function handleFiles(files) {
         deleteBtn.type = "button";
         deleteBtn.classList.add("btn", "btn-sm", "btn-danger");
         deleteBtn.innerHTML = `<i class="bi bi-trash"></i>`;
-        deleteBtn.addEventListener("click", () => removeFileById(fileId));
+        deleteBtn.addEventListener("click", () => {
+            removeFileById(fileId);
+            toggleButtons(false);
+        });
+
 
         btnGroup.appendChild(toggleBtn);
         btnGroup.appendChild(deleteBtn);
@@ -380,7 +384,11 @@ async function displayFavoriteImages(favoriteImages) {
         deleteBtn.type = "button";
         deleteBtn.classList.add("btn", "btn-sm", "btn-danger");
         deleteBtn.innerHTML = `<i class="bi bi-trash"></i>`;
-        deleteBtn.addEventListener("click", () => removeFileById(fileId));
+        deleteBtn.addEventListener("click", () => {
+            removeFileById(fileId);
+            toggleButtons(false);
+        });
+
 
         btnGroup.appendChild(toggleBtn);
         btnGroup.appendChild(deleteBtn);
@@ -417,11 +425,13 @@ async function displayFavoriteImages(favoriteImages) {
         widthInput.name = `files_info[${fileId}][width]`;
         widthInput.classList.add("form-control", "preview-input", "file-width");
         widthInput.addEventListener("input", () => updateLongueur(fileId));
+        widthInput.addEventListener("change", () => toggleButtons(false));
 
         const heightInput = document.createElement("input");
         heightInput.type = "number";
         heightInput.name = `files_info[${fileId}][height]`;
         heightInput.classList.add("form-control", "preview-input", "file-height");
+        heightInput.addEventListener("change", () => toggleButtons(false));
 
         const qtyInputFull = document.createElement("input");
         qtyInputFull.type = "number";
@@ -432,6 +442,7 @@ async function displayFavoriteImages(favoriteImages) {
 
         qtyInputFull.addEventListener("input", () => qtyInputCompact.value = qtyInputFull.value);
         qtyInputCompact.addEventListener("input", () => qtyInputFull.value = qtyInputCompact.value);
+        qtyInputFull.addEventListener("change", () => toggleButtons(false));
 
         if (file.type.startsWith("image/")) {
             const img = document.createElement("img");
@@ -466,7 +477,9 @@ async function displayFavoriteImages(favoriteImages) {
 
         }
         widthInput.addEventListener("input", () => updateLongueur(fileId));
+        widthInput.addEventListener("change", () => toggleButtons(false));
         heightInput.addEventListener("input", () => updateLargeur(fileId));
+        heightInput.addEventListener("change", () => toggleButtons(false));
 
         card.appendChild(imgContainer);
 
@@ -759,6 +772,7 @@ async function loadPdfAsCanvas(url, scale = 2) {
 }
 
 async function renderPreview(data) {
+    console.log(data);
     toggleButtons(false);
     applyInversedFromFiles(data);
 
@@ -795,7 +809,7 @@ async function renderPreview(data) {
             if (sheetCache[sheetKey]) {
                 sheetCache[sheetKey].count++;
                 const subtitle = sheetCache[sheetKey].card.querySelector('.support-subtitle');
-                subtitle.textContent = `Répliqué : ${sheetCache[sheetKey].count} fois`;
+                subtitle.textContent = `${data.traductions.text1} : ${sheetCache[sheetKey].count} ${data.traductions.text2}`;
                 continue;
             }
 
@@ -805,10 +819,10 @@ async function renderPreview(data) {
             card.innerHTML = `
                 <div class="canvas-wrapper">
                     <div class="support-presentation">
-                        <div class="support-title">Format : ${supportKey}</div>
-                        <div class="support-subtitle">Répliqué : 1 fois</div>
+                        <div class="support-title">${data.traductions.text3} : ${supportKey}</div>
+                        <div class="support-subtitle">${data.traductions.text1} : 1 ${data.traductions.text2}</div>
                         <div class="sheet-header">
-                            <span>Nombre d'images dedans : ${sheet.length}</span>
+                            <span>${data.traductions.text4} : ${sheet.length}</span>
                         </div>
                     </div>
                     <canvas></canvas>
@@ -897,9 +911,8 @@ async function renderPreview(data) {
                 ctx.font = `${12 * scale}px sans-serif`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText('Made with love DTF optimizer', canvas.width / 2, canvas.height - bannerHeightPx / 2);
+                ctx.fillText('Made with love DTF Generator', canvas.width / 2, canvas.height - bannerHeightPx / 2);
             }
-
         }
     }
 }

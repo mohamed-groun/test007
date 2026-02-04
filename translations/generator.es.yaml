@@ -38,3 +38,21 @@ messages:
   premium_margin_error: "Pasa al plan Premium para modificar el margen."
   upgrade_premium: "Pasa a Premium"
 
+js:
+  text1: "Repetido"
+  text2: "veces"
+  text3: "Formato"
+  text4: "Número de imágenes dentro"
+
+modal:
+  info:
+    title: "Información sobre los formatos"
+    description_intro: "DTF Generator elegirá el formato más adecuado para tus diseños de esta lista:"
+    format1: "Placa A6: 10,5 × 14,8 cm"
+    format2: "Placa A5: 14,8 × 21 cm"
+    format3: "Placa A4: 21 × 29,7 cm"
+    format4: "Placa A3: 29,7 × 42 cm"
+    format5: "Bobina: ancho 54 cm, longitud entre 100 y 900 cm"
+    description_outro: "¿Deseas otros formatos? Conéctate y añade los formatos disponibles mediante este enlace:"
+    description_outro2: "Formatos adicionales:"
+    close_button: "Cerrar"

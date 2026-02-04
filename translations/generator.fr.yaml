@@ -37,3 +37,23 @@ messages:
   premium_spacing_error: "Passez à l’abonnement Premium pour modifier l’espace entre les images."
   premium_margin_error: "Passez à l’abonnement Premium pour modifier la marge."
   upgrade_premium: "Passez Premium"
+
+js:
+  text1: "Répliqué"
+  text2: "fois"
+  text3: "Format"
+  text4: "Nombre d'images dedans"
+
+
+modal:
+  info:
+    title: "Information sur les formats"
+    description_intro: "DTF Generator choisira le format le plus adapté pour vos visuels parmi cette liste :"
+    format1: "Planche A6 : 10,5 × 14,8 cm"
+    format2: "Planche A5 : 14,8 × 21 cm"
+    format3: "Planche A4 : 21 × 29,7 cm"
+    format4: "Planche A3 : 29,7 × 42 cm"
+    format5: "Bobine : largeur 54 cm, longueur entre 100 et 900 cm"
+    description_outro: "Vous souhaitez d’autres formats ? Connectez-vous et ajoutez les formats disponibles via ce lien :"
+    description_outro2: "Formats supplémentaires:"
+    close_button: "Fermer"
