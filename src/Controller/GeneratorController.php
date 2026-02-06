@@ -89,7 +89,7 @@ final class GeneratorController extends AbstractController
         // =============================
         // Premium checks
         // =============================
-        if (!$isPremium) {
+     /*   if (!$isPremium) {
             if (!$withBanner) {
                 return $this->premiumError('messages.premium_banner_error', $translator);
             }
@@ -101,7 +101,7 @@ final class GeneratorController extends AbstractController
             if ($margin !== '0.5') {
                 return $this->premiumError('messages.premium_margin_error', $translator);
             }
-        }
+        } */
 
         // =============================
         // Upload files
@@ -147,7 +147,7 @@ final class GeneratorController extends AbstractController
         $pdfParam = new PdfParametres();
         $pdfParam
          ->setName('pack-result-' . $now->format('Ymd-His'))
-         ->setIdUser($user->getId())
+         ->setIdUser($user ? $user->getId() : 0)
         ->setWidth($supportDetails[0]['width'])
         ->setHeight($supportDetails[0]['height'])
         ->setImagesSheets(json_encode($result))
@@ -188,13 +188,32 @@ final class GeneratorController extends AbstractController
             ? $em->getRepository(UserSubscription::class)->isActiveForUser($user->getId())
             : false;
 
-        if (!$isPremium) {
-            return $this->premiumError('messages.premium_margin_error', $translator);
-        }
-        $id_file = $request->request->get('id_file');
 
+        $id_file = $request->request->get('id_file');
         $with_banner = (bool)$request->request->get('with_banner', false);
+        $margin = $request->request->get('margin', false);
+        $spaceBetween = $request->request->get('space_between_logos', false);
         $pdf = $em->getRepository(PdfParametres::class)->find($id_file);
+        $pdfDownloadCount = $pdf->getDownloadCount();
+
+        if (($pdfDownloadCount > 0) && (!$isPremium)) {
+            return $this->premiumError('messages.premium_download_error', $translator);
+        }
+
+        if (!$isPremium) {
+            if (!$with_banner) {
+                return $this->premiumError('messages.premium_banner_error', $translator);
+            }
+
+            if ($spaceBetween !== '0.5') {
+                return $this->premiumError('messages.premium_spacing_error', $translator);
+            }
+
+            if ($margin !== '0.5') {
+                return $this->premiumError('messages.premium_margin_error', $translator);
+            }
+        }
+
         $json = $pdf->getImagessheets();
         $images = $pdf->getImages();
 

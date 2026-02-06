@@ -25,7 +25,7 @@ generator:
       download: "Descargar PDF"
 
   canvas:
-    footer_text: "Hecho con amor – DTF Generator"
+    footer_text: "Made with love DTF Generator"
 
 message_succes1: "¡PDF descargado con éxito! Crea una cuenta ahora para encontrar fácilmente todos tus PDFs en tu Panel."
 message_error1: "¡Por favor, agrega al menos una imagen o PDF!"
@@ -36,6 +36,7 @@ messages:
   premium_banner_error: "Pasa al plan Premium para eliminar la franja en la parte inferior del formato."
   premium_spacing_error: "Pasa al plan Premium para modificar el espacio entre las imágenes."
   premium_margin_error: "Pasa al plan Premium para modificar el margen."
+  premium_download_error: "Pásate a la suscripción Premium para descargar el PDF."
   upgrade_premium: "Pasa a Premium"
 
 js:

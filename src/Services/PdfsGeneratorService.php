@@ -103,7 +103,7 @@ class PdfsGeneratorService
                     $pdf->SetTextColor(255, 255, 255);
                     $pdf->SetFont('helvetica', 'B', 10);
                     $pdf->SetXY(0, $pageHeight - $bannerHeight + 1);
-                    $pdf->Cell($pageWidth, $bannerHeight - 2, 'Made by Logos Sheet', 0, 0, 'C');
+                    $pdf->Cell($pageWidth, $bannerHeight - 2, 'Made with love DTF Generator', 0, 0, 'C');
                 }
 
                 // Insertion des images

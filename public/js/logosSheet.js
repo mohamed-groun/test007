@@ -523,7 +523,6 @@ async function displayFavoriteImages(favoriteImages) {
 async function getImageDimensions(file) {
     const formData = new FormData();
     formData.append('file', file);
-console.log(file)
     try {
         const response = await fetch('/image-info', { method: 'POST', body: formData });
         if (!response.ok) {
@@ -574,12 +573,14 @@ async function submitForm(action) {
     });
 
     const with_banner = document.getElementById('with_banner')?.checked ? 1 : 0;
+    const margin = document.getElementById('margin').value;
+    const space_between_logos = document.getElementById('space_between_logos').value;
 
     formData.append('with_banner', with_banner);
     formData.append('support', $('#support').val());
     formData.append('format-choice', document.getElementById('id_format_choice').value);
-    formData.append('margin', document.getElementById('margin').value);
-    formData.append('space_between_logos', document.getElementById('space_between_logos').value);
+    formData.append('margin', margin);
+    formData.append('space_between_logos', space_between_logos);
 
     if (action === 'preview') {
         const response = await fetch(window.routes.generatorCalculate, { method: 'POST', body: formData });
@@ -625,6 +626,8 @@ async function submitForm(action) {
         const downloadData = new FormData();
         downloadData.append('id_file', fileId);
         downloadData.append('with_banner', with_banner);
+        downloadData.append('margin', margin);
+        downloadData.append('space_between_logos', space_between_logos);
 
         try {
             const response = await fetch(window.routes.generatorDownload, { method: 'POST', body: downloadData });
@@ -772,7 +775,6 @@ async function loadPdfAsCanvas(url, scale = 2) {
 }
 
 async function renderPreview(data) {
-    console.log(data);
     toggleButtons(false);
     applyInversedFromFiles(data);
 
@@ -903,16 +905,34 @@ async function renderPreview(data) {
 
             // Ajouter la bande si demandé
             if (data.with_banner) {
-                const bannerHeightPx = 38 * scale; // 1 cm ≈ 38px
+                const bannerHeightMm = 10; // 1 cm réel
+                const pxPerMm = canvas.height / supportHeight;
+                const bannerHeightPx = bannerHeightMm * pxPerMm;
+
+                // Bandeau
                 ctx.fillStyle = '#3b82f6';
-                ctx.fillRect(0, canvas.height - bannerHeightPx, canvas.width, bannerHeightPx);
+                ctx.fillRect(
+                    0,
+                    canvas.height - bannerHeightPx,
+                    canvas.width,
+                    bannerHeightPx
+                );
+
+                // Texte
+                const fontSizePx = bannerHeightPx * 0.6;
 
                 ctx.fillStyle = '#ffffff';
-                ctx.font = `${12 * scale}px sans-serif`;
+                ctx.font = `bold ${fontSizePx}px sans-serif`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText('Made with love DTF Generator', canvas.width / 2, canvas.height - bannerHeightPx / 2);
+
+                ctx.fillText(
+                    'Made with love DTF Generator',
+                    canvas.width / 2,
+                    canvas.height - bannerHeightPx / 2
+                );
             }
+
         }
     }
 }
