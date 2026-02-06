@@ -12,7 +12,7 @@ class ImageController extends AbstractController
     #[Route('/image-info', name: 'image_info', methods: ['POST'])]
     public function imageInfo(Request $request): JsonResponse
     {
-        ini_set('upload_max_filesize', '20M');
+    /*    ini_set('upload_max_filesize', '20M');
         ini_set('post_max_size', '20M');
         ini_set('max_execution_time', '300');
         ini_set('memory_limit', '256M');
@@ -21,10 +21,10 @@ class ImageController extends AbstractController
             'upload_max_filesize' => ini_get('upload_max_filesize'),
             'post_max_size' => ini_get('post_max_size'),
             'content_length' => $_SERVER['CONTENT_LENGTH'],
-        ]);
+        ]); */
 
         $uploadedFile = $request->files->get('file');
-        dd($uploadedFile);
+
       /*  dd([
             'error' => $uploadedFile->getError(),
             'errorMessage' => $uploadedFile->getErrorMessage(),

@@ -263,6 +263,9 @@
                         </div>
                     </div>
                 `);
+                    setTimeout(function() {
+                        location.reload();
+                    }, 5000);
                 },
                 error: function (xhr) {
                     toastr.error(xhr.responseJSON?.message || 'Erreur serveur');

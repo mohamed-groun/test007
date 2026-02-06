@@ -178,7 +178,7 @@ async function handleFiles(files) {
         widthInput.name = `files_info[${fileId}][width]`;
         widthInput.classList.add("form-control", "preview-input", "file-width");
         widthInput.addEventListener("input", () => updateLongueur(fileId));
-        widthInput.addEventListener("change", () => toggleButtons(false));
+        widthInput.addEventListener("input", () => toggleButtons(false));
 
 // Height input
         const heightInput = document.createElement("input");
@@ -186,7 +186,7 @@ async function handleFiles(files) {
         heightInput.name = `files_info[${fileId}][height]`;
         heightInput.classList.add("form-control", "preview-input", "file-height");
         heightInput.addEventListener("input", () => updateLargeur(fileId));
-        heightInput.addEventListener("change", () => toggleButtons(false));
+        heightInput.addEventListener("input", () => toggleButtons(false));
 
 // Quantity input
         const qtyInputFull = document.createElement("input");
@@ -195,7 +195,7 @@ async function handleFiles(files) {
         qtyInputFull.value = 1;
         qtyInputFull.name = `files_info[${fileId}][qty]`;
         qtyInputFull.classList.add("form-control", "preview-input", "file-qty");
-        qtyInputFull.addEventListener("change", () => toggleButtons(false));
+        qtyInputFull.addEventListener("input", () => toggleButtons(false));
 
         // Synchronisation compact/full
         qtyInputFull.addEventListener("input", () => qtyInputCompact.value = qtyInputFull.value);
@@ -425,13 +425,13 @@ async function displayFavoriteImages(favoriteImages) {
         widthInput.name = `files_info[${fileId}][width]`;
         widthInput.classList.add("form-control", "preview-input", "file-width");
         widthInput.addEventListener("input", () => updateLongueur(fileId));
-        widthInput.addEventListener("change", () => toggleButtons(false));
+        widthInput.addEventListener("input", () => toggleButtons(false));
 
         const heightInput = document.createElement("input");
         heightInput.type = "number";
         heightInput.name = `files_info[${fileId}][height]`;
         heightInput.classList.add("form-control", "preview-input", "file-height");
-        heightInput.addEventListener("change", () => toggleButtons(false));
+        heightInput.addEventListener("input", () => toggleButtons(false));
 
         const qtyInputFull = document.createElement("input");
         qtyInputFull.type = "number";
@@ -442,7 +442,7 @@ async function displayFavoriteImages(favoriteImages) {
 
         qtyInputFull.addEventListener("input", () => qtyInputCompact.value = qtyInputFull.value);
         qtyInputCompact.addEventListener("input", () => qtyInputFull.value = qtyInputCompact.value);
-        qtyInputFull.addEventListener("change", () => toggleButtons(false));
+        qtyInputFull.addEventListener("input", () => toggleButtons(false));
 
         if (file.type.startsWith("image/")) {
             const img = document.createElement("img");
@@ -477,9 +477,9 @@ async function displayFavoriteImages(favoriteImages) {
 
         }
         widthInput.addEventListener("input", () => updateLongueur(fileId));
-        widthInput.addEventListener("change", () => toggleButtons(false));
+        widthInput.addEventListener("input", () => toggleButtons(false));
         heightInput.addEventListener("input", () => updateLargeur(fileId));
-        heightInput.addEventListener("change", () => toggleButtons(false));
+        heightInput.addEventListener("input", () => toggleButtons(false));
 
         card.appendChild(imgContainer);
 

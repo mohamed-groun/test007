@@ -87,23 +87,6 @@ final class GeneratorController extends AbstractController
         ];
 
         // =============================
-        // Premium checks
-        // =============================
-     /*   if (!$isPremium) {
-            if (!$withBanner) {
-                return $this->premiumError('messages.premium_banner_error', $translator);
-            }
-
-            if ($spaceBetween !== '0.5') {
-                return $this->premiumError('messages.premium_spacing_error', $translator);
-            }
-
-            if ($margin !== '0.5') {
-                return $this->premiumError('messages.premium_margin_error', $translator);
-            }
-        } */
-
-        // =============================
         // Upload files
         // =============================
         $fileDetails = $this->handleFileUploads(
@@ -384,13 +367,14 @@ final class GeneratorController extends AbstractController
         }
 
         // Roll
-        $roll = $em->getRepository(Roll::class)->findOneBy([
-            'id_user' => $user ?->getId()
-    ]);
+        $criteria = ['id_user' => $user ? $user->getId() : null];
+        $roll = $em->getRepository(Roll::class)->findOneBy($criteria);
+
 
     if (!$roll) {
         return $supports;
     }
+
 
     for ($h = $roll->getMinHeight(); $h <= $roll->getMaxHeight(); $h += 10) {
         $height = $h * 10 - ($withBanner ? 10 : 0);

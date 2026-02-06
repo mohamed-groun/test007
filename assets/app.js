@@ -14,7 +14,7 @@ import $ from 'jquery';
 window.$ = $;
 window.jQuery = $;
 
-import 'bootstrap';
+import * as bootstrap from 'bootstrap';
 import toastr from 'toastr';
 window.toastr = toastr;
 import 'select2';
@@ -27,7 +27,7 @@ window.pdfjsLib = pdfjsLib;
 // Tes fichiers JS perso
 import './js/main.js';
 
-
+window.bootstrap = bootstrap;
 // ==================== Config Toastr ====================
 toastr.options = {
     closeButton: true,
